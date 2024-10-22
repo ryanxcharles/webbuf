@@ -240,32 +240,18 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
 
-    return BigInt(
-      ( this[offset] as number) +
-        (( this[offset + 1] as number) << 8) +
-        (( this[offset + 2] as number) << 16) +
-        (( this[offset + 3] as number) * 2 ** 24) +
-        (( this[offset + 4] as number) * 2 ** 32) +
-        (( this[offset + 5] as number) * 2 ** 40) +
-        (( this[offset + 6] as number) * 2 ** 48) +
-        (( this[offset + 7] as number) * 2 ** 56),
-    );
+    const lo = this.readUint32LE(offset);
+    const hi = this.readUint32LE(offset + 4);
+    return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
 
   readBigUint64BE(offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
 
-    return BigInt(
-      (( this[offset] as number) * 2 ** 56) +
-        (( this[offset + 1] as number) * 2 ** 48) +
-        (( this[offset + 2] as number) * 2 ** 40) +
-        (( this[offset + 3] as number) * 2 ** 32) +
-        (( this[offset + 4] as number) * 2 ** 24) +
-        (( this[offset + 5] as number) << 16) +
-        (( this[offset + 6] as number) << 8) +
-        ( this[offset + 7] as number),
-    );
+    const lo = this.readUint32BE(offset);
+    const hi = this.readUint32BE(offset + 4);
+    return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
   
   readIntLE(offset: number, byteLength: number) {
@@ -351,6 +337,24 @@ export class WebBuf extends Uint8Array {
       ((this[offset + 2] as number) << 8) |
       (this[offset + 3] as number)
     );
+  }
+
+  readBigInt64LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    const lo = this.readUint32LE(offset);
+    const hi = this.readInt32LE(offset + 4);
+    return BigInt(lo) + (BigInt(hi) << BigInt(32));
+  }
+
+  readBigInt64BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    const lo = this.readInt32BE(offset + 4);
+    const hi = this.readUint32BE(offset);
+    return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
 
 }
