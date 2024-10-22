@@ -2,6 +2,7 @@ export class Buffer extends Uint8Array {
     length: number
     write(string: string, offset?: number, length?: number, encoding?: string): number;
     toString(encoding?: string, start?: number, end?: number): string;
+    // biome-ignore lint:
     toJSON(): { type: 'Buffer', data: any[] };
     equals(otherBuffer: Buffer): boolean;
     compare(otherBuffer: Uint8Array, targetStart?: number, targetEnd?: number, sourceStart?: number, sourceEnd?: number): number;
@@ -21,15 +22,15 @@ export class Buffer extends Uint8Array {
     readUInt16BE(offset?: number, noAssert?: boolean): number;
     readUInt32LE(offset?: number, noAssert?: boolean): number;
     readUInt32BE(offset?: number, noAssert?: boolean): number;
-    readBigUInt64LE(offset?: number): BigInt;
-    readBigUInt64BE(offset?: number): BigInt;
+    readBigUInt64LE(offset?: number): bigint;
+    readBigUInt64BE(offset?: number): bigint;
     readInt8(offset?: number, noAssert?: boolean): number;
     readInt16LE(offset?: number, noAssert?: boolean): number;
     readInt16BE(offset?: number, noAssert?: boolean): number;
     readInt32LE(offset?: number, noAssert?: boolean): number;
     readInt32BE(offset?: number, noAssert?: boolean): number;
-    readBigInt64LE(offset?: number): BigInt;
-    readBigInt64BE(offset?: number): BigInt;
+    readBigInt64LE(offset?: number): bigint;
+    readBigInt64BE(offset?: number): bigint;
     readFloatLE(offset?: number, noAssert?: boolean): number;
     readFloatBE(offset?: number, noAssert?: boolean): number;
     readDoubleLE(offset?: number, noAssert?: boolean): number;
@@ -43,19 +44,20 @@ export class Buffer extends Uint8Array {
     writeUInt16BE(value: number, offset?: number, noAssert?: boolean): number;
     writeUInt32LE(value: number, offset?: number, noAssert?: boolean): number;
     writeUInt32BE(value: number, offset?: number, noAssert?: boolean): number;
-    writeBigUInt64LE(value: BigInt, offset?: number): number;
-    writeBigUInt64BE(value: BigInt, offset?: number): number;
+    writeBigUInt64LE(value: bigint, offset?: number): number;
+    writeBigUInt64BE(value: bigint, offset?: number): number;
     writeInt8(value: number, offset?: number, noAssert?: boolean): number;
     writeInt16LE(value: number, offset?: number, noAssert?: boolean): number;
     writeInt16BE(value: number, offset?: number, noAssert?: boolean): number;
     writeInt32LE(value: number, offset?: number, noAssert?: boolean): number;
     writeInt32BE(value: number, offset?: number, noAssert?: boolean): number;
-    writeBigInt64LE(value: BigInt, offset?: number): number;
-    writeBigInt64BE(value: BigInt, offset?: number): number;
+    writeBigInt64LE(value: bigint, offset?: number): number;
+    writeBigInt64BE(value: bigint, offset?: number): number;
     writeFloatLE(value: number, offset?: number, noAssert?: boolean): number;
     writeFloatBE(value: number, offset?: number, noAssert?: boolean): number;
     writeDoubleLE(value: number, offset?: number, noAssert?: boolean): number;
     writeDoubleBE(value: number, offset?: number, noAssert?: boolean): number;
+    // biome-ignore lint:
     fill(value: any, offset?: number, end?: number): this;
     indexOf(value: string | number | Buffer, byteOffset?: number, encoding?: string): number;
     lastIndexOf(value: string | number | Buffer, byteOffset?: number, encoding?: string): number;
@@ -93,6 +95,7 @@ export class Buffer extends Uint8Array {
      *
      * @param array The octets to store.
      */
+    // biome-ignore lint:
     constructor (array: any[]);
     /**
      * Copies the passed {buffer} data onto a new {Buffer} instance.
@@ -106,6 +109,7 @@ export class Buffer extends Uint8Array {
      *
      * @param array
      */
+    // biome-ignore lint:
     static from(array: any[]): Buffer;
     /**
      * When passed a reference to the .buffer property of a TypedArray instance,
@@ -137,6 +141,7 @@ export class Buffer extends Uint8Array {
      *
      * @param obj object to test.
      */
+    // biome-ignore lint:
     static isBuffer(obj: any): obj is Buffer;
     /**
      * Returns true if {encoding} is a valid encoding argument.
