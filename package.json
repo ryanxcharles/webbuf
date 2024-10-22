@@ -15,10 +15,6 @@
   "keywords": [],
   "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
   "license": "MIT",
-  "dependencies": {
-    "base64-js": "^1.5.1",
-    "ieee754": "^1.2.1"
-  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "typescript": "^5.6.3",
