@@ -1,2 +1,2 @@
-import { Buffer as WebBuf } from 'buffer';
+import { Buffer as WebBuf } from './buffer.d.ts';
 export { WebBuf };
