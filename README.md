@@ -2,9 +2,10 @@
 
 WebBuf is a fork of the NPM package [`buffer`](https://github.com/feross/buffer)
 with a different name. The purpose is to prohibit use of the global `Buffer`
-object throughout your code base for any code wants to use the `buffer` package
+object throughout your codebase for any code wants to use the `buffer` package
 in the browser and wants to ensure that the global `Buffer` object is not used.
-Also, it uses ES Modules instead of CommonJS.
+Also, it uses ES Modules instead of CommonJS. Also, it inlines the dependencies
+and converts them to ES Modules too.
 
 Usage:
 
