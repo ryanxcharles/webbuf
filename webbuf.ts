@@ -1,4 +1,3 @@
-// import * as base64 from "./base64-js.js";
 import * as ieee754 from "./ieee754.js";
 
 const lookup: string[] = [];
@@ -8,6 +7,15 @@ const code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 for (let i = 0, len = code.length; i < len; ++i) {
   lookup[i] = code[i] as string;
   revLookup[code.charCodeAt(i)] = i;
+}
+
+function checkOffset(offset: number, ext: number, length: number) {
+  if (offset % 1 !== 0 || offset < 0) {
+    throw new RangeError("offset is not uint");
+  }
+  if (offset + ext > length) {
+    throw new RangeError("Trying to access beyond buffer length");
+  }
 }
 
 export class WebBuf extends Uint8Array {
@@ -132,14 +140,21 @@ export class WebBuf extends Uint8Array {
   }
 
   compare(other: WebBuf): number {
-    if (this.length !== other.length) {
-      return this.length - other.length;
-    }
-    for (let i = 0; i < this.length; i++) {
+    const len = Math.min(this.length, other.length);
+
+    for (let i = 0; i < len; i++) {
       if (this[i] !== other[i]) {
-        return (this[i] as number) - (other[i] as number);
+        return (this[i] as number) < (other[i] as number) ? -1 : 1;
       }
     }
+
+    if (this.length < other.length) {
+      return -1;
+    }
+    if (this.length > other.length) {
+      return 1;
+    }
+
     return 0;
   }
 
