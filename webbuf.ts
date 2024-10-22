@@ -193,4 +193,164 @@ export class WebBuf extends Uint8Array {
 
     return val;
   }
+
+  readUint8(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 1, this.length);
+    return this[offset] as number;
+  }
+
+  readUint16LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    return (this[offset] as number) | ((this[offset + 1] as number) << 8);
+  }
+
+  readUint16BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    return ((this[offset] as number) << 8) | (this[offset + 1] as number);
+  }
+
+  readUint32LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+
+    return (
+      (this[offset] as number) |
+      ((this[offset + 1] as number) << 8) |
+      ((this[offset + 2] as number) << 16) |
+      ((this[offset + 3] as number) << 24)
+    );
+  }
+
+  readUint32BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+
+    return (
+      ((this[offset] as number) << 24) |
+      ((this[offset + 1] as number) << 16) |
+      ((this[offset + 2] as number) << 8) |
+      (this[offset + 3] as number)
+    );
+  }
+
+  readBigUInt64LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    return BigInt(
+      ( this[offset] as number) +
+        (( this[offset + 1] as number) << 8) +
+        (( this[offset + 2] as number) << 16) +
+        (( this[offset + 3] as number) * 2 ** 24) +
+        (( this[offset + 4] as number) * 2 ** 32) +
+        (( this[offset + 5] as number) * 2 ** 40) +
+        (( this[offset + 6] as number) * 2 ** 48) +
+        (( this[offset + 7] as number) * 2 ** 56),
+    );
+  }
+
+  readBigUint64BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    return BigInt(
+      (( this[offset] as number) * 2 ** 56) +
+        (( this[offset + 1] as number) * 2 ** 48) +
+        (( this[offset + 2] as number) * 2 ** 40) +
+        (( this[offset + 3] as number) * 2 ** 32) +
+        (( this[offset + 4] as number) * 2 ** 24) +
+        (( this[offset + 5] as number) << 16) +
+        (( this[offset + 6] as number) << 8) +
+        ( this[offset + 7] as number),
+    );
+  }
+  
+  readIntLE(offset: number, byteLength: number) {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let val = this[offset] as number;
+    let mul = 1;
+    let i = 0;
+    // biome-ignore lint:
+    while (++i < byteLength && (mul *= 0x100)) {
+      val += (this[offset + i] as number) * mul;
+    }
+    mul *= 0x80;
+
+    if (val >= mul) {
+      val -= 2 ** (8 * byteLength);
+    }
+
+    return val;
+  }
+
+  readIntBE(offset: number, byteLength: number) {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let i = byteLength;
+    let mul = 1;
+    let val = this[offset + --i] as number;
+    // biome-ignore lint:
+    while (i > 0 && (mul *= 0x100)) {
+      val += (this[offset + --i] as number) * mul;
+    }
+    mul *= 0x80;
+
+    if (val >= mul) {
+      val -= 2 ** (8 * byteLength);
+    }
+
+    return val;
+  }
+
+  readInt8(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 1, this.length);
+    const val = this[offset] as number;
+    return val & 0x80 ? val | 0xffffff00 : val;
+  }
+
+  readInt16LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    const val = (this[offset] as number) | ((this[offset + 1] as number) << 8);
+    return val & 0x8000 ? val | 0xffff0000 : val;
+  }
+
+  readInt16BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    const val = ((this[offset] as number) << 8) | (this[offset + 1] as number);
+    return val & 0x8000 ? val | 0xffff0000 : val;
+  }
+
+  readInt32LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    return (
+      (this[offset] as number) |
+      ((this[offset + 1] as number) << 8) |
+      ((this[offset + 2] as number) << 16) |
+      ((this[offset + 3] as number) << 24)
+    );
+  }
+
+  readInt32BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    return (
+      ((this[offset] as number) << 24) |
+      ((this[offset + 1] as number) << 16) |
+      ((this[offset + 2] as number) << 8) |
+      (this[offset + 3] as number)
+    );
+  }
+
 }
