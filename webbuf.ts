@@ -2,11 +2,6 @@ import * as base64 from "./base64-js.js";
 import * as ieee754 from "./ieee754.js";
 
 export class WebBuf extends Uint8Array {
-  // constructor(size: number) {
-  //   super(size);
-  // }
-  // concat
-
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
     const result = new WebBuf(size);
@@ -65,9 +60,13 @@ export class WebBuf extends Uint8Array {
     return Array.from(this);
   }
 
-  // toString
-  // fromString
   // slice
+  slice(start: number, end: number): WebBuf {
+    return new WebBuf(this.subarray(start, end));
+  }
   // subarray
+  subarray(start: number, end: number): WebBuf {
+    return new WebBuf(this.slice(start, end));
+  }
   // read/write binary numbers
 }
