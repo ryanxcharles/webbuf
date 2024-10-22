@@ -1,6 +1,5 @@
 const lookup = [];
 const revLookup = [];
-const Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 const code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 for (let i = 0, len = code.length; i < len; ++i) {
@@ -48,7 +47,7 @@ export function toByteArray(b64) {
   const validLen = lens[0];
   const placeHoldersLen = lens[1];
 
-  const arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
+  const arr = new Uint8Array(_byteLength(b64, validLen, placeHoldersLen));
 
   let curByte = 0;
 
