@@ -42,7 +42,7 @@ export class WebBuf extends Uint8Array {
     const byteArray = base64.toByteArray(b64);
     return new WebBuf(byteArray);
   }
-  
+
   toString() {
     const decoder = new TextDecoder();
     return decoder.decode(this);
@@ -53,7 +53,9 @@ export class WebBuf extends Uint8Array {
   }
 
   toHex() {
-    return Array.from(this).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return Array.from(this)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
   }
 
   toArray() {
@@ -67,6 +69,22 @@ export class WebBuf extends Uint8Array {
   // subarray
   subarray(start: number, end: number): WebBuf {
     return new WebBuf(this.slice(start, end));
+  }
+  // compare
+  compare(other: WebBuf): number {
+    if (this.length !== other.length) {
+      return this.length - other.length;
+    }
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] !== other[i]) {
+        return (this[i] as number) - (other[i] as number);
+      }
+    }
+    return 0;
+  }
+  //equals
+  equals(other: WebBuf): boolean {
+    return this.compare(other) === 0;
   }
   // read/write binary numbers
 }
