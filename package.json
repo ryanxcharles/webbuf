@@ -1,0 +1,22 @@
+{
+  "name": "webbuf",
+  "version": "1.0.0",
+  "description": "A re-export of \"buffer\" with a different package name to disambiguate with the Node.js standard library.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "keywords": [],
+  "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
+  "license": "MIT",
+  "dependencies": {
+    "buffer": "^6.0.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
+  }
+}
