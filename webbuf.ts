@@ -34,8 +34,18 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(size);
   }
 
+  clone() {
+    return new WebBuf(this);
+  }
+
+  /**
+   * Return a WebBuf that is a view of the same data as the input Uint8Array
+   *
+   * @param buffer
+   * @returns WebBuf
+   */
   static fromUint8Array(buffer: Uint8Array) {
-    return new WebBuf(buffer);
+    return new WebBuf(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   }
 
   static fromArray(array: number[]) {
@@ -253,7 +263,7 @@ export class WebBuf extends Uint8Array {
     const hi = this.readUint32BE(offset + 4);
     return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
-  
+
   readIntLE(offset: number, byteLength: number) {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
@@ -357,4 +367,5 @@ export class WebBuf extends Uint8Array {
     return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
 
+  // writing numbers
 }
