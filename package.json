@@ -1,6 +1,6 @@
 {
   "name": "webbuf",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A fork of \"buffer\" converted to ES Modules and with a different name.",
   "repository": {
     "type": "git",
