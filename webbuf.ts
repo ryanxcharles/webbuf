@@ -162,4 +162,35 @@ export class WebBuf extends Uint8Array {
     return this.compare(other) === 0;
   }
   // read/write binary numbers
+
+  readUintLE(offset: number, byteLength: number) {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let val = this[offset] as number;
+    let mul = 1;
+    let i = 0;
+    // biome-ignore lint:
+    while (++i < byteLength && (mul *= 0x100)) {
+      val += (this[offset + i] as number) * mul;
+    }
+
+    return val;
+  }
+
+  readUintBE(offset: number, byteLength: number) {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let val = this[offset + --byteLength] as number;
+    let mul = 1;
+    // biome-ignore lint:
+    while (byteLength > 0 && (mul *= 0x100)) {
+      val += (this[offset + --byteLength] as number) * mul;
+    }
+
+    return val;
+  }
 }
