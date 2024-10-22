@@ -26,10 +26,10 @@ export const constants = {
   MAX_STRING_LENGTH: K_STRING_MAX_LENGTH,
 }
 
-export { Blob };
-export { File };
-export { atob };
-export { btoa };
+// export { Blob };
+// export { File };
+// export { atob };
+// export { btoa };
 
 /**
  * If `Buffer.TYPED_ARRAY_SUPPORT`:
