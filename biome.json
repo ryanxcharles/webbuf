@@ -69,7 +69,8 @@
         "useAsConstAssertion": "error",
         "useBlockStatements": "error",
         "useConst": "error",
-        "noParameterProperties": "error"
+        "noParameterProperties": "error",
+        "noParameterAssign": "off"
       },
       "suspicious": {
         "noAssignInExpressions": "error",
