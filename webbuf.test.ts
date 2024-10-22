@@ -19,6 +19,16 @@ describe("WebBuf", () => {
       const decoded = WebBuf.fromBase64(base64);
       expect(decoded.toHex()).toBe(hex);
     });
+
+    it('should encode and decode arbitrary binary data of length n, n+1, n+2 ... m', () => {
+      for (let i = 0; i < 100; i++) {
+        const hex = new Array(i).fill(0).map((_, i) => i.toString(16).padStart(2, "0")).join("");
+        const buf = WebBuf.fromHex(hex);
+        const base64 = buf.toBase64();
+        const decoded = WebBuf.fromBase64(base64);
+        expect(decoded.toHex()).toBe(hex);
+      }
+    });
   });
 
   describe("hex", () => {
