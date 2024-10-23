@@ -631,7 +631,7 @@ describe("WebBuf", () => {
         //expect(buf.readBigInt128LE(0)).toBe(-1311768467463790320234590827345n);
       });
 
-      it.skip("should throw if writing a number that is too big", () => {
+      it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(16);
         expect(() =>
           buf.writeBigInt128LE(-0x80000000000000000000000000000000n - 1n, 0),
@@ -644,7 +644,7 @@ describe("WebBuf", () => {
         expect(buf.readBigInt128LE(1)).toBe(-1311768467463790320234590827345n);
       });
 
-      it.skip("should throw if offset is invalid", () => {
+      it("should throw if offset is invalid", () => {
         const buf = WebBuf.alloc(16);
         expect(() =>
           buf.writeBigInt128LE(-1311768467463790320n, 1),
