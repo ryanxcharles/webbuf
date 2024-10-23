@@ -2,6 +2,34 @@ import { describe, it, expect } from "vitest";
 import { WebBuf } from "../src/webbuf.js";
 
 describe("WebBuf", () => {
+  describe("compare", () => {
+    it("should pass these known test vectors", () => {
+      const b = WebBuf.fromString("a");
+      const c = WebBuf.fromString("c");
+      const d = WebBuf.fromString("aa");
+      //const e = new Uint8Array([0x61, 0x61]); // ASCII 'aa', same as d
+
+      expect(b.compare(c)).toBe(-1);
+      expect(c.compare(d)).toBe(1);
+      expect(d.compare(b)).toBe(1);
+      //expect(d.compare(e)).toBe( 0);
+      expect(b.compare(d)).toBe(-1);
+      expect(b.compare(b)).toBe(0);
+
+      expect(WebBuf.compare(b, c)).toBe(-1);
+      expect(WebBuf.compare(c, d)).toBe(1);
+      expect(WebBuf.compare(d, b)).toBe(1);
+      expect(WebBuf.compare(b, d)).toBe(-1);
+      expect(WebBuf.compare(c, c)).toBe(0);
+      //expect(WebBuf.compare(e, e)).toBe(0);
+      //expect(WebBuf.compare(d, e)).toBe(0);
+      expect(WebBuf.compare(d, b)).toBe(1);
+
+      expect(WebBuf.compare(WebBuf.alloc(0), WebBuf.alloc(0))).toBe(0);
+      expect(WebBuf.compare(WebBuf.alloc(0), WebBuf.alloc(1))).toBe(-1);
+      expect(WebBuf.compare(WebBuf.alloc(1), WebBuf.alloc(0))).toBe(1);
+    });
+  });
   describe("from", () => {
     it("should convert from hex", () => {
       const webBuf = WebBuf.from("deadbeef", "hex");
