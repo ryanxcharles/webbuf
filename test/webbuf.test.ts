@@ -335,5 +335,29 @@ describe("WebBuf", () => {
         expect(() => buf.writeInt16LE(-30584, 1)).toThrow();
       });
     });
+
+    describe("i16be", () => {
+      it("should write a valid i16be", () => {
+        const buf = WebBuf.alloc(2);
+        buf.writeInt16BE(-30584, 0);
+        expect(buf.readInt16BE(0)).toBe(-30584);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeInt16BE(-0x8000 - 1, 0)).toThrow();
+      });
+
+      it("should write a valid i16be with valid offset", () => {
+        const buf = WebBuf.alloc(3);
+        buf.writeInt16BE(-30584, 1);
+        expect(buf.readInt16BE(1)).toBe(-30584);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeInt16BE(-30584, 1)).toThrow();
+      });
+    });
   });
 });
