@@ -263,7 +263,7 @@ describe("WebBuf", () => {
         const oBuf = Buffer.alloc(8);
         oBuf.writeBigUInt64BE(1311768467463790320n, 0);
         expect(buf.toHex()).toBe(oBuf.toString("hex"));
-        //expect(buf.readBigUint64BE(0)).toBe(1311768467463790320n);
+        expect(buf.readBigUint64BE(0)).toBe(1311768467463790320n);
       });
 
       it("should throw if writing a number that is too big", () => {
@@ -271,7 +271,7 @@ describe("WebBuf", () => {
         expect(() => buf.writeBigUint64BE(0x12345678901234567n, 0)).toThrow();
       });
 
-      it.skip("should write a valid u64be with valid offset", () => {
+      it("should write a valid u64be with valid offset", () => {
         const buf = WebBuf.alloc(9);
         buf.writeBigUint64BE(0xf0debc9a78563412n, 1);
         expect(buf.readBigUint64BE(1)).toBe(0xf0debc9a78563412n);
