@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { WebBuf } from "../webbuf.js";
-// import { Buffer } from "../buffer.js";
+import { Buffer } from "buffer";
 // import { Buffer } from "node:buffer";
-import { fromByteArray } from "base64-js";
+import { fromByteArray } from "../base64-js.js";
 
 describe("WebBuf", () => {
   describe("from", () => {
