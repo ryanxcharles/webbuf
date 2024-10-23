@@ -387,6 +387,40 @@ describe("WebBuf", () => {
         );
       });
     });
+
+    describe("u256be", () => {
+      it("should write a valid u256be", () => {
+        const buf = WebBuf.alloc(32);
+        buf.writeBigUint256BE(1311768467463790320n, 0);
+        expect(buf.readBigUint256BE(0)).toBe(1311768467463790320n);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(32);
+        expect(() =>
+          buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffn + 1n, 0),
+        ).toThrow();
+      });
+
+      it("should write a valid u256be with valid offset", () => {
+        const buf = WebBuf.alloc(33);
+        buf.writeBigUint256BE(0xf0debc9a78563412n, 1);
+        expect(buf.readBigUint256BE(1)).toBe(0xf0debc9a78563412n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(32);
+        expect(() => buf.writeBigUint256BE(0xf0debc9a78563412n, 1)).toThrow();
+      });
+
+      it("should write and read the biggest u256be", () => {
+        const buf = WebBuf.alloc(32);
+        buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffn, 0);
+        expect(buf.readBigUint256BE(0)).toBe(
+          0xffffffffffffffffffffffffffffffffn,
+        );
+      });
+    });
   });
 
   describe("read/write unsigned integers and signed integers", () => {
