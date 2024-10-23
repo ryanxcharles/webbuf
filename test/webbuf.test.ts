@@ -91,4 +91,14 @@ describe("WebBuf", () => {
       expect(() => WebBuf.fromBase64(base64)).toThrow();
     });
   });
+
+  describe('read/write unsigned integers and signed integers', () => {
+    describe('u8', () => {
+      it('should write a valid u8', () => {
+        const buf = WebBuf.alloc(1);
+        buf.writeUint8(255, 0);
+        expect(buf.readUint8(0)).toBe(255);
+      });
+    })
+  });
 });
