@@ -18,4 +18,22 @@ describe("FixedBuf", () => {
       expect(buf.toBase64()).toBe(base64);
     });
   });
+
+  describe("create new buffer", () => {
+    it("should create a new buffer", () => {
+      const buf = FixedBuf.alloc(4);
+      expect(buf.buf.length).toBe(4);
+    });
+
+    it("should create a new FixedBuf from a WebBuf", () => {
+      const buf = WebBuf.alloc(4);
+      const fixedBuf = FixedBuf.fromBuf(4, buf);
+      expect(fixedBuf.buf.length).toBe(4);
+    });
+
+    it("should not create a new FixedBuf from a WebBuf with the wrong size", () => {
+      const buf = WebBuf.alloc(4);
+      expect(() => FixedBuf.fromBuf(5, buf)).toThrow();
+    });
+  });
 });
