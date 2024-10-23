@@ -706,6 +706,18 @@ describe("WebBuf", () => {
         expect(buf.readBigInt128BE(1)).toBe(-1311768467463790320234590827345n);
       });
 
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() => buf.writeBigInt128BE(-1311768467463790320n, 1)).toThrow();
+      });
+
+      it("should write and read the biggest i128be", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128BE(-0x80000000000000000000000000000000n, 0);
+        expect(buf.readBigInt128BE(0)).toBe(
+          -0x80000000000000000000000000000000n,
+        );
+      });
     });
   });
 });
