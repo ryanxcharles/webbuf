@@ -54,6 +54,13 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(size);
   }
 
+  fill(value: number, start = 0, end = this.length) {
+    for (let i = start; i < end; i++) {
+      this[i] = value;
+    }
+    return this
+  }
+
   clone() {
     return new WebBuf(this);
   }
