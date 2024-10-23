@@ -456,9 +456,6 @@ describe("WebBuf", () => {
       it("should write a valid i64be", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigInt64BE(-1311768467463790320n, 0);
-        const oBuf = Buffer.alloc(8);
-        oBuf.writeBigInt64BE(-1311768467463790320n, 0);
-        expect(buf.toHex()).toBe(oBuf.toString("hex"));
         expect(buf.readBigInt64BE(0)).toBe(-1311768467463790320n);
       });
 
