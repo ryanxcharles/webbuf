@@ -452,32 +452,35 @@ describe("WebBuf", () => {
       });
     });
 
-    describe.skip("i64be", () => {
+    describe("i64be", () => {
       it("should write a valid i64be", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigInt64BE(-1311768467463790320n, 0);
-        expect(buf.readBigInt64BE(0)).toBe(-1311768467463790320n);
+        const oBuf = Buffer.alloc(8);
+        oBuf.writeBigInt64BE(-1311768467463790320n, 0);
+        expect(buf.toHex()).toBe(oBuf.toString("hex"));
+        //expect(buf.readBigInt64BE(0)).toBe(-1311768467463790320n);
       });
 
-      it("should throw if writing a number that is too big", () => {
+      it.skip("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(8);
         expect(() =>
           buf.writeBigInt64BE(-0x8000000000000000n - 1n, 0),
         ).toThrow();
       });
 
-      it("should write a valid i64be with valid offset", () => {
+      it.skip("should write a valid i64be with valid offset", () => {
         const buf = WebBuf.alloc(9);
         buf.writeBigInt64BE(-1311768467463790320n, 1);
         expect(buf.readBigInt64BE(1)).toBe(-1311768467463790320n);
       });
 
-      it("should throw if offset is invalid", () => {
+      it.skip("should throw if offset is invalid", () => {
         const buf = WebBuf.alloc(8);
         expect(() => buf.writeBigInt64BE(-1311768467463790320n, 1)).toThrow();
       });
 
-      it("should write and read the biggest i64be", () => {
+      it.skip("should write and read the biggest i64be", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigInt64BE(-0x8000000000000000n, 0);
         expect(buf.readBigInt64BE(0)).toBe(-0x8000000000000000n);
