@@ -295,7 +295,7 @@ describe("WebBuf", () => {
 
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(16);
-        expect(() => buf.writeBigUint128LE(0x12345678901234567890123456789012n, 0)).toThrow();
+        expect(() => buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn + 1n, 0)).toThrow();
       });
 
       it("should write a valid u128le with valid offset", () => {
@@ -309,7 +309,7 @@ describe("WebBuf", () => {
         expect(() => buf.writeBigUint128LE(0xf0debc9a78563412n, 1)).toThrow();
       });
 
-      it.skip("should write and read the biggest u128le", () => {
+      it("should write and read the biggest u128le", () => {
         const buf = WebBuf.alloc(16);
         buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn, 0);
         expect(buf.readBigUint128LE(0)).toBe(0xffffffffffffffffffffffffffffffffn);

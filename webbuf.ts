@@ -557,7 +557,7 @@ export class WebBuf extends Uint8Array {
   writeBigUint128LE(value: bigint, offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 16, this.length);
-    checkInt(this, value, offset, 16, 0xffffffffffffffffn, 0n);
+    checkInt(this, value, offset, 16, 0xffffffffffffffffffffffffffffffffn, 0n);
     this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
     this.writeBigUint64LE(value >> 64n, offset + 8);
     return offset + 16;
