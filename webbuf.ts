@@ -278,33 +278,27 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
 
-    return (
-      (this[offset] as number) |
-      ((this[offset + 1] as number) << 8) |
-      ((this[offset + 2] as number) << 16) |
-      ((this[offset + 3] as number) << 24)
-    );
+    const lo = this.readUint16LE(offset);
+    const hi = this.readUint16LE(offset + 2);
+    return lo + hi * 0x10000;
   }
 
   readUint32BE(offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
 
-    return (
-      ((this[offset] as number) << 24) |
-      ((this[offset + 1] as number) << 16) |
-      ((this[offset + 2] as number) << 8) |
-      (this[offset + 3] as number)
-    );
+    const hi = this.readUint16BE(offset);
+    const lo = this.readUint16BE(offset + 2);
+    return lo + hi * 0x10000;
   }
 
   readBigUint64LE(offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
 
-    const lo = this.readUint32LE(offset);
-    const hi = this.readUint32LE(offset + 4);
-    return BigInt(lo) + (BigInt(hi) << 32n);
+    const lo = BigInt(this.readUint32LE(offset));
+    const hi = BigInt(this.readUint32LE(offset + 4));
+    return lo + (hi << 32n);
   }
 
   readBigUint64BE(offset: number) {
@@ -514,7 +508,7 @@ export class WebBuf extends Uint8Array {
     checkOffset(offset, 8, this.length);
     checkInt(this, value, offset, 8, 0xffffffffffffffffn, 0n);
     this.writeUint32LE(Number(value & 0xffffffffn), offset);
-    this.writeUint32LE(Number(( value >> 32n ) & 0xffffffffn), offset + 4);
+    this.writeUint32LE(Number((value >> 32n) & 0xffffffffn), offset + 4);
     return offset + 8;
   }
 
