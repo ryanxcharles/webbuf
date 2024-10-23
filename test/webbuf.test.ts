@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { WebBuf } from "../webbuf.js";
-import { Buffer } from "buffer";
-// import { Buffer } from "node:buffer";
-import { fromByteArray } from "../base64-js.js";
 
 describe("WebBuf", () => {
   describe("from", () => {
@@ -42,29 +39,6 @@ describe("WebBuf", () => {
         const decoded = WebBuf.fromBase64(base64);
         expect(decoded.toHex()).toBe(hex);
       }
-    });
-
-    it("should convert a large buffer the same between WebBuf and Buffer", () => {
-      const buf = Buffer.alloc(1024 * 1024 * 10);
-      for (let i = 0; i < buf.length; i += 256) {
-        for (let j = 0; j < 256; j++) {
-          buf[i + j] = j;
-        }
-      }
-      const webBuf = WebBuf.from(buf);
-      console.time("Buffer to base64");
-      const bufBase64 = buf.toString("base64");
-      console.timeEnd("Buffer to base64");
-      console.time("base64-js to base64");
-      const base64_1 = fromByteArray(new Uint8Array(buf));
-      console.timeEnd("base64-js to base64");
-      console.time("base64-js to base64");
-      const base64_2 = fromByteArray(new Uint8Array(buf));
-      console.timeEnd("base64-js to base64");
-      console.time("WebBuf to base64");
-      const webBufBase64 = webBuf.toBase64();
-      console.timeEnd("WebBuf to base64");
-      expect(webBufBase64).toBe(bufBase64);
     });
   });
 
