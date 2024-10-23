@@ -38,6 +38,15 @@ function encodeChunk(uint8: Uint8Array, start: number, end: number) {
   return output.join("");
 }
 
+function checkInt(buf: WebBuf, value: number, offset: number, ext: number, max: number, min: number) {
+  if (value > max || value < min) {
+    throw new RangeError('"value" argument is out of bounds');
+  }
+  if (offset + ext > buf.length) {
+    throw new RangeError("Index out of range");
+  }
+}
+
 export class WebBuf extends Uint8Array {
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
@@ -443,6 +452,7 @@ export class WebBuf extends Uint8Array {
     value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 1, this.length);
+    checkInt(this, value, offset, 1, 0xff, 0);
     this[offset] = value & 0xff;
     return offset + 1;
   }

@@ -99,6 +99,11 @@ describe("WebBuf", () => {
         buf.writeUint8(255, 0);
         expect(buf.readUint8(0)).toBe(255);
       });
+
+      it('should throw if writing a number that is too big', () => {
+        const buf = WebBuf.alloc(1);
+        expect(() => buf.writeUint8(256, 0)).toThrow();
+      });
     })
   });
 });
