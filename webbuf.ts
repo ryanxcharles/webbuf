@@ -310,6 +310,46 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 32n);
   }
 
+  readBigUint128LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 16, this.length);
+
+    const lo = this.readBigUint64LE(offset);
+    const hi = this.readBigUint64LE(offset + 8);
+    return lo + (hi << 64n);
+  }
+
+  readBigUint128BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 16, this.length);
+
+    const hi = this.readBigUint64BE(offset);
+    const lo = this.readBigUint64BE(offset + 8);
+    return lo + (hi << 64n);
+  }
+
+  readBigUint256LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 32, this.length);
+
+    const lo = this.readBigUint64LE(offset);
+    const hi = this.readBigUint64LE(offset + 8);
+    const hi2 = this.readBigUint64LE(offset + 16);
+    const hi3 = this.readBigUint64LE(offset + 24);
+    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
+  }
+
+  readBigUint256BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 32, this.length);
+
+    const hi3 = this.readBigUint64BE(offset);
+    const hi2 = this.readBigUint64BE(offset + 8);
+    const hi = this.readBigUint64BE(offset + 16);
+    const lo = this.readBigUint64BE(offset + 24);
+    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
+  }
+
   readIntLE(offset: number, byteLength: number) {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
@@ -508,16 +548,16 @@ export class WebBuf extends Uint8Array {
   writeBigUint64BE(value: bigint, offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
-
-    this.writeUint32BE(Number(value >> BigInt(32)), offset);
-    this.writeUint32BE(Number(value & BigInt(0xffffffff)), offset + 4);
+    checkInt(this, value, offset, 8, 0xffffffffffffffffn, 0n);
+    this.writeUint32BE(Number(value >> 32n), offset);
+    this.writeUint32BE(Number(value & 0xffffffffn), offset + 4);
     return offset + 8;
   }
 
   writeBigUint128LE(value: bigint, offset: number) {
     offset = offset >>> 0;
     checkOffset(offset, 16, this.length);
-
+    checkInt(this, value, offset, 16, 0xffffffffffffffffn, 0n);
     this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
     this.writeBigUint64LE(value >> 64n, offset + 8);
     return offset + 16;

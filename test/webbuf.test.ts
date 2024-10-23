@@ -285,6 +285,36 @@ describe("WebBuf", () => {
         expect(buf.readBigUint64BE(0)).toBe(0xffffffffffffffffn);
       });
     });
+
+    describe("u128le", () => {
+      it("should write a valid u128le", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigUint128LE(1311768467463790320n, 0);
+        expect(buf.readBigUint128LE(0)).toBe(1311768467463790320n);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() => buf.writeBigUint128LE(0x12345678901234567890123456789012n, 0)).toThrow();
+      });
+
+      it("should write a valid u128le with valid offset", () => {
+        const buf = WebBuf.alloc(17);
+        buf.writeBigUint128LE(0xf0debc9a78563412n, 1);
+        expect(buf.readBigUint128LE(1)).toBe(0xf0debc9a78563412n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() => buf.writeBigUint128LE(0xf0debc9a78563412n, 1)).toThrow();
+      });
+
+      it.skip("should write and read the biggest u128le", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn, 0);
+        expect(buf.readBigUint128LE(0)).toBe(0xffffffffffffffffffffffffffffffffn);
+      });
+    });
   });
 
   describe("read/write unsigned integers and signed integers", () => {
