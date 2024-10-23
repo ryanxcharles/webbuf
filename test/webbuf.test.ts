@@ -359,5 +359,35 @@ describe("WebBuf", () => {
         expect(() => buf.writeInt16BE(-30584, 1)).toThrow();
       });
     });
+
+    describe("i32le", () => {
+      it("should write a valid i32le", () => {
+        const buf = WebBuf.alloc(4);
+        buf.writeInt32LE(-30584, 0);
+        expect(buf.readInt32LE(0)).toBe(-30584);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(4);
+        expect(() => buf.writeInt32LE(-0x80000000 - 1, 0)).toThrow();
+      });
+
+      it("should write a valid i32le with valid offset", () => {
+        const buf = WebBuf.alloc(5);
+        buf.writeInt32LE(-30584, 1);
+        expect(buf.readInt32LE(1)).toBe(-30584);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(4);
+        expect(() => buf.writeInt32LE(-30584, 1)).toThrow();
+      });
+
+      it("should write and read the biggest i32le", () => {
+        const buf = WebBuf.alloc(4);
+        buf.writeInt32LE(-0x80000000, 0);
+        expect(buf.readInt32LE(0)).toBe(-0x80000000);
+      });
+    });
   });
 });
