@@ -475,9 +475,9 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 32, this.length);
 
-    const lo = this.readBigInt64LE(offset);
-    const hi = this.readBigInt64LE(offset + 8);
-    const hi2 = this.readBigInt64LE(offset + 16);
+    const lo = this.readBigUint64LE(offset);
+    const hi = this.readBigUint64LE(offset + 8);
+    const hi2 = this.readBigUint64LE(offset + 16);
     const hi3 = this.readBigInt64LE(offset + 24);
     return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
@@ -487,9 +487,9 @@ export class WebBuf extends Uint8Array {
     checkOffset(offset, 32, this.length);
 
     const hi3 = this.readBigInt64BE(offset);
-    const hi2 = this.readBigInt64BE(offset + 8);
-    const hi = this.readBigInt64BE(offset + 16);
-    const lo = this.readBigInt64BE(offset + 24);
+    const hi2 = this.readBigUint64BE(offset + 8);
+    const hi = this.readBigUint64BE(offset + 16);
+    const lo = this.readBigUint64BE(offset + 24);
     return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
 

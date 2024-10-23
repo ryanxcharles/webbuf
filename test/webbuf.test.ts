@@ -652,7 +652,7 @@ describe("WebBuf", () => {
         ).toThrow();
       });
 
-      it.skip("should write a valid i128le with valid offset", () => {
+      it("should write a valid i128le with valid offset", () => {
         const buf = WebBuf.alloc(17);
         buf.writeBigInt128LE(-1311768467463790320234590827345n, 1);
         expect(buf.readBigInt128LE(1)).toBe(-1311768467463790320234590827345n);
