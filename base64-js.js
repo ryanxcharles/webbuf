@@ -22,7 +22,9 @@ function getLens(b64) {
   // Trim off extra bytes after placeholder bytes are found
   // See: https://github.com/beatgammit/base64-js/issues/42
   let validLen = b64.indexOf("=");
-  if (validLen === -1) { validLen = len; }
+  if (validLen === -1) {
+    validLen = len;
+  }
 
   const placeHoldersLen = validLen === len ? 0 : 4 - (validLen % 4);
 
@@ -132,9 +134,11 @@ export function fromByteArray(uint8) {
   } else if (extraBytes === 2) {
     tmp = (uint8[len - 2] << 8) + uint8[len - 1];
     parts.push(
-      `${lookup[tmp >> 10] +
+      `${
+        lookup[tmp >> 10] +
         lookup[(tmp >> 4) & 0x3f] +
-        lookup[(tmp << 2) & 0x3f]}=`,
+        lookup[(tmp << 2) & 0x3f]
+      }=`,
     );
   }
 

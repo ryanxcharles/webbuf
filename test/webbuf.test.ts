@@ -4,6 +4,13 @@ import { WebBuf } from "../webbuf.js";
 import { Buffer } from "buffer";
 
 describe("WebBuf", () => {
+  describe("from", () => {
+    it("should convert from hex", () => {
+      const webBuf = WebBuf.from("deadbeef", "hex");
+      expect(webBuf.toHex()).toBe("deadbeef");
+    });
+  });
+
   describe("base64", () => {
     it("should encode and decode base64", () => {
       const myStr = "Hello, World!";

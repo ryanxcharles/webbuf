@@ -148,6 +148,45 @@ export class WebBuf extends Uint8Array {
     return result;
   }
 
+  /**
+   * Override Uint8Array.from to return a WebBuf
+   *
+   * @param source An array-like or iterable object to convert to WebBuf
+   * @param mapFn Optional map function to call on every element of the array
+   * @param thisArg Optional value to use as `this` when executing `mapFn`
+   * @returns WebBuf
+   */
+  static from(
+    source: ArrayLike<number> | Iterable<number> | string,
+    mapFn?: ((v: number, k: number) => number) | string,
+    // biome-ignore lint:
+    thisArg?: any,
+  ): WebBuf {
+    if (typeof source === "string") {
+      if (mapFn === "hex") {
+        return WebBuf.fromHex(source);
+      }
+      if (mapFn === "base64") {
+        return WebBuf.fromBase64(source);
+      }
+      if (mapFn === "utf8") {
+        return WebBuf.fromString(source);
+      }
+      throw new TypeError("Invalid mapFn");
+    }
+    if (typeof mapFn === "string") {
+      throw new TypeError("Invalid mapFn");
+    }
+    const sourceArray = Array.from(source);
+    // biome-ignore lint:
+    const uint8Array = super.from(sourceArray, mapFn, thisArg);
+    return new WebBuf(
+      uint8Array.buffer,
+      uint8Array.byteOffset,
+      uint8Array.byteLength,
+    );
+  }
+
   toBase64() {
     let tmp: number;
     const len = this.length;

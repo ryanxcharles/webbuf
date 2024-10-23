@@ -15,7 +15,7 @@ describe("WebBuf", () => {
     const decoded = WebBuf.from(base64, "base64");
     expect(decoded.toString()).toBe(myStr);
   });
-  
+
   it("should encode and decode hex", () => {
     const myStr = "Hello, World!";
     const buf = WebBuf.from(myStr);
@@ -24,13 +24,13 @@ describe("WebBuf", () => {
     expect(decoded.toString()).toBe(myStr);
   });
 
-  it('should read and wrote a float in little endian', () => {
+  it("should read and wrote a float in little endian", () => {
     const buf = WebBuf.alloc(4);
     buf.writeFloatLE(3.14, 0);
     expect(buf.readFloatLE(0)).toBeCloseTo(3.14);
   });
 
-  it('should read and wrote a float in big endian', () => {
+  it("should read and wrote a float in big endian", () => {
     const buf = WebBuf.alloc(4);
     buf.writeFloatBE(3.14, 0);
     expect(buf.readFloatBE(0)).toBeCloseTo(3.14);

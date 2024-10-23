@@ -1,7 +1,12 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "formatter": {
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/build/**", "**/public/**"],
+    "ignore": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/public/**"
+    ],
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",

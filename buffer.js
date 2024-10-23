@@ -24,7 +24,7 @@ export const kStringMaxLength = K_STRING_MAX_LENGTH;
 export const constants = {
   MAX_LENGTH: K_MAX_LENGTH,
   MAX_STRING_LENGTH: K_STRING_MAX_LENGTH,
-}
+};
 
 // export { Blob };
 // export { File };
