@@ -243,6 +243,10 @@ export class WebBuf extends Uint8Array {
     return 0;
   }
 
+  static compare(buf1: WebBuf, buf2: WebBuf): number {
+    return buf1.compare(buf2);
+  }
+
   equals(other: WebBuf): boolean {
     return this.compare(other) === 0;
   }
