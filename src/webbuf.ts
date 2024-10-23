@@ -278,25 +278,25 @@ export class WebBuf extends Uint8Array {
     return val;
   }
 
-  readUint8(offset: number) {
+  readUint8(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 1, this.length);
     return this[offset] as number;
   }
 
-  readUint16LE(offset: number) {
+  readUint16LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     return (this[offset] as number) | ((this[offset + 1] as number) << 8);
   }
 
-  readUint16BE(offset: number) {
+  readUint16BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     return ((this[offset] as number) << 8) | (this[offset + 1] as number);
   }
 
-  readUint32LE(offset: number) {
+  readUint32LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
 
@@ -305,7 +305,7 @@ export class WebBuf extends Uint8Array {
     return lo + hi * 0x10000;
   }
 
-  readUint32BE(offset: number) {
+  readUint32BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
 
@@ -314,7 +314,7 @@ export class WebBuf extends Uint8Array {
     return lo + hi * 0x10000;
   }
 
-  readBigUint64LE(offset: number) {
+  readBigUint64LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
 
@@ -323,7 +323,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 32n);
   }
 
-  readBigUint64BE(offset: number) {
+  readBigUint64BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
 
@@ -332,7 +332,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 32n);
   }
 
-  readBigUint128LE(offset: number) {
+  readBigUint128LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
 
@@ -341,7 +341,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 64n);
   }
 
-  readBigUint128BE(offset: number) {
+  readBigUint128BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
 
@@ -350,7 +350,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 64n);
   }
 
-  readBigUint256LE(offset: number) {
+  readBigUint256LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
 
@@ -361,7 +361,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
 
-  readBigUint256BE(offset: number) {
+  readBigUint256BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
 
@@ -414,28 +414,28 @@ export class WebBuf extends Uint8Array {
     return val;
   }
 
-  readInt8(offset: number) {
+  readInt8(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 1, this.length);
     const val = this[offset] as number;
     return val & 0x80 ? val | 0xffffff00 : val;
   }
 
-  readInt16LE(offset: number) {
+  readInt16LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     const val = (this[offset] as number) | ((this[offset + 1] as number) << 8);
     return val & 0x8000 ? val | 0xffff0000 : val;
   }
 
-  readInt16BE(offset: number) {
+  readInt16BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     const val = ((this[offset] as number) << 8) | (this[offset + 1] as number);
     return val & 0x8000 ? val | 0xffff0000 : val;
   }
 
-  readInt32LE(offset: number) {
+  readInt32LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     return (
@@ -446,7 +446,7 @@ export class WebBuf extends Uint8Array {
     );
   }
 
-  readInt32BE(offset: number) {
+  readInt32BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     return (
@@ -457,7 +457,7 @@ export class WebBuf extends Uint8Array {
     );
   }
 
-  readBigInt64LE(offset: number) {
+  readBigInt64LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
 
@@ -466,7 +466,7 @@ export class WebBuf extends Uint8Array {
     return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
 
-  readBigInt64BE(offset: number) {
+  readBigInt64BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
 
@@ -475,7 +475,7 @@ export class WebBuf extends Uint8Array {
     return BigInt(lo) + (BigInt(hi) << BigInt(32));
   }
 
-  readBigInt128LE(offset: number) {
+  readBigInt128LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
 
@@ -484,7 +484,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << BigInt(64));
   }
 
-  readBigInt128BE(offset: number) {
+  readBigInt128BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
 
@@ -493,7 +493,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 64n);
   }
 
-  readBigInt256LE(offset: number) {
+  readBigInt256LE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
 
@@ -504,7 +504,7 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
 
-  readBigInt256BE(offset: number) {
+  readBigInt256BE(offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
 
@@ -549,7 +549,7 @@ export class WebBuf extends Uint8Array {
     return offset + byteLength;
   }
 
-  writeUint8(value: number, offset: number) {
+  writeUint8(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 1, this.length);
     verifySize(this, value, offset, 1, 0xff, 0);
@@ -557,7 +557,7 @@ export class WebBuf extends Uint8Array {
     return offset + 1;
   }
 
-  writeUint16LE(value: number, offset: number) {
+  writeUint16LE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     verifySize(this, value, offset, 2, 0xffff, 0);
@@ -566,7 +566,7 @@ export class WebBuf extends Uint8Array {
     return offset + 2;
   }
 
-  writeUint16BE(value: number, offset: number) {
+  writeUint16BE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     verifySize(this, value, offset, 2, 0xffff, 0);
@@ -575,7 +575,7 @@ export class WebBuf extends Uint8Array {
     return offset + 2;
   }
 
-  writeUint32LE(value: number, offset: number) {
+  writeUint32LE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     verifySize(this, value, offset, 4, 0xffffffff, 0);
@@ -586,7 +586,7 @@ export class WebBuf extends Uint8Array {
     return offset + 4;
   }
 
-  writeUint32BE(value: number, offset: number) {
+  writeUint32BE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     verifySize(this, value, offset, 4, 0xffffffff, 0);
@@ -597,7 +597,7 @@ export class WebBuf extends Uint8Array {
     return offset + 4;
   }
 
-  writeBigUint64LE(value: bigint, offset: number) {
+  writeBigUint64LE(value: bigint, offset = 0) {
     value = BigInt(value);
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
@@ -607,7 +607,7 @@ export class WebBuf extends Uint8Array {
     return offset + 8;
   }
 
-  writeBigUint64BE(value: bigint, offset: number) {
+  writeBigUint64BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
     verifySize(this, value, offset, 8, 0xffffffffffffffffn, 0n);
@@ -616,7 +616,7 @@ export class WebBuf extends Uint8Array {
     return offset + 8;
   }
 
-  writeBigUint128LE(value: bigint, offset: number) {
+  writeBigUint128LE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
     verifySize(
@@ -632,7 +632,7 @@ export class WebBuf extends Uint8Array {
     return offset + 16;
   }
 
-  writeBigUint128BE(value: bigint, offset: number) {
+  writeBigUint128BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
     verifySize(
@@ -648,7 +648,7 @@ export class WebBuf extends Uint8Array {
     return offset + 16;
   }
 
-  writeBigUint256LE(value: bigint, offset: number) {
+  writeBigUint256LE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
     verifySize(
@@ -666,7 +666,7 @@ export class WebBuf extends Uint8Array {
     return offset + 32;
   }
 
-  writeBigUint256BE(value: bigint, offset: number) {
+  writeBigUint256BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
     verifySize(
@@ -716,7 +716,7 @@ export class WebBuf extends Uint8Array {
     return offset + byteLength;
   }
 
-  writeInt8(value: number, offset: number) {
+  writeInt8(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 1, this.length);
     verifySize(this, value, offset, 1, 0x7f, -0x80);
@@ -724,7 +724,7 @@ export class WebBuf extends Uint8Array {
     return offset + 1;
   }
 
-  writeInt16LE(value: number, offset: number) {
+  writeInt16LE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     verifySize(this, value, offset, 2, 0x7fff, -0x8000);
@@ -733,7 +733,7 @@ export class WebBuf extends Uint8Array {
     return offset + 2;
   }
 
-  writeInt16BE(value: number, offset: number) {
+  writeInt16BE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 2, this.length);
     verifySize(this, value, offset, 2, 0x7fff, -0x8000);
@@ -742,7 +742,7 @@ export class WebBuf extends Uint8Array {
     return offset + 2;
   }
 
-  writeInt32LE(value: number, offset: number) {
+  writeInt32LE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     verifySize(this, value, offset, 4, 0x7fffffff, -0x80000000);
@@ -753,7 +753,7 @@ export class WebBuf extends Uint8Array {
     return offset + 4;
   }
 
-  writeInt32BE(value: number, offset: number) {
+  writeInt32BE(value: number, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 4, this.length);
     verifySize(this, value, offset, 4, 0x7fffffff, -0x80000000);
@@ -764,7 +764,7 @@ export class WebBuf extends Uint8Array {
     return offset + 4;
   }
 
-  writeBigInt64LE(value: bigint, offset: number) {
+  writeBigInt64LE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
     verifySize(
@@ -780,7 +780,7 @@ export class WebBuf extends Uint8Array {
     return offset + 8;
   }
 
-  writeBigInt64BE(value: bigint, offset: number) {
+  writeBigInt64BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 8, this.length);
     verifySize(
@@ -796,7 +796,7 @@ export class WebBuf extends Uint8Array {
     return offset + 8;
   }
 
-  writeBigInt128LE(value: bigint, offset: number) {
+  writeBigInt128LE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
     verifySize(
@@ -812,7 +812,7 @@ export class WebBuf extends Uint8Array {
     return offset + 16;
   }
 
-  writeBigInt128BE(value: bigint, offset: number) {
+  writeBigInt128BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 16, this.length);
     verifySize(
@@ -828,7 +828,7 @@ export class WebBuf extends Uint8Array {
     return offset + 16;
   }
 
-  writeBigInt256LE(value: bigint, offset: number) {
+  writeBigInt256LE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
     verifySize(
@@ -846,7 +846,7 @@ export class WebBuf extends Uint8Array {
     return offset + 32;
   }
 
-  writeBigInt256BE(value: bigint, offset: number) {
+  writeBigInt256BE(value: bigint, offset = 0) {
     offset = offset >>> 0;
     verifyOffset(offset, 32, this.length);
     verifySize(
