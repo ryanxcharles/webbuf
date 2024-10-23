@@ -1,11 +1,7 @@
 # WebBuf
 
-WebBuf is a fork of the NPM package [`buffer`](https://github.com/feross/buffer)
-with a different name. The purpose is to prohibit use of the global `Buffer`
-object throughout your codebase for any code wants to use the `buffer` package
-in the browser and wants to ensure that the global `Buffer` object is not used.
-Also, it uses ES Modules instead of CommonJS. Also, it inlines the dependencies
-and converts them to ES Modules too.
+This is a simple package that provides a `Buffer`-like interface for the
+browser. It is implemented using `Uint8Array` and `TextEncoder`/`TextDecoder`.
 
 Usage:
 
@@ -16,4 +12,3 @@ const buf = WebBuf.from("Hello, world!");
 console.log(buf.toString("utf8"));
 ```
 
-The interface, of course, is the same as the `buffer` package.
