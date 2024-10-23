@@ -619,5 +619,41 @@ describe("WebBuf", () => {
         expect(buf.readBigInt64BE(0)).toBe(-0x8000000000000000n);
       });
     });
+
+    describe.skip("i128le", () => {
+      it("should write a valid i128le", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128LE(-1311768467463790320n, 0);
+        expect(buf.readBigInt128LE(0)).toBe(-1311768467463790320n);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() =>
+          buf.writeBigInt128LE(-0x80000000000000000000000000000000n - 1n, 0),
+        ).toThrow();
+      });
+
+      it("should write a valid i128le with valid offset", () => {
+        const buf = WebBuf.alloc(17);
+        buf.writeBigInt128LE(-1311768467463790320n, 1);
+        expect(buf.readBigInt128LE(1)).toBe(-1311768467463790320n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() =>
+          buf.writeBigInt128LE(-1311768467463790320n, 1),
+        ).toThrow();
+      });
+
+      it("should write and read the biggest i128le", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128LE(-0x80000000000000000000000000000000n, 0);
+        expect(buf.readBigInt128LE(0)).toBe(
+          -0x80000000000000000000000000000000n,
+        );
+      });
+    });
   });
 });
