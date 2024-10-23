@@ -236,6 +236,21 @@ describe("WebBuf", () => {
         expect(oBuf.readBigUInt64LE(0)).toBe(1311768467463790320n);
         expect(buf.readBigUint64LE(0)).toBe(1311768467463790320n);
       });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(8);
+        expect(() => buf.writeBigUint64LE(0x12345678901234567n, 0)).toThrow();
+      });
+
+      it("should write a valid u64le with valid offset", () => {
+        const buf = WebBuf.alloc(9);
+        buf.writeBigUint64LE(0xf0debc9a78563412n, 1);
+        const oBuf = Buffer.alloc(9);
+        oBuf.writeBigUInt64LE(0xf0debc9a78563412n, 1);
+        expect(buf.toHex()).toBe(oBuf.toString("hex"));
+        expect(oBuf.readBigUInt64LE(1)).toBe(0xf0debc9a78563412n);
+        expect(buf.readBigUint64LE(1)).toBe(0xf0debc9a78563412n);
+      });
     });
   });
 });
