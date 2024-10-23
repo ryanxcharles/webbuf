@@ -651,7 +651,7 @@ describe("WebBuf", () => {
         ).toThrow();
       });
 
-      it.skip("should write and read the biggest i128le", () => {
+      it("should write and read the biggest i128le", () => {
         const buf = WebBuf.alloc(16);
         buf.writeBigInt128LE(-0x80000000000000000000000000000000n, 0);
         expect(buf.readBigInt128LE(0)).toBe(
