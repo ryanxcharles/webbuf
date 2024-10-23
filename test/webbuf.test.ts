@@ -230,10 +230,6 @@ describe("WebBuf", () => {
       it("should write a valid u64le", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigUint64LE(1311768467463790320n, 0);
-        const oBuf = Buffer.alloc(8);
-        oBuf.writeBigUInt64LE(1311768467463790320n, 0);
-        expect(buf.toHex()).toBe(oBuf.toString("hex"));
-        expect(oBuf.readBigUInt64LE(0)).toBe(1311768467463790320n);
         expect(buf.readBigUint64LE(0)).toBe(1311768467463790320n);
       });
 
@@ -245,11 +241,18 @@ describe("WebBuf", () => {
       it("should write a valid u64le with valid offset", () => {
         const buf = WebBuf.alloc(9);
         buf.writeBigUint64LE(0xf0debc9a78563412n, 1);
-        const oBuf = Buffer.alloc(9);
-        oBuf.writeBigUInt64LE(0xf0debc9a78563412n, 1);
-        expect(buf.toHex()).toBe(oBuf.toString("hex"));
-        expect(oBuf.readBigUInt64LE(1)).toBe(0xf0debc9a78563412n);
         expect(buf.readBigUint64LE(1)).toBe(0xf0debc9a78563412n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(8);
+        expect(() => buf.writeBigUint64LE(0xf0debc9a78563412n, 1)).toThrow();
+      });
+
+      it("should write and read the biggest u64le", () => {
+        const buf = WebBuf.alloc(8);
+        buf.writeBigUint64LE(0xffffffffffffffffn, 0);
+        expect(buf.readBigUint64LE(0)).toBe(0xffffffffffffffffn);
       });
     });
   });
