@@ -685,6 +685,27 @@ describe("WebBuf", () => {
           "1000000000000000000000000000000",
         );
       });
+
+      it("should write another valid i128be", () => {
+        const bn = BigInt(131176846746379032029384n);
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128BE(bn, 0);
+        expect(buf.readBigInt128BE(0)).toBe(131176846746379032029384n);
+      });
+
+      it("should write yet another valid i128be", () => {
+        const bn = BigInt(-1311768467463790320234590827345n);
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128BE(bn, 0);
+        expect(buf.readBigInt128BE(0)).toBe(-1311768467463790320234590827345n);
+      });
+      
+      // it("should write a valid i128be with valid offset", () => {
+      //   const buf = WebBuf.alloc(17);
+      //   buf.writeBigInt128BE(-1311768467463790320234590827345n, 1);
+      //   expect(buf.readBigInt128BE(1)).toBe(-1311768467463790320234590827345n);
+      // });
+
     });
   });
 });
