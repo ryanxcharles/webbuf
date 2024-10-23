@@ -1,6 +1,7 @@
 // import vittest requirements
 import { describe, it, expect } from "vitest";
 import { WebBuf } from "../webbuf.js";
+import { Buffer } from "buffer";
 
 describe("WebBuf", () => {
   describe("base64", () => {
@@ -214,10 +215,13 @@ describe("WebBuf", () => {
     });
 
     describe("u64le", () => {
-      it.skip("should write a valid u64le", () => {
+      it("should write a valid u64le", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigUint64LE(1311768467463790320n, 0);
-        expect(buf.readBigUint64LE(0)).toBe(1311768467463790320n);
+        const oBuf = Buffer.alloc(8);
+        oBuf.writeBigUInt64LE(1311768467463790320n, 0);
+        expect(buf.toHex()).toBe(oBuf.toString("hex"));
+        //expect(buf.readBigUint64LE(0)).toBe(1311768467463790320n);
       });
     });
   });

@@ -304,7 +304,7 @@ export class WebBuf extends Uint8Array {
 
     const lo = this.readUint32LE(offset);
     const hi = this.readUint32LE(offset + 4);
-    return BigInt(lo) + (BigInt(hi) << BigInt(32));
+    return BigInt(lo) + (BigInt(hi) << 32n);
   }
 
   readBigUint64BE(offset: number) {
@@ -519,7 +519,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeBigUint64BE(value: bigint, offset: number) {
-    value = BigInt(value);
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
 
