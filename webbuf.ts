@@ -416,7 +416,6 @@ export class WebBuf extends Uint8Array {
   // writing numbers
 
   writeUintLE(value: number, offset: number, byteLength: number) {
-    value = +value;
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     checkOffset(offset, byteLength, this.length);
@@ -433,7 +432,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUintBE(value: number, offset: number, byteLength: number) {
-    value = +value;
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     checkOffset(offset, byteLength, this.length);
@@ -450,7 +448,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUint8(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 1, this.length);
     checkInt(this, value, offset, 1, 0xff, 0);
@@ -459,7 +456,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUint16LE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 2, this.length);
     checkInt(this, value, offset, 2, 0xffff, 0);
@@ -469,7 +465,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUint16BE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 2, this.length);
     checkInt(this, value, offset, 2, 0xffff, 0);
@@ -479,7 +474,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUint32LE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
     checkInt(this, value, offset, 4, 0xffffffff, 0);
@@ -491,7 +485,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeUint32BE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
     checkInt(this, value, offset, 4, 0xffffffff, 0);
@@ -522,7 +515,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeIntLE(value: number, offset: number, byteLength: number) {
-    value = +value;
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     checkOffset(offset, byteLength, this.length);
@@ -539,7 +531,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeIntBE(value: number, offset: number, byteLength: number) {
-    value = +value;
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     checkOffset(offset, byteLength, this.length);
@@ -556,7 +547,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeInt8(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 1, this.length);
     checkInt(this, value, offset, 1, 0x7f, -0x80);
@@ -565,7 +555,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeInt16LE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 2, this.length);
     checkInt(this, value, offset, 2, 0x7fff, -0x8000);
@@ -575,7 +564,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeInt16BE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 2, this.length);
     checkInt(this, value, offset, 2, 0x7fff, -0x8000);
@@ -585,7 +573,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeInt32LE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
     checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
@@ -597,7 +584,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeInt32BE(value: number, offset: number) {
-    value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 4, this.length);
     checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
