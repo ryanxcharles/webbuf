@@ -366,4 +366,65 @@ export class WebBuf extends Uint8Array {
   }
 
   // writing numbers
+
+  writeUintLE(value: number, offset: number, byteLength: number) {
+    value = +value;
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let mul = 1;
+    let i = 0;
+    this[offset] = value & 0xff;
+    // biome-ignore lint:
+    while (++i < byteLength && (mul *= 0x100)) {
+      this[offset + i] = (value / mul) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeUintBE(value: number, offset: number, byteLength: number) {
+    value = +value;
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let i = byteLength - 1;
+    let mul = 1;
+    this[offset + i] = value & 0xff;
+    // biome-ignore lint:
+    while (--i >= 0 && (mul *= 0x100)) {
+      this[offset + i] = (value / mul) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeUint8(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 1, this.length);
+    this[offset] = value & 0xff;
+    return offset + 1;
+  }
+
+  writeUint16LE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    this[offset] = value & 0xff;
+    this[offset + 1] = (value >>> 8) & 0xff;
+    return offset + 2;
+  }
+
+  writeUint16BE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    this[offset] = (value >>> 8) & 0xff;
+    this[offset + 1] = value & 0xff;
+    return offset + 2;
+  }
+
 }
