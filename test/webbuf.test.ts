@@ -10,6 +10,15 @@ describe("WebBuf", () => {
     });
   });
 
+  describe("slice", () => {
+    it("should slice a buffer", () => {
+      const webBuf = WebBuf.from("deadbeef", "hex");
+      const sliced = webBuf.slice(1, 3);
+      expect(sliced.toHex()).toBe("adbe");
+      expect(sliced instanceof WebBuf).toBe(true);
+    });
+  });
+
   describe("base64", () => {
     it("should encode and decode base64", () => {
       const myStr = "Hello, World!";

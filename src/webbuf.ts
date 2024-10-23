@@ -63,6 +63,16 @@ export class WebBuf extends Uint8Array {
     return this;
   }
 
+  // Override slice method to return WebBuf instead of Uint8Array
+  slice(start?: number, end?: number): WebBuf {
+    const slicedArray = super.slice(start, end); // Create a slice using Uint8Array's slice method
+    return new WebBuf(
+      slicedArray.buffer,
+      slicedArray.byteOffset,
+      slicedArray.byteLength,
+    ); // Return a WebBuf instead
+  }
+
   clone() {
     return new WebBuf(this);
   }
