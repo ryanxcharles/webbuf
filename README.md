@@ -19,12 +19,6 @@ Install via npm:
 npm install webbuf
 ```
 
-Or include it in your project using a CDN:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/webbuf"></script>
-```
-
 ## Usage
 
 ### Basic Usage
