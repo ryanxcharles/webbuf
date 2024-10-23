@@ -468,7 +468,7 @@ export class WebBuf extends Uint8Array {
 
     const lo = this.readBigInt64BE(offset + 8);
     const hi = this.readBigInt64BE(offset);
-    return lo + (hi << BigInt(64));
+    return lo + (hi << 64n);
   }
 
   readBigInt256LE(offset: number) {
@@ -479,7 +479,7 @@ export class WebBuf extends Uint8Array {
     const hi = this.readBigInt64LE(offset + 8);
     const hi2 = this.readBigInt64LE(offset + 16);
     const hi3 = this.readBigInt64LE(offset + 24);
-    return lo + (hi << BigInt(64)) + (hi2 << BigInt(128)) + (hi3 << BigInt(192));
+    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
 
   readBigInt256BE(offset: number) {
@@ -490,7 +490,7 @@ export class WebBuf extends Uint8Array {
     const hi2 = this.readBigInt64BE(offset + 8);
     const hi = this.readBigInt64BE(offset + 16);
     const lo = this.readBigInt64BE(offset + 24);
-    return lo + (hi << BigInt(64)) + (hi2 << BigInt(128)) + (hi3 << BigInt(192));
+    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
   }
 
   // writing numbers
