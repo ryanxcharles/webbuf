@@ -628,7 +628,9 @@ describe("WebBuf", () => {
         const buf = WebBuf.alloc(16);
         buf.writeBigInt128LE(bn, 0);
         expect(buf.toHex()).toBe(hexLE);
-        expect(buf.readBigInt128LE(0).toString(16)).toBe("1000000000000000000000000000000");
+        expect(buf.readBigInt128LE(0).toString(16)).toBe(
+          "1000000000000000000000000000000",
+        );
       });
 
       it("should write another valid i128le", () => {
@@ -660,9 +662,7 @@ describe("WebBuf", () => {
 
       it("should throw if offset is invalid", () => {
         const buf = WebBuf.alloc(16);
-        expect(() =>
-          buf.writeBigInt128LE(-1311768467463790320n, 1),
-        ).toThrow();
+        expect(() => buf.writeBigInt128LE(-1311768467463790320n, 1)).toThrow();
       });
 
       it("should write and read the biggest i128le", () => {
@@ -670,6 +670,19 @@ describe("WebBuf", () => {
         buf.writeBigInt128LE(-0x80000000000000000000000000000000n, 0);
         expect(buf.readBigInt128LE(0)).toBe(
           -0x80000000000000000000000000000000n,
+        );
+      });
+    });
+
+    describe("i128be", () => {
+      it("should write a valid i128be", () => {
+        const hexBE = "01000000000000000000000000000000";
+        const bn = BigInt(`0x${hexBE}`);
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128BE(bn, 0);
+        expect(buf.toHex()).toBe(hexBE);
+        expect(buf.readBigInt128BE(0).toString(16)).toBe(
+          "1000000000000000000000000000000",
         );
       });
     });
