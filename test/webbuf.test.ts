@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "../webbuf.js";
+import { WebBuf } from "../src/webbuf.js";
 
 describe("WebBuf", () => {
   describe("from", () => {
