@@ -16,13 +16,12 @@ function uint8ArrayToBinaryString(arr: Uint8Array): string {
     chunks.push(String.fromCharCode.apply(null, chunk as unknown as number[]));
   }
 
-  // Join the chunks into a single string at the end
   return chunks.join("");
 }
 
 function uint8ArrayToBase64(arr: Uint8Array): string {
-  const binaryString = uint8ArrayToBinaryString(arr); // Step 1: Convert to binary string
-  return btoa(binaryString); // Step 2: Convert to Base64
+  const binaryString = uint8ArrayToBinaryString(arr);
+  return btoa(binaryString);
 }
 
 function checkInt(
