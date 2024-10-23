@@ -73,6 +73,15 @@ export class WebBuf extends Uint8Array {
     ); // Return a WebBuf instead
   }
 
+  subarray(start?: number, end?: number): WebBuf {
+    const subArray = super.subarray(start, end);
+    return new WebBuf(
+      subArray.buffer,
+      subArray.byteOffset,
+      subArray.byteLength,
+    );
+  }
+
   clone() {
     return new WebBuf(this);
   }

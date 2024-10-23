@@ -19,6 +19,15 @@ describe("WebBuf", () => {
     });
   });
 
+  describe("subarray", () => {
+    it("should subarray a buffer", () => {
+      const webBuf = WebBuf.from("deadbeef", "hex");
+      const subarray = webBuf.subarray(1, 3);
+      expect(subarray.toHex()).toBe("adbe");
+      expect(subarray instanceof WebBuf).toBe(true);
+    });
+  });
+
   describe("base64", () => {
     it("should encode and decode base64", () => {
       const myStr = "Hello, World!";
