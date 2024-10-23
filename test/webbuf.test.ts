@@ -816,6 +816,12 @@ describe("WebBuf", () => {
           buf.writeBigInt256BE(-131176846746379032023234582344590827345n, 1),
         ).toThrow();
       });
+
+      it("should write and read the biggest i256be", () => {
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256BE(-BigInt(`0x7f${"f".repeat(62)}`), 0);
+        expect(buf.readBigInt256BE(0)).toBe(-BigInt(`0x7f${"f".repeat(62)}`));
+      });
     });
   });
 });
