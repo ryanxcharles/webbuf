@@ -295,7 +295,9 @@ describe("WebBuf", () => {
 
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(16);
-        expect(() => buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn + 1n, 0)).toThrow();
+        expect(() =>
+          buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn + 1n, 0),
+        ).toThrow();
       });
 
       it("should write a valid u128le with valid offset", () => {
@@ -312,7 +314,43 @@ describe("WebBuf", () => {
       it("should write and read the biggest u128le", () => {
         const buf = WebBuf.alloc(16);
         buf.writeBigUint128LE(0xffffffffffffffffffffffffffffffffn, 0);
-        expect(buf.readBigUint128LE(0)).toBe(0xffffffffffffffffffffffffffffffffn);
+        expect(buf.readBigUint128LE(0)).toBe(
+          0xffffffffffffffffffffffffffffffffn,
+        );
+      });
+    });
+
+    describe("u128be", () => {
+      it("should write a valid u128be", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigUint128BE(1311768467463790320n, 0);
+        expect(buf.readBigUint128BE(0)).toBe(1311768467463790320n);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() =>
+          buf.writeBigUint128BE(0xffffffffffffffffffffffffffffffffn + 1n, 0),
+        ).toThrow();
+      });
+
+      it("should write a valid u128be with valid offset", () => {
+        const buf = WebBuf.alloc(17);
+        buf.writeBigUint128BE(0xf0debc9a78563412n, 1);
+        expect(buf.readBigUint128BE(1)).toBe(0xf0debc9a78563412n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(16);
+        expect(() => buf.writeBigUint128BE(0xf0debc9a78563412n, 1)).toThrow();
+      });
+
+      it("should write and read the biggest u128be", () => {
+        const buf = WebBuf.alloc(16);
+        buf.writeBigUint128BE(0xffffffffffffffffffffffffffffffffn, 0);
+        expect(buf.readBigUint128BE(0)).toBe(
+          0xffffffffffffffffffffffffffffffffn,
+        );
       });
     });
   });
