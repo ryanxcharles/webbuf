@@ -638,7 +638,7 @@ describe("WebBuf", () => {
         expect(buf.readBigInt128LE(0)).toBe(131176846746379032029384n);
       });
 
-      it.skip("should write yet another valid i128le", () => {
+      it("should write yet another valid i128le", () => {
         const bn = BigInt(-1311768467463790320234590827345n);
         const buf = WebBuf.alloc(16);
         buf.writeBigInt128LE(bn, 0);
