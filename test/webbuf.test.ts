@@ -48,5 +48,13 @@ describe("WebBuf", () => {
       const decoded = WebBuf.fromBase64(base64);
       expect(decoded.toString()).toBe('aoeu');
     });
+
+    it('should handle newline in utf8', () => {
+    // new B('LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK', 'base64').toString('utf8'),
+    // '---\ntitle: Three dashes marks the spot\ntags:\n'
+      const base64 = "LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK";
+      const decoded = WebBuf.fromBase64(base64);
+      expect(decoded.toString()).toBe('---\ntitle: Three dashes marks the spot\ntags:\n');
+    });
   });
 });
