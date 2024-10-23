@@ -255,5 +255,35 @@ describe("WebBuf", () => {
         expect(buf.readBigUint64LE(0)).toBe(0xffffffffffffffffn);
       });
     });
+
+    describe("u64be", () => {
+      it.skip("should write a valid u64be", () => {
+        const buf = WebBuf.alloc(8);
+        buf.writeBigUint64BE(1311768467463790320n, 0);
+        expect(buf.readBigUint64BE(0)).toBe(1311768467463790320n);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(8);
+        expect(() => buf.writeBigUint64BE(0x12345678901234567n, 0)).toThrow();
+      });
+
+      it.skip("should write a valid u64be with valid offset", () => {
+        const buf = WebBuf.alloc(9);
+        buf.writeBigUint64BE(0xf0debc9a78563412n, 1);
+        expect(buf.readBigUint64BE(1)).toBe(0xf0debc9a78563412n);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(8);
+        expect(() => buf.writeBigUint64BE(0xf0debc9a78563412n, 1)).toThrow();
+      });
+
+      it("should write and read the biggest u64be", () => {
+        const buf = WebBuf.alloc(8);
+        buf.writeBigUint64BE(0xffffffffffffffffn, 0);
+        expect(buf.readBigUint64BE(0)).toBe(0xffffffffffffffffn);
+      });
+    });
   });
 });

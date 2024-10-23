@@ -305,9 +305,9 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
 
-    const lo = this.readUint32BE(offset);
-    const hi = this.readUint32BE(offset + 4);
-    return BigInt(lo) + (BigInt(hi) << BigInt(32));
+    const lo = BigInt(this.readUint32BE(offset));
+    const hi = BigInt(this.readUint32BE(offset + 4));
+    return lo + (hi << 32n);
   }
 
   readIntLE(offset: number, byteLength: number) {
