@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "./index.js";
+import { WebBuf } from "../index.js";
 
 describe("WebBuf", () => {
   it("should be a Buffer", () => {

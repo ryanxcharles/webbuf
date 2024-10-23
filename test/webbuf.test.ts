@@ -1,6 +1,6 @@
 // import vittest requirements
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "./webbuf.js";
+import { WebBuf } from "../webbuf.js";
 
 describe("WebBuf", () => {
   describe("base64", () => {
