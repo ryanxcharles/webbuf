@@ -104,6 +104,17 @@ describe("WebBuf", () => {
         const buf = WebBuf.alloc(1);
         expect(() => buf.writeUint8(256, 0)).toThrow();
       });
+
+      it('should write a valid u8 with valid offset', () => {
+        const buf = WebBuf.alloc(2);
+        buf.writeUint8(255, 1);
+        expect(buf.readUint8(1)).toBe(255);
+      });
+
+      it('should throw if offset is invalid', () => {
+        const buf = WebBuf.alloc(1);
+        expect(() => buf.writeUint8(255, 1)).toThrow();
+      });
     })
   });
 });
