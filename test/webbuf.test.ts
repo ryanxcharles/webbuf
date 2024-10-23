@@ -49,12 +49,29 @@ describe("WebBuf", () => {
       expect(decoded.toString()).toBe('aoeu');
     });
 
+    it('should ignore whitespace', () => {
+  // const text = '\n   YW9ldQ==  '
+  // const buf = new B(text, 'base64')
+  // t.equal(buf.toString(), 'aoeu')
+      const base64 = "\n   YW9ldQ==  ";
+      const decoded = WebBuf.fromBase64(base64);
+      expect(decoded.toString()).toBe('aoeu');
+    });
+
     it('should handle newline in utf8', () => {
     // new B('LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK', 'base64').toString('utf8'),
     // '---\ntitle: Three dashes marks the spot\ntags:\n'
       const base64 = "LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK";
       const decoded = WebBuf.fromBase64(base64);
       expect(decoded.toString()).toBe('---\ntitle: Three dashes marks the spot\ntags:\n');
+    });
+
+    it('should strip newline in base64', () => {
+    // new B('LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK\nICAtIHlhbWwKICAtIGZyb250LW1hdHRlcgogIC0gZGFzaGVzCmV4cGFuZWQt', 'base64').toString('utf8'),
+    // '---\ntitle: Three dashes marks the spot\ntags:\n  - yaml\n  - front-matter\n  - dashes\nexpaned-'
+      const base64 = "LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoKICAtIHlhbWwKICAtIGZyb250LW1hdHRlcgogIC0gZGFzaGVzCmV4cGFuZWQt";
+      const decoded = WebBuf.fromBase64(base64);
+      expect(decoded.toString()).toBe('---\ntitle: Three dashes marks the spot\ntags:\n  - yaml\n  - front-matter\n  - dashes\nexpaned-');
     });
   });
 });
