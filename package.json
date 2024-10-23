@@ -10,7 +10,11 @@
   "types": "index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint --write --unsafe",
+    "format": "biome format --write",
+    "fix": "pnpm run typecheck && pnpm run lint && pnpm run format"
   },
   "keywords": [],
   "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
