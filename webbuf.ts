@@ -1,5 +1,3 @@
-import * as ieee754 from "./ieee754.js";
-
 const lookup: string[] = [];
 const revLookup: number[] = [];
 
