@@ -52,8 +52,12 @@ export class WebBuf extends Uint8Array {
     return result;
   }
 
-  static alloc(size: number) {
-    return new WebBuf(size);
+  static alloc(size: number, fill = 0) {
+    const buf = new WebBuf(size);
+    if (fill !== 0) {
+      buf.fill(fill);
+    }
+    return buf;
   }
 
   fill(value: number, start = 0, end = this.length) {
