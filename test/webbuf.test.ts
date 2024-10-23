@@ -746,6 +746,34 @@ describe("WebBuf", () => {
           -131176846746379032023234582344590827345n,
         );
       });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(32);
+        expect(() =>
+          buf.writeBigInt256LE(BigInt(`0x${"f".repeat(64)}`) + 1n, 0),
+        ).toThrow();
+      });
+
+      it("should write a valid i256le with valid offset", () => {
+        const buf = WebBuf.alloc(33);
+        buf.writeBigInt256LE(-131176846746379032023234582344590827345n, 1);
+        expect(buf.readBigInt256LE(1)).toBe(
+          -131176846746379032023234582344590827345n,
+        );
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(32);
+        expect(() =>
+          buf.writeBigInt256LE(-131176846746379032023234582344590827345n, 1),
+        ).toThrow();
+      });
+
+      it("should write and read the biggest i256le", () => {
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256LE(-BigInt(`0x7f${"f".repeat(62)}`), 0);
+        expect(buf.readBigInt256LE(0)).toBe(-BigInt(`0x7f${"f".repeat(62)}`));
+      });
     });
   });
 });
