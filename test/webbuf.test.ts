@@ -311,5 +311,29 @@ describe("WebBuf", () => {
         expect(() => buf.writeInt8(-1, 1)).toThrow();
       });
     });
+
+    describe("i16le", () => {
+      it("should write a valid i16le", () => {
+        const buf = WebBuf.alloc(2);
+        buf.writeInt16LE(-30584, 0);
+        expect(buf.readInt16LE(0)).toBe(-30584);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeInt16LE(-0x8000 - 1, 0)).toThrow();
+      });
+
+      it("should write a valid i16le with valid offset", () => {
+        const buf = WebBuf.alloc(3);
+        buf.writeInt16LE(-30584, 1);
+        expect(buf.readInt16LE(1)).toBe(-30584);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeInt16LE(-30584, 1)).toThrow();
+      });
+    });
   });
 });
