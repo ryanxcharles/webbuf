@@ -58,6 +58,24 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(this);
   }
 
+  copy(target: WebBuf, targetStart = 0, sourceStart = 0, sourceEnd = this.length) {
+    if (sourceStart >= sourceEnd) {
+      return 0;
+    }
+    if (targetStart >= target.length) {
+      throw new RangeError("targetStart out of bounds");
+    }
+    if (sourceEnd > this.length) {
+      throw new RangeError("sourceEnd out of bounds");
+    }
+    if (targetStart + sourceEnd - sourceStart > target.length) {
+      throw new RangeError("source is too large");
+    }
+
+    target.set(this.subarray(sourceStart, sourceEnd), targetStart);
+    return sourceEnd - sourceStart;
+  }
+
   /**
    * Return a WebBuf that is a view of the same data as the input Uint8Array
    *
@@ -448,7 +466,7 @@ export class WebBuf extends Uint8Array {
     this[offset + 3] = value & 0xff;
     return offset + 4;
   }
-  
+
   writeBigUInt64LE(value: bigint, offset: number) {
     value = BigInt(value);
     offset = offset >>> 0;
@@ -469,4 +487,105 @@ export class WebBuf extends Uint8Array {
     return offset + 8;
   }
 
+  writeIntLE(value: number, offset: number, byteLength: number) {
+    value = +value;
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let mul = 1;
+    let i = 0;
+    this[offset] = value & 0xff;
+    // biome-ignore lint:
+    while (++i < byteLength && (mul *= 0x100)) {
+      this[offset + i] = (value / mul) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeIntBE(value: number, offset: number, byteLength: number) {
+    value = +value;
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    checkOffset(offset, byteLength, this.length);
+
+    let i = byteLength - 1;
+    let mul = 1;
+    this[offset + i] = value & 0xff;
+    // biome-ignore lint:
+    while (--i >= 0 && (mul *= 0x100)) {
+      this[offset + i] = (value / mul) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeInt8(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 1, this.length);
+    this[offset] = value & 0xff;
+    return offset + 1;
+  }
+
+  writeInt16LE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    this[offset] = value & 0xff;
+    this[offset + 1] = (value >>> 8) & 0xff;
+    return offset + 2;
+  }
+
+  writeInt16BE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 2, this.length);
+    this[offset] = (value >>> 8) & 0xff;
+    this[offset + 1] = value & 0xff;
+    return offset + 2;
+  }
+
+  writeInt32LE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    this[offset] = value & 0xff;
+    this[offset + 1] = (value >>> 8) & 0xff;
+    this[offset + 2] = (value >>> 16) & 0xff;
+    this[offset + 3] = (value >>> 24) & 0xff;
+    return offset + 4;
+  }
+
+  writeInt32BE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    this[offset] = (value >>> 24) & 0xff;
+    this[offset + 1] = (value >>> 16) & 0xff;
+    this[offset + 2] = (value >>> 8) & 0xff;
+    this[offset + 3] = value & 0xff;
+    return offset + 4;
+  }
+
+  writeBigInt64LE(value: bigint, offset: number) {
+    value = BigInt(value);
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    this.writeUint32LE(Number(value & BigInt(0xffffffff)), offset);
+    this.writeInt32LE(Number(value >> BigInt(32)), offset + 4);
+    return offset + 8;
+  }
+
+  writeBigInt64BE(value: bigint, offset: number) {
+    value = BigInt(value);
+    offset = offset >>> 0;
+    checkOffset(offset, 8, this.length);
+
+    this.writeInt32BE(Number(value >> BigInt(32)), offset);
+    this.writeUint32BE(Number(value & BigInt(0xffffffff)), offset + 4);
+    return offset + 8;
+  }
 }
