@@ -536,8 +536,10 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 32, this.length);
 
-    this.writeBigUint128LE(value & 0xffffffffffffffffffffffffffffffffn, offset);
-    this.writeBigUint128LE(value >> 128n, offset + 16);
+    this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
+    this.writeBigUint64LE(value >> 64n, offset + 8);
+    this.writeBigUint64LE(value >> 128n, offset + 16);
+    this.writeBigUint64LE(value >> 192n, offset + 24);
     return offset + 32;
   }
 
@@ -545,9 +547,11 @@ export class WebBuf extends Uint8Array {
     offset = offset >>> 0;
     checkOffset(offset, 32, this.length);
 
-    this.writeBigUint128BE(value >> 128n, offset);
-    this.writeBigUint128BE(value & 0xffffffffffffffffffffffffffffffffn, offset + 16);
-    return offset + 32;
+    this.writeBigUint64BE(value >> 192n, offset);
+    this.writeBigUint64BE(value >> 128n, offset + 8);
+    this.writeBigUint64BE(value >> 64n, offset + 16);
+    this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 24);
+    return offset;
   }
 
   writeIntLE(value: number, offset: number, byteLength: number) {
