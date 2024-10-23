@@ -732,10 +732,19 @@ describe("WebBuf", () => {
       });
 
       it("should write another valid i256le", () => {
-        const bn = BigInt(131176846746379032029384n);
+        const bn = BigInt(13117684674632349085779032029384n);
         const buf = WebBuf.alloc(32);
         buf.writeBigInt256LE(bn, 0);
-        expect(buf.readBigInt256LE(0)).toBe(131176846746379032029384n);
+        expect(buf.readBigInt256LE(0)).toBe(13117684674632349085779032029384n);
+      });
+
+      it("should write yet another valid i256le", () => {
+        const bn = BigInt(-131176846746379032023234582344590827345n);
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256LE(bn, 0);
+        expect(buf.readBigInt256LE(0)).toBe(
+          -131176846746379032023234582344590827345n,
+        );
       });
     });
   });

@@ -808,8 +808,8 @@ export class WebBuf extends Uint8Array {
       -0x8000000000000000000000000000000000000000000000000000000000000000n,
     );
     this.writeBigInt64BE(value >> 192n, offset);
-    this.writeBigUint64BE(( value >> 128n ) & 0xffffffffffffffffn, offset + 8);
-    this.writeBigUint64BE(( value >> 64n ) & 0xffffffffffffffffn, offset + 16);
+    this.writeBigUint64BE((value >> 128n) & 0xffffffffffffffffn, offset + 8);
+    this.writeBigUint64BE((value >> 64n) & 0xffffffffffffffffn, offset + 16);
     this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 24);
     return offset + 32;
   }
