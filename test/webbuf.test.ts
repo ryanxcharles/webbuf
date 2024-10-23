@@ -212,5 +212,13 @@ describe("WebBuf", () => {
         expect(() => buf.writeUint32BE(0x12345678, 1)).toThrow();
       });
     });
+
+    describe("u64le", () => {
+      it.skip("should write a valid u64le", () => {
+        const buf = WebBuf.alloc(8);
+        buf.writeBigUint64LE(1311768467463790320n, 0);
+        expect(buf.readBigUint64LE(0)).toBe(1311768467463790320n);
+      });
+    });
   });
 });
