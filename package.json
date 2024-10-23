@@ -15,7 +15,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome lint --write --unsafe",
     "format": "biome format --write",
-    "fix": "pnpm run typecheck && pnpm run lint && pnpm run format"
+    "fix": "pnpm run typecheck && pnpm run lint && pnpm run format",
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "pnpm run clean && pnpm run build"
   },
   "keywords": [],
   "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
