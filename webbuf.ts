@@ -471,6 +471,28 @@ export class WebBuf extends Uint8Array {
     return lo + (hi << BigInt(64));
   }
 
+  readBigInt256LE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 32, this.length);
+
+    const lo = this.readBigInt64LE(offset);
+    const hi = this.readBigInt64LE(offset + 8);
+    const hi2 = this.readBigInt64LE(offset + 16);
+    const hi3 = this.readBigInt64LE(offset + 24);
+    return lo + (hi << BigInt(64)) + (hi2 << BigInt(128)) + (hi3 << BigInt(192));
+  }
+
+  readBigInt256BE(offset: number) {
+    offset = offset >>> 0;
+    checkOffset(offset, 32, this.length);
+
+    const hi3 = this.readBigInt64BE(offset);
+    const hi2 = this.readBigInt64BE(offset + 8);
+    const hi = this.readBigInt64BE(offset + 16);
+    const lo = this.readBigInt64BE(offset + 24);
+    return lo + (hi << BigInt(64)) + (hi2 << BigInt(128)) + (hi3 << BigInt(192));
+  }
+
   // writing numbers
 
   writeUintLE(value: number, offset: number, byteLength: number) {
