@@ -227,7 +227,7 @@ describe("WebBuf", () => {
     });
 
     describe("u64le", () => {
-      it.skip("should write a valid u64le", () => {
+      it("should write a valid u64le", () => {
         const buf = WebBuf.alloc(8);
         buf.writeBigUint64LE(1311768467463790320n, 0);
         const oBuf = Buffer.alloc(8);
