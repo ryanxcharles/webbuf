@@ -775,5 +775,47 @@ describe("WebBuf", () => {
         expect(buf.readBigInt256LE(0)).toBe(-BigInt(`0x7f${"f".repeat(62)}`));
       });
     });
+
+    describe("i256be", () => {
+      it("should write a valid i256be", () => {
+        const hexBE = `01${"00".repeat(31)}`;
+        const bn = BigInt(`0x${hexBE}`);
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256BE(bn, 0);
+        expect(buf.toHex()).toBe(hexBE);
+        expect(buf.readBigInt256BE(0).toString(16)).toBe(`1${"0".repeat(62)}`);
+      });
+
+      it("should write another valid i256be", () => {
+        const bn = BigInt(13117684674632349085779032029384n);
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256BE(bn, 0);
+        expect(buf.readBigInt256BE(0)).toBe(13117684674632349085779032029384n);
+      });
+
+      it("should write yet another valid i256be", () => {
+        const bn = BigInt(-131176846746379032023234582344590827345n);
+        const buf = WebBuf.alloc(32);
+        buf.writeBigInt256BE(bn, 0);
+        expect(buf.readBigInt256BE(0)).toBe(
+          -131176846746379032023234582344590827345n,
+        );
+      });
+
+      it("should write a valid i256be with valid offset", () => {
+        const buf = WebBuf.alloc(33);
+        buf.writeBigInt256BE(-131176846746379032023234582344590827345n, 1);
+        expect(buf.readBigInt256BE(1)).toBe(
+          -131176846746379032023234582344590827345n,
+        );
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(32);
+        expect(() =>
+          buf.writeBigInt256BE(-131176846746379032023234582344590827345n, 1),
+        ).toThrow();
+      });
+    });
   });
 });
