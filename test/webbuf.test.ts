@@ -40,4 +40,13 @@ describe("WebBuf", () => {
       expect(decoded.toString()).toBe(myStr);
     });
   });
+
+  describe("base64", () => {
+    // t.equal((new B('YW9ldQ', 'base64').toString()), 'aoeu')
+    it('should decode base64', () => {
+      const base64 = "YW9ldQ==";
+      const decoded = WebBuf.fromBase64(base64);
+      expect(decoded.toString()).toBe('aoeu');
+    });
+  });
 });
