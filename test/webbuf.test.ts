@@ -628,7 +628,14 @@ describe("WebBuf", () => {
         const buf = WebBuf.alloc(16);
         buf.writeBigInt128LE(bn, 0);
         expect(buf.toHex()).toBe(hexLE);
-        //expect(buf.readBigInt128LE(0)).toBe(-1311768467463790320234590827345n);
+        expect(buf.readBigInt128LE(0).toString(16)).toBe("1000000000000000000000000000000");
+      });
+
+      it("should write another valid i128le", () => {
+        const bn = BigInt(131176846746379032029384n);
+        const buf = WebBuf.alloc(16);
+        buf.writeBigInt128LE(bn, 0);
+        expect(buf.readBigInt128LE(0)).toBe(131176846746379032029384n);
       });
 
       it("should throw if writing a number that is too big", () => {
