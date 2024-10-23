@@ -609,7 +609,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeBigInt64LE(value: bigint, offset: number) {
-    value = BigInt(value);
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
     checkInt(this, value, offset, 8, 0x7fffffffffffffffn, -0x8000000000000000n);
@@ -619,7 +618,6 @@ export class WebBuf extends Uint8Array {
   }
 
   writeBigInt64BE(value: bigint, offset: number) {
-    value = BigInt(value);
     offset = offset >>> 0;
     checkOffset(offset, 8, this.length);
     checkInt(this, value, offset, 8, 0x7fffffffffffffffn, -0x8000000000000000n);
