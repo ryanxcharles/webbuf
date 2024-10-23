@@ -1,12 +1,3 @@
-const lookup: string[] = [];
-const revLookup: number[] = [];
-
-const code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-for (let i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i] as string;
-  revLookup[code.charCodeAt(i)] = i;
-}
-
 function checkOffset(offset: number, ext: number, length: number) {
   if (offset % 1 !== 0 || offset < 0) {
     throw new RangeError("offset is not uint");
@@ -16,26 +7,22 @@ function checkOffset(offset: number, ext: number, length: number) {
   }
 }
 
-function tripletToBase64(num: number) {
-  return (
-    (lookup[(num >> 18) & 0x3f] as string) +
-    (lookup[(num >> 12) & 0x3f] as string) +
-    (lookup[(num >> 6) & 0x3f] as string) +
-    (lookup[num & 0x3f] as string)
-  );
+function uint8ArrayToBinaryString(arr: Uint8Array): string {
+  const CHUNK_SIZE = 0x8000; // 32KB chunk size
+  const chunks: string[] = [];
+
+  for (let i = 0; i < arr.length; i += CHUNK_SIZE) {
+    const chunk = arr.subarray(i, i + CHUNK_SIZE);
+    chunks.push(String.fromCharCode.apply(null, chunk as unknown as number[]));
+  }
+
+  // Join the chunks into a single string at the end
+  return chunks.join("");
 }
 
-function encodeChunk(uint8: Uint8Array, start: number, end: number) {
-  let tmp: number;
-  const output = [];
-  for (let i = start; i < end; i += 3) {
-    tmp =
-      (((uint8[i] as number) << 16) & 0xff0000) +
-      (((uint8[i + 1] as number) << 8) & 0xff00) +
-      ((uint8[i + 2] as number) & 0xff);
-    output.push(tripletToBase64(tmp));
-  }
-  return output.join("");
+function uint8ArrayToBase64(arr: Uint8Array): string {
+  const binaryString = uint8ArrayToBinaryString(arr); // Step 1: Convert to binary string
+  return btoa(binaryString); // Step 2: Convert to Base64
 }
 
 function checkInt(
@@ -188,41 +175,7 @@ export class WebBuf extends Uint8Array {
   }
 
   toBase64() {
-    let tmp: number;
-    const len = this.length;
-    const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
-    const parts = [];
-    const maxChunkLength = 16383; // must be multiple of 3
-
-    // go through the array every three bytes, we'll deal with trailing stuff later
-    for (let i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-      parts.push(
-        encodeChunk(
-          this,
-          i,
-          i + maxChunkLength > len2 ? len2 : i + maxChunkLength,
-        ),
-      );
-    }
-
-    // pad the end with zeros, but make sure to not forget the extra bytes
-    if (extraBytes === 1) {
-      tmp = this[len - 1] as number;
-      parts.push(
-        `${(lookup[tmp >> 2] as string) + lookup[(tmp << 4) & 0x3f]}==`,
-      );
-    } else if (extraBytes === 2) {
-      tmp = ((this[len - 2] as number) << 8) + (this[len - 1] as number);
-      parts.push(
-        `${
-          (lookup[tmp >> 10] as string) +
-          (lookup[(tmp >> 4) & 0x3f] as string) +
-          (lookup[(tmp << 2) & 0x3f] as string)
-        }=`,
-      );
-    }
-
-    return parts.join("");
+    return uint8ArrayToBase64(this);
   }
 
   toString() {
