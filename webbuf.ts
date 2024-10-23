@@ -427,4 +427,26 @@ export class WebBuf extends Uint8Array {
     return offset + 2;
   }
 
+  writeUint32LE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    this[offset] = value & 0xff;
+    this[offset + 1] = (value >>> 8) & 0xff;
+    this[offset + 2] = (value >>> 16) & 0xff;
+    this[offset + 3] = (value >>> 24) & 0xff;
+    return offset + 4;
+  }
+
+  writeUint32BE(value: number, offset: number) {
+    value = +value;
+    offset = offset >>> 0;
+    checkOffset(offset, 4, this.length);
+    this[offset] = (value >>> 24) & 0xff;
+    this[offset + 1] = (value >>> 16) & 0xff;
+    this[offset + 2] = (value >>> 8) & 0xff;
+    this[offset + 3] = value & 0xff;
+    return offset + 4;
+  }
+
 }
