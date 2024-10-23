@@ -92,29 +92,53 @@ describe("WebBuf", () => {
     });
   });
 
-  describe('read/write unsigned integers and signed integers', () => {
-    describe('u8', () => {
-      it('should write a valid u8', () => {
+  describe("read/write unsigned integers and signed integers", () => {
+    describe("u8", () => {
+      it("should write a valid u8", () => {
         const buf = WebBuf.alloc(1);
         buf.writeUint8(255, 0);
         expect(buf.readUint8(0)).toBe(255);
       });
 
-      it('should throw if writing a number that is too big', () => {
+      it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(1);
         expect(() => buf.writeUint8(256, 0)).toThrow();
       });
 
-      it('should write a valid u8 with valid offset', () => {
+      it("should write a valid u8 with valid offset", () => {
         const buf = WebBuf.alloc(2);
         buf.writeUint8(255, 1);
         expect(buf.readUint8(1)).toBe(255);
       });
 
-      it('should throw if offset is invalid', () => {
+      it("should throw if offset is invalid", () => {
         const buf = WebBuf.alloc(1);
         expect(() => buf.writeUint8(255, 1)).toThrow();
       });
-    })
+    });
+
+    describe("u16le", () => {
+      it("should write a valid u16le", () => {
+        const buf = WebBuf.alloc(2);
+        buf.writeUint16LE(0x1234, 0);
+        expect(buf.readUint16LE(0)).toBe(0x1234);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeUint16LE(0x12345, 0)).toThrow();
+      });
+
+      it("should write a valid u16le with valid offset", () => {
+        const buf = WebBuf.alloc(3);
+        buf.writeUint16LE(0x1234, 1);
+        expect(buf.readUint16LE(1)).toBe(0x1234);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(2);
+        expect(() => buf.writeUint16LE(0x1234, 1)).toThrow();
+      });
+    });
   });
 });
