@@ -188,5 +188,29 @@ describe("WebBuf", () => {
         expect(() => buf.writeUint32LE(0x12345678, 1)).toThrow();
       });
     });
+
+    describe("u32be", () => {
+      it("should write a valid u32be", () => {
+        const buf = WebBuf.alloc(4);
+        buf.writeUint32BE(0x12345678, 0);
+        expect(buf.readUint32BE(0)).toBe(0x12345678);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(4);
+        expect(() => buf.writeUint32BE(0x123456789, 0)).toThrow();
+      });
+
+      it("should write a valid u32be with valid offset", () => {
+        const buf = WebBuf.alloc(5);
+        buf.writeUint32BE(0x12345678, 1);
+        expect(buf.readUint32BE(1)).toBe(0x12345678);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(4);
+        expect(() => buf.writeUint32BE(0x12345678, 1)).toThrow();
+      });
+    });
   });
 });
