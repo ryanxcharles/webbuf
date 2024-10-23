@@ -58,14 +58,19 @@ export class WebBuf extends Uint8Array {
     for (let i = start; i < end; i++) {
       this[i] = value;
     }
-    return this
+    return this;
   }
 
   clone() {
     return new WebBuf(this);
   }
 
-  copy(target: WebBuf, targetStart = 0, sourceStart = 0, sourceEnd = this.length) {
+  copy(
+    target: WebBuf,
+    targetStart = 0,
+    sourceStart = 0,
+    sourceEnd = this.length,
+  ) {
     if (sourceStart >= sourceEnd) {
       return 0;
     }
@@ -110,6 +115,14 @@ export class WebBuf extends Uint8Array {
     return result;
   }
 
+  /**
+   * Convert a base64 string to a Uint8Array. Tolerant of whitespace, but
+   * throws if the string has invalid characters.
+   *
+   * @param b64
+   * @returns Uint8Array
+   * @throws {Error} if the input string is not valid base64
+   */
   static fromBase64(b64: string) {
     const binary = atob(b64);
     const result = new WebBuf(binary.length);
