@@ -38,7 +38,14 @@ function encodeChunk(uint8: Uint8Array, start: number, end: number) {
   return output.join("");
 }
 
-function checkInt(buf: WebBuf, value: number, offset: number, ext: number, max: number, min: number) {
+function checkInt(
+  buf: WebBuf,
+  value: number | bigint,
+  offset: number,
+  ext: number,
+  max: number | bigint,
+  min: number | bigint,
+) {
   if (value > max || value < min) {
     throw new RangeError('"value" argument is out of bounds');
   }
