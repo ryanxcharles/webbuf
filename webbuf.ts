@@ -18,6 +18,28 @@ function checkOffset(offset: number, ext: number, length: number) {
   }
 }
 
+function tripletToBase64(num: number) {
+  return (
+    (lookup[(num >> 18) & 0x3f] as string) +
+    (lookup[(num >> 12) & 0x3f] as string) +
+    (lookup[(num >> 6) & 0x3f] as string) +
+    (lookup[num & 0x3f] as string)
+  );
+}
+
+function encodeChunk(uint8: Uint8Array, start: number, end: number) {
+  let tmp: number;
+  const output = [];
+  for (let i = start; i < end; i += 3) {
+    tmp =
+      (((uint8[i] as number) << 16) & 0xff0000) +
+      (((uint8[i + 1] as number) << 8) & 0xff00) +
+      ((uint8[i + 2] as number) & 0xff);
+    output.push(tripletToBase64(tmp));
+  }
+  return output.join("");
+}
+
 export class WebBuf extends Uint8Array {
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
@@ -75,28 +97,6 @@ export class WebBuf extends Uint8Array {
   }
 
   toBase64() {
-    function tripletToBase64(num: number) {
-      return (
-        (lookup[(num >> 18) & 0x3f] as string) +
-        (lookup[(num >> 12) & 0x3f] as string) +
-        (lookup[(num >> 6) & 0x3f] as string) +
-        (lookup[num & 0x3f] as string)
-      );
-    }
-
-    function encodeChunk(uint8: Uint8Array, start: number, end: number) {
-      let tmp: number;
-      const output = [];
-      for (let i = start; i < end; i += 3) {
-        tmp =
-          (((uint8[i] as number) << 16) & 0xff0000) +
-          (((uint8[i + 1] as number) << 8) & 0xff00) +
-          ((uint8[i + 2] as number) & 0xff);
-        output.push(tripletToBase64(tmp));
-      }
-      return output.join("");
-    }
-
     let tmp: number;
     const len = this.length;
     const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
