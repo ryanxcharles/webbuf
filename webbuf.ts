@@ -559,6 +559,7 @@ export class WebBuf extends Uint8Array {
     value = +value;
     offset = offset >>> 0;
     checkOffset(offset, 1, this.length);
+    checkInt(this, value, offset, 1, 0x7f, -0x80);
     this[offset] = value & 0xff;
     return offset + 1;
   }

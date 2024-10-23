@@ -286,4 +286,30 @@ describe("WebBuf", () => {
       });
     });
   });
+
+  describe("read/write unsigned integers and signed integers", () => {
+    describe("i8", () => {
+      it("should write a valid i8", () => {
+        const buf = WebBuf.alloc(1);
+        buf.writeInt8(-1, 0);
+        expect(buf.readInt8(0)).toBe(-1);
+      });
+
+      it("should throw if writing a number that is too big", () => {
+        const buf = WebBuf.alloc(1);
+        expect(() => buf.writeInt8(-129, 0)).toThrow();
+      });
+
+      it("should write a valid i8 with valid offset", () => {
+        const buf = WebBuf.alloc(2);
+        buf.writeInt8(-1, 1);
+        expect(buf.readInt8(1)).toBe(-1);
+      });
+
+      it("should throw if offset is invalid", () => {
+        const buf = WebBuf.alloc(1);
+        expect(() => buf.writeInt8(-1, 1)).toThrow();
+      });
+    });
+  });
 });
