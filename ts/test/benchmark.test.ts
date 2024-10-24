@@ -2,12 +2,36 @@
 import { describe, it, expect } from "vitest";
 import {
   WebBuf,
-  uint8ArrayToBase64,
-  newUint8ArrayToBase64,
   encode_base64,
   decode_base64
 } from "../src/webbuf.js";
 import { Buffer as NpmBuffer } from "buffer";
+
+function uint8ArrayToBinaryString(arr: Uint8Array): string {
+  const CHUNK_SIZE = 0x8000; // 32KB chunk size
+  const chunks: string[] = [];
+
+  for (let i = 0; i < arr.length; i += CHUNK_SIZE) {
+    const chunk = arr.subarray(i, i + CHUNK_SIZE);
+    chunks.push(String.fromCharCode.apply(null, chunk as unknown as number[]));
+  }
+
+  return chunks.join("");
+}
+
+function uint8ArrayToBase64(arr: Uint8Array): string {
+  const binaryString = uint8ArrayToBinaryString(arr);
+  return btoa(binaryString);
+}
+
+function newUint8ArrayToBinaryString(arr: Uint8Array): string {
+  return new TextDecoder("latin1").decode(arr); // latin1 ensures each byte is converted to a character directly
+}
+
+function newUint8ArrayToBase64(arr: Uint8Array): string {
+  const binaryString = uint8ArrayToBinaryString(arr);
+  return btoa(binaryString);
+}
 
 describe("WebBuf", () => {
   describe("benchmarks", () => {
@@ -17,6 +41,7 @@ describe("WebBuf", () => {
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
       }
+      const npmBuffer = NpmBuffer.from(testArray.buffer);
 
       // Old approach (chunking)
       const startOld = performance.now();
@@ -32,7 +57,7 @@ describe("WebBuf", () => {
 
       // Npm Buffer
       const startNpm = performance.now();
-      const base64Npm = NpmBuffer.from(testArray.buffer).toString("base64");
+      const base64Npm = npmBuffer.toString("base64");
       const endNpm = performance.now();
       console.log(`Npm method time: ${endNpm - startNpm} ms`);
 
