@@ -1,0 +1,30 @@
+[package]
+name = "webbuf"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)"]
+description = "A Rust library for fast base64 and hex encoding/decoding"
+license = "MIT"
+repository = "https://github.com/ryanxcharles/webbuf"
+homepage = "https://github.com/ryanxcharles/webbuf"
+readme = "README.md"
+keywords = ["base64", "hex", "encoding", "performance", "web"]
+categories = ["encoding", "utilities"]
+
+[dependencies]
+base64 = "0.22.1"
+hex = "0.4"
+
+[lib]
+crate-type = ["cdylib"]  # Required for generating WebAssembly bindings later if needed
+
+[features]
+default = ["wasm"]
+
+[dependencies.wasm-bindgen]
+version = "0.2"
+optional = true
+
+[build-dependencies]
+wasm-pack = "0.13.0"
+
