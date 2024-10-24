@@ -11,6 +11,7 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf dist",
+    "benchmark": "vitest --config vitest.benchmark.config.ts run",
     "test": "vitest --run",
     "test:browser": "vitest --run --browser",
     "typecheck": "tsc --noEmit",
