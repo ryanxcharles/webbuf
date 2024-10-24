@@ -1,3 +1,5 @@
+//import { encode_bas64, decode_base64, encode_hex, decode_hex } from "./rs.
+
 function verifyOffset(offset: number, ext: number, length: number) {
   if (offset % 1 !== 0 || offset < 0) {
     throw new Error("offset is not uint");
