@@ -9,7 +9,7 @@ repository = "https://github.com/ryanxcharles/webbuf"
 homepage = "https://github.com/ryanxcharles/webbuf"
 readme = "README.md"
 keywords = ["base64", "hex", "encoding", "performance", "web"]
-categories = ["encoding", "utilities"]
+categories = ["encoding"]
 
 [dependencies]
 base64 = "0.22.1"
