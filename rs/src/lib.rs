@@ -30,20 +30,50 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_base64() {
-        let data = b"Hello, world!";
-        let encoded = encode_base64(data);
-        assert_eq!(encoded, "SGVsbG8sIHdvcmxkIQ==");
-        let decoded = decode_base64(&encoded).unwrap();
-        assert_eq!(decoded, data);
+    fn test_encode_base64() {
+        let input = b"Hello, world!";
+        let expected_output = "SGVsbG8sIHdvcmxkIQ==";
+        let result = encode_base64(input);
+        assert_eq!(result, expected_output);
     }
 
     #[test]
-    fn test_hex() {
-        let data = b"Hello, world!";
-        let encoded = encode_hex(data);
-        assert_eq!(encoded, "48656c6c6f2c20776f726c6421");
-        let decoded = decode_hex(&encoded).unwrap();
-        assert_eq!(decoded, data);
+    fn test_decode_base64_valid() {
+        let input = "SGVsbG8sIHdvcmxkIQ==";
+        let expected_output = b"Hello, world!";
+        let result = decode_base64(input).unwrap();
+        assert_eq!(result, expected_output);
+    }
+
+    #[test]
+    fn test_decode_base64_invalid() {
+        let input = "invalid_base64";
+        let result = decode_base64(input);
+        assert!(result.is_err());
+        assert_eq!(result.err().unwrap(), "invalid base64");
+    }
+
+    #[test]
+    fn test_encode_hex() {
+        let input = b"Hello, world!";
+        let expected_output = "48656c6c6f2c20776f726c6421";
+        let result = encode_hex(input);
+        assert_eq!(result, expected_output);
+    }
+
+    #[test]
+    fn test_decode_hex_valid() {
+        let input = "48656c6c6f2c20776f726c6421";
+        let expected_output = b"Hello, world!";
+        let result = decode_hex(input).unwrap();
+        assert_eq!(result, expected_output);
+    }
+
+    #[test]
+    fn test_decode_hex_invalid() {
+        let input = "zzzz";
+        let result = decode_hex(input);
+        assert!(result.is_err());
+        assert_eq!(result.err().unwrap(), "invalid hex");
     }
 }
