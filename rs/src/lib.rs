@@ -5,14 +5,14 @@ use wasm_bindgen::prelude::*;
 /// Encode a byte slice into a base64 string using the default engine
 #[wasm_bindgen]
 pub fn encode_base64(data: &[u8]) -> String {
-    lib_base64::URL_SAFE.encode(data)
+    lib_base64::STANDARD.encode(data)
 }
 
 /// Decode a base64 string into a byte vector
 /// Returns an error string if decoding fails
 #[wasm_bindgen]
 pub fn decode_base64(encoded: &str) -> Result<Vec<u8>, String> {
-    lib_base64::URL_SAFE
+    lib_base64::STANDARD
         .decode(encoded)
         .map_err(|_| "invalid base64".to_string())
 }
