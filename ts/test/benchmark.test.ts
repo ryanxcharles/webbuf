@@ -30,6 +30,7 @@ function newUint8ArrayToBinaryString(arr: Uint8Array): string {
 }
 
 function newUint8ArrayToBase64(arr: Uint8Array): string {
+  //const binaryString = newUint8ArrayToBinaryString(arr);
   const binaryString = uint8ArrayToBinaryString(arr);
   return btoa(binaryString);
 }
@@ -40,12 +41,6 @@ function fromHex(hex: string) {
     result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
   }
   return result;
-  // const uint8array = decode_hex(hex);
-  // return new WebBuf(
-  //   uint8array.buffer,
-  //   uint8array.byteOffset,
-  //   uint8array.byteLength,
-  // );
 }
 
 function toHex(buf: WebBuf) {
@@ -102,7 +97,7 @@ describe("WebBuf", () => {
       // expect(base64Old).toBe(base64Native);
     });
 
-    it.only("should decode this large base64 string", () => {
+    it("should decode this large base64 string", () => {
       const testArray = new Uint8Array(1_000_000); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
@@ -151,6 +146,33 @@ describe("WebBuf", () => {
 
       // Make sure they are all equal
       expect(hexNpm).toBe(hexWasm);
+    });
+
+    it("should decode this large hex string", () => {
+      const testArray = new Uint8Array(1_000_000); // Large Uint8Array for benchmarking
+      // fill with iterating count
+      for (let i = 0; i < testArray.length; i++) {
+        testArray[i] = i % 256;
+      }
+      //const npmBuffer = NpmBuffer.from(testArray.buffer);
+      const hex = toHex(WebBuf.from(testArray));
+
+      // Npm Buffer
+      const startNpm = performance.now();
+      const decodedNpm = NpmBuffer.from(hex, "hex");
+      const endNpm = performance.now();
+      console.log(`Npm method time: ${endNpm - startNpm} ms`);
+
+      // wasm methods
+      const startWasm = performance.now();
+      const decodedWasm = decode_hex(hex);
+      const endWasm = performance.now();
+      console.log(`Wasm method time: ${endWasm - startWasm} ms`);
+
+      // Make sure they are all equal
+      expect(NpmBuffer.from(decodedWasm).toString("hex")).toBe(
+        decodedNpm.toString("hex"),
+      );
     });
   });
 });
