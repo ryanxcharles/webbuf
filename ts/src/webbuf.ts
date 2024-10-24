@@ -126,28 +126,26 @@ export class WebBuf extends Uint8Array {
   // we use wasm for big data, because small data is faster in js
 
   // experiments show wasm is always faster
-  static FROM_BASE64_ALGO_THRESHOLD = 0; // str len
+  static FROM_BASE64_ALGO_THRESHOLD = 10; // str len
 
   // experiments show wasm is always faster
-  static TO_BASE64_ALGO_THRESHOLD = 0; // buf len
+  static TO_BASE64_ALGO_THRESHOLD = 10; // buf len
 
   // experimentally derived for optimal performance
   static FROM_HEX_ALGO_THRESHOLD = 1_000; // str len
 
   // experiments show wasm is always faster
-  static TO_HEX_ALGO_THRESHOLD = 0; // buf len
+  static TO_HEX_ALGO_THRESHOLD = 10; // buf len
 
-  static fromHex(hex: string): WebBuf {
-    if (hex.length % 2 !== 0) {
-      throw new Error("Invalid hex string");
+  static fromHexPureJs(hex: string): WebBuf {
+    const result = new WebBuf(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+      result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
     }
-    if (hex.length < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
-      const result = new WebBuf(hex.length / 2);
-      for (let i = 0; i < hex.length; i += 2) {
-        result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
-      }
-      return result;
-    }
+    return result;
+  }
+
+  static fromHexWasm(hex: string): WebBuf {
     const uint8array = decode_hex(hex);
     return new WebBuf(
       uint8array.buffer,
@@ -156,14 +154,56 @@ export class WebBuf extends Uint8Array {
     );
   }
 
-  toHex(): string {
-    // disabled: experiments show this is not faster, even for small buffers
-    // if (this.length > WebBuf.TO_HEX_ALGO_THRESHOLD) {
-    //   return encode_hex(this);
-    // }
+  static fromHex(hex: string): WebBuf {
+    if (hex.length % 2 !== 0) {
+      throw new Error("Invalid hex string");
+    }
+    if (hex.length < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
+      return WebBuf.fromHexPureJs(hex);
+    }
+    return WebBuf.fromHexWasm(hex);
+  }
+
+  toHexPureJs(): string {
     return Array.from(this)
       .map((byte) => byte.toString(16).padStart(2, "0"))
       .join("");
+  }
+
+  toHexWasm(): string {
+    return encode_hex(this);
+  }
+
+  toHex(): string {
+    // disabled: experiments show this is not faster, even for small buffers
+    // if (this.length < WebBuf.TO_HEX_ALGO_THRESHOLD) {
+    //   return this.toHexPureJs();
+    // }
+    return this.toHexWasm();
+  }
+
+  static fromBase64PureJs(b64: string, stripWhitespace = false): WebBuf {
+    const uint8array = new Uint8Array(
+      atob(stripWhitespace ? b64.replace(/\s+/g, "") : b64)
+        .split("")
+        .map((c) => c.charCodeAt(0)),
+    );
+    return new WebBuf(
+      uint8array.buffer,
+      uint8array.byteOffset,
+      uint8array.byteLength,
+    );
+  }
+
+  static fromBase64Wasm(b64: string, stripWhitespace = false): WebBuf {
+    const uint8array = stripWhitespace
+      ? decode_base64_strip_whitespace(b64)
+      : decode_base64(b64);
+    return new WebBuf(
+      uint8array.buffer,
+      uint8array.byteOffset,
+      uint8array.byteLength,
+    );
   }
 
   /**
@@ -177,29 +217,25 @@ export class WebBuf extends Uint8Array {
   static fromBase64(b64: string, stripWhitespace = false): WebBuf {
     // disabled: experiments show this is not faster, even for small buffers
     // if (b64.length < WebBuf.FROM_BASE64_ALGO_THRESHOLD) {
-    //   if (stripWhitespace) {
-    //     b64 = b64.replace(/\s+/g, "");
-    //   }
-    //   return WebBuf.fromUint8Array(
-    //     Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)),
-    //   );
+    //   return WebBuf.fromBase64PureJs(b64, stripWhitespace);
     // }
-    const uint8array = stripWhitespace
-      ? decode_base64_strip_whitespace(b64)
-      : decode_base64(b64);
-    return new WebBuf(
-      uint8array.buffer,
-      uint8array.byteOffset,
-      uint8array.byteLength,
-    );
+    return WebBuf.fromBase64Wasm(b64, stripWhitespace);
+  }
+
+  toBase64PureJs(): string {
+    return btoa(String.fromCharCode(...new Uint8Array(this)));
+  }
+
+  toBase64Wasm(): string {
+    return encode_base64(this);
   }
 
   toBase64() {
     // disabled: experiments show this is not faster, even for small buffers
-    // if (this.length > WebBuf.TO_BASE64_ALGO_THRESHOLD) {
-    //   return encode_base64(this);
+    // if (this.length < WebBuf.TO_BASE64_ALGO_THRESHOLD) {
+    //   return this.toBase64PureJs();
     // }
-    return btoa(String.fromCharCode(...new Uint8Array(this)));
+    return this.toBase64Wasm();
   }
 
   /**
