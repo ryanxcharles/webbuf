@@ -12,6 +12,11 @@ export function encode_base64(data: Uint8Array): string;
  * @param {string} encoded
  * @returns {Uint8Array}
  */
+export function decode_base64_strip_whitespace(encoded: string): Uint8Array;
+/**
+ * @param {string} encoded
+ * @returns {Uint8Array}
+ */
 export function decode_base64(encoded: string): Uint8Array;
 /**
  * Encode a byte slice into a hex string

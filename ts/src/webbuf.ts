@@ -1,11 +1,10 @@
 import {
   encode_base64,
   decode_base64,
+  decode_base64_strip_whitespace,
   encode_hex,
   decode_hex,
 } from "./rs-webbuf-inline-base64/webbuf.js";
-
-export { encode_base64, decode_base64, encode_hex, decode_hex };
 
 function verifyOffset(offset: number, ext: number, length: number) {
   if (offset % 1 !== 0 || offset < 0) {
@@ -147,7 +146,7 @@ export class WebBuf extends Uint8Array {
    * @throws {Error} if the input string is not valid base64
    */
   static fromBase64(b64: string) {
-    let uint8array = decode_base64(b64);
+    let uint8array = decode_base64_strip_whitespace(b64);
     return new WebBuf(
       uint8array.buffer,
       uint8array.byteOffset,
