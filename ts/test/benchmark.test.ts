@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  WebBuf,
   encode_base64,
   decode_base64,
   encode_hex,
@@ -25,21 +24,6 @@ function uint8ArrayToBase64(arr: Uint8Array): string {
   return btoa(binaryString);
 }
 
-function fromHex(hex: string) {
-  const result = new WebBuf(hex.length / 2);
-  for (let i = 0; i < hex.length; i += 2) {
-    result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
-  }
-  return result;
-}
-
-function toHex(buf: WebBuf) {
-  // return encode_hex(buf);
-  return Array.from(new Uint8Array(buf.buffer))
-    .map((v) => v.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 describe("WebBuf", () => {
   describe("benchmarks", () => {
     it("should encode this large buffer to base64", () => {
@@ -49,12 +33,6 @@ describe("WebBuf", () => {
         testArray[i] = i % 256;
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
-
-      // // Old approach (chunking)
-      // const startOld = performance.now();
-      // const base64Old = uint8ArrayToBase64(testArray);
-      // const endOld = performance.now();
-      // console.log(`Old method time: ${endOld - startOld} ms`);
 
       // Npm Buffer
       const startNpm = performance.now();
@@ -68,16 +46,6 @@ describe("WebBuf", () => {
       const endWasm = performance.now();
       console.log(`Wasm method time: ${endWasm - startWasm} ms`);
 
-      // Native Buffer
-      // const startNative = performance.now();
-      // const base64Native = Buffer.from(testArray.buffer).toString("base64");
-      // const endNative = performance.now();
-      // console.log(`Native method time: ${endNative - startNative} ms`);
-
-      // Make sure they are all equal
-      // expect(base64Old).toBe(base64Npm);
-      // expect(base64Old).toBe(base64Wasm);
-      // expect(base64Old).toBe(base64Native);
       expect(base64Npm).toBe(base64Wasm);
     });
 
@@ -139,7 +107,7 @@ describe("WebBuf", () => {
         testArray[i] = i % 256;
       }
       //const npmBuffer = NpmBuffer.from(testArray.buffer);
-      const hex = toHex(WebBuf.from(testArray));
+      const hex = NpmBuffer.from(testArray).toString("hex");
 
       // Npm Buffer
       const startNpm = performance.now();
