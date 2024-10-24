@@ -19,6 +19,9 @@
     "fix": "pnpm run typecheck && pnpm run lint && pnpm run format",
     "build": "tsc -p tsconfig.build.json",
     "sync:from-rust": "cp -r ../rs/build/bundler/* src/rs-webbuf-bundler/",
+    "build:bundler-to-inline-base64": "cp -r src/rs-webbuf-bundler/* src/rs-webbuf-inline-base64/",
+    "build:inline-wasm": "tsx build-inline-wasm.ts",
+    "build:wasm": "pnpm run build:bundler-to-inline-base64 && pnpm run build:inline-wasm",
     "prepublishOnly": "pnpm run clean && pnpm run build"
   },
   "engines": {
