@@ -1,13 +1,17 @@
 # WebBuf
 
-`WebBuf` is a powerful, flexible class that extends JavaScript's `Uint8Array` to
-provide additional functionality for handling binary data. It includes methods
-for manipulating binary data, converting to and from different formats (e.g.,
-base64, hex, strings), and reading/writing values in both little-endian and
-big-endian formats. This library is ideal for applications that need efficient
-and low-level control over binary data, like encoding/decoding or working with
-protocols. It also supports "fixed-size" buffers with the `FixedBuf` class,
-which enforces a specific buffer size at compile-time.
+`WebBuf` is a powerful, flexible class that extends JavaScript's `Uint8Array`
+to provide additional functionality for handling binary data. It includes
+methods for manipulating binary data, converting to and from different formats
+(e.g., base64, hex, strings), and reading/writing values in both little-endian
+and big-endian formats. This library is ideal for applications that need
+efficient and low-level control over binary data, like encoding/decoding or
+working with protocols. It also supports "fixed-size" buffers with the
+`FixedBuf` class, which enforces a specific buffer size at compile-time.
+
+Finally, the base64 and hex conversion methods are written in rust and built to
+WebAssembly for performance. They are about five times faster than pure
+JavaScript implementations for large data (~ 10 MB).
 
 ## Features
 
