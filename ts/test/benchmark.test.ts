@@ -5,7 +5,7 @@ import {
   encode_hex,
   decode_hex,
 } from "../src/webbuf.js";
-import { Buffer as NpmBuffer } from "buffer";
+import { Buffer as NpmBuffer } from "buffer/index.js";
 
 function uint8ArrayToBinaryString(arr: Uint8Array): string {
   const CHUNK_SIZE = 0x8000; // 32KB chunk size
@@ -24,7 +24,7 @@ function uint8ArrayToBase64(arr: Uint8Array): string {
   return btoa(binaryString);
 }
 
-describe.skip("WebBuf Benchmarks", () => {
+describe("WebBuf Benchmarks", () => {
   describe("benchmarks", () => {
     it("should encode this large buffer to base64", () => {
       const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
