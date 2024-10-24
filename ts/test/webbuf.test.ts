@@ -103,7 +103,7 @@ describe("WebBuf", () => {
 
     it("should ignore whitespace", () => {
       const base64 = "\n   YW9ldQ==  ";
-      const decoded = WebBuf.fromBase64(base64);
+      const decoded = WebBuf.fromBase64(base64, true);
       expect(decoded.toString()).toBe("aoeu");
     });
 

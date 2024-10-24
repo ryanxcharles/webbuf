@@ -145,8 +145,8 @@ export class WebBuf extends Uint8Array {
    * @returns Uint8Array
    * @throws {Error} if the input string is not valid base64
    */
-  static fromBase64(b64: string) {
-    let uint8array = decode_base64_strip_whitespace(b64);
+  static fromBase64(b64: string, stripWhitespace = false) {
+    let uint8array = stripWhitespace ? decode_base64_strip_whitespace(b64) : decode_base64(b64);
     return new WebBuf(
       uint8array.buffer,
       uint8array.byteOffset,
