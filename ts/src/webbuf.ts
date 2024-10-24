@@ -32,11 +32,6 @@ function verifySize(
 }
 
 export class WebBuf extends Uint8Array {
-  static FROM_BASE64_ALGO_THRESHOLD = 1000;
-  static TO_BASE64_ALGO_THRESHOLD = 1000;
-  static FROM_HEX_ALGO_THRESHOLD = 1000;
-  static TO_HEX_ALGO_THRESHOLD = 1000;
-
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
     const result = new WebBuf(size);
@@ -128,11 +123,18 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(encoder.encode(str));
   }
 
+  // we use wasm for big data, because small data is faster in js
+  static FROM_BASE64_ALGO_THRESHOLD = 1_000;
+  static TO_BASE64_ALGO_THRESHOLD = 6_000;
+  static FROM_HEX_ALGO_THRESHOLD = 12_000;
+  static TO_HEX_ALGO_THRESHOLD = 6_000;
+
   static fromHex(hex: string): WebBuf {
     if (hex.length % 2 !== 0) {
       throw new Error("Invalid hex string");
     }
-    if (hex.length < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
+    // disabled: experiments show this is always slower
+    if (hex.length / 2 < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
       const result = new WebBuf(hex.length / 2);
       for (let i = 0; i < hex.length; i += 2) {
         result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
@@ -148,7 +150,7 @@ export class WebBuf extends Uint8Array {
   }
 
   toHex(): string {
-    if (this.length > WebBuf.TO_HEX_ALGO_THRESHOLD) {
+    if (this.length / 2 > WebBuf.TO_HEX_ALGO_THRESHOLD) {
       return encode_hex(this);
     }
     return Array.from(this)

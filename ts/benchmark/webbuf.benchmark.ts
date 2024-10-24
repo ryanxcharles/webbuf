@@ -5,7 +5,93 @@ import { WebBuf } from "../src/webbuf.js";
 const SIZE = 10_000_000;
 
 describe("WebBuf Benchmarks", () => {
-  describe("benchmarks", () => {
+  describe("threshold speed tests", () => {
+    it("to hex: should get the same speed for both values", () => {
+      const TO_HEX_ALGO_THRESHOLD = WebBuf.TO_HEX_ALGO_THRESHOLD;
+      const smallBufLength = TO_HEX_ALGO_THRESHOLD - 1;
+      const largeBufLength = TO_HEX_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const startSmall = performance.now();
+      const smallHex = smallBuf.toHex();
+      const endSmall = performance.now();
+      const startLarge = performance.now();
+      const largeHex = largeBuf.toHex();
+      const endLarge = performance.now();
+      console.log(`Small: ${endSmall - startSmall} ms`);
+      console.log(`Large: ${endLarge - startLarge} ms`);
+      const fromSmallHex = WebBuf.fromHex(smallHex);
+      const fromLargeHex = WebBuf.fromHex(largeHex);
+      expect(fromSmallHex.toHex()).toBe(smallHex);
+      expect(fromLargeHex.toHex()).toBe(largeHex);
+    });
+
+    it("to base64: should get the same speed for both values", () => {
+      const TO_BASE64_ALGO_THRESHOLD = WebBuf.TO_BASE64_ALGO_THRESHOLD;
+      const smallBufLength = TO_BASE64_ALGO_THRESHOLD - 1;
+      const largeBufLength = TO_BASE64_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const startSmall = performance.now();
+      const smallBase64 = smallBuf.toBase64();
+      const endSmall = performance.now();
+      const startLarge = performance.now();
+      const largeBase64 = largeBuf.toBase64();
+      const endLarge = performance.now();
+      console.log(`Small: ${endSmall - startSmall} ms`);
+      console.log(`Large: ${endLarge - startLarge} ms`);
+      const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
+      const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
+      expect(fromSmallBase64.toBase64()).toBe(smallBase64);
+      expect(fromLargeBase64.toBase64()).toBe(largeBase64);
+    });
+
+    it.only("from hex: should get the same speed for both values", () => {
+      const TO_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
+      const smallBufLength = TO_HEX_ALGO_THRESHOLD - 1;
+      const largeBufLength = TO_HEX_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const smallHex = smallBuf.toHex();
+      const largeHex = largeBuf.toHex();
+      const startSmall = performance.now();
+      const fromSmallHex = WebBuf.fromHex(smallHex);
+      const endSmall = performance.now();
+      const startLarge = performance.now();
+      const fromLargeHex = WebBuf.fromHex(largeHex);
+      const endLarge = performance.now();
+      console.log(`Small: ${endSmall - startSmall} ms`);
+      console.log(`Large: ${endLarge - startLarge} ms`);
+      expect(fromSmallHex.toHex()).toBe(smallHex);
+      expect(fromLargeHex.toHex()).toBe(largeHex);
+    });
+  });
+
+  describe("speed of to/from hex", () => {
     it("should encode this large buffer to base64", () => {
       const testArray = new Uint8Array(SIZE); // Large Uint8Array for benchmarking
       // fill with iterating count
