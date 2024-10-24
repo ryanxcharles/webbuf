@@ -2,10 +2,12 @@ import { describe, it, expect } from "vitest";
 import { Buffer as NpmBuffer } from "buffer/index.js";
 import { WebBuf } from "../src/webbuf.js";
 
+const SIZE = 10_000_000;
+
 describe("WebBuf Benchmarks", () => {
   describe("benchmarks", () => {
     it("should encode this large buffer to base64", () => {
-      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(SIZE); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
@@ -29,7 +31,7 @@ describe("WebBuf Benchmarks", () => {
     });
 
     it("should decode this large base64 string", () => {
-      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(SIZE); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
@@ -56,7 +58,7 @@ describe("WebBuf Benchmarks", () => {
     });
 
     it("should encode this large buffer to hex", () => {
-      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(SIZE); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
@@ -81,7 +83,7 @@ describe("WebBuf Benchmarks", () => {
     });
 
     it("should decode this large hex string", () => {
-      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(SIZE); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
