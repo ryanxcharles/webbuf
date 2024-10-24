@@ -1,6 +1,6 @@
 {
   "name": "webbuf",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "description": "Buffers for the web, node.js, deno, and bun.",
   "repository": {
     "type": "git",
