@@ -2,6 +2,74 @@ import { describe, it, expect } from "vitest";
 import { WebBuf } from "../src/webbuf.js";
 
 describe("WebBuf 2", () => {
+  describe("to/from hex/base64 algo threshold", () => {
+    it("should hande algo threshold for to hex", () => {
+      const TO_HEX_ALGO_THRESHOLD = WebBuf.TO_HEX_ALGO_THRESHOLD;
+      const smallBufLength = TO_HEX_ALGO_THRESHOLD - 1;
+      const largeBufLength = TO_HEX_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const smallHex = smallBuf.toHex();
+      const largeHex = largeBuf.toHex();
+      const fromSmallHex = WebBuf.fromHex(smallHex);
+      const fromLargeHex = WebBuf.fromHex(largeHex);
+      expect(fromSmallHex.toHex()).toBe(smallHex);
+      expect(fromLargeHex.toHex()).toBe(largeHex);
+    });
+
+    it("should handle algo threshold for from hex", () => {
+      const FROM_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
+      const smallBufLength = FROM_HEX_ALGO_THRESHOLD - 1;
+      const largeBufLength = FROM_HEX_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const smallHex = smallBuf.toHex();
+      const largeHex = largeBuf.toHex();
+      const fromSmallHex = WebBuf.fromHex(smallHex);
+      const fromLargeHex = WebBuf.fromHex(largeHex);
+      expect(fromSmallHex.toHex()).toBe(smallHex);
+      expect(fromLargeHex.toHex()).toBe(largeHex);
+    });
+
+    it("should hande algo threshold for to base64", () => {
+      const TO_BASE64_ALGO_THRESHOLD = WebBuf.TO_BASE64_ALGO_THRESHOLD;
+      const smallBufLength = TO_BASE64_ALGO_THRESHOLD - 1;
+      const largeBufLength = TO_BASE64_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const smallBase64 = smallBuf.toBase64();
+      const largeBase64 = largeBuf.toBase64();
+      const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
+      const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
+      expect(fromSmallBase64.toBase64()).toBe(smallBase64);
+      expect(fromLargeBase64.toBase64()).toBe(largeBase64);
+    });
+  });
+
   describe("compare", () => {
     it("should pass these known test vectors", () => {
       const b = WebBuf.fromString("a");
@@ -26,6 +94,7 @@ describe("WebBuf 2", () => {
       expect(WebBuf.compare(WebBuf.alloc(1), WebBuf.alloc(0))).toBe(1);
     });
   });
+
   describe("from", () => {
     it("should convert from hex", () => {
       const webBuf = WebBuf.from("deadbeef", "hex");
@@ -402,7 +471,11 @@ describe("WebBuf 2", () => {
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(32);
         expect(() =>
-          buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn + 1n, 0),
+          buf.writeBigUint256LE(
+            0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn +
+              1n,
+            0,
+          ),
         ).toThrow();
       });
 
@@ -419,7 +492,10 @@ describe("WebBuf 2", () => {
 
       it("should write and read the biggest u256le", () => {
         const buf = WebBuf.alloc(32);
-        buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn, 0);
+        buf.writeBigUint256LE(
+          0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+          0,
+        );
         expect(buf.readBigUint256LE(0)).toBe(
           0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
         );
@@ -436,7 +512,11 @@ describe("WebBuf 2", () => {
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(32);
         expect(() =>
-          buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn + 1n, 0),
+          buf.writeBigUint256BE(
+            0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn +
+              1n,
+            0,
+          ),
         ).toThrow();
       });
 
@@ -453,7 +533,10 @@ describe("WebBuf 2", () => {
 
       it("should write and read the biggest u256be", () => {
         const buf = WebBuf.alloc(32);
-        buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn, 0);
+        buf.writeBigUint256BE(
+          0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+          0,
+        );
         expect(buf.readBigUint256BE(0)).toBe(
           0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
         );

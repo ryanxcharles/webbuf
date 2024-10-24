@@ -32,6 +32,11 @@ function verifySize(
 }
 
 export class WebBuf extends Uint8Array {
+  static FROM_BASE64_ALGO_THRESHOLD = 1000;
+  static TO_BASE64_ALGO_THRESHOLD = 1000;
+  static FROM_HEX_ALGO_THRESHOLD = 1000;
+  static TO_HEX_ALGO_THRESHOLD = 1000;
+
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
     const result = new WebBuf(size);
@@ -127,7 +132,7 @@ export class WebBuf extends Uint8Array {
     if (hex.length % 2 !== 0) {
       throw new Error("Invalid hex string");
     }
-    if (hex.length < 1000) {
+    if (hex.length < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
       const result = new WebBuf(hex.length / 2);
       for (let i = 0; i < hex.length; i += 2) {
         result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
@@ -143,7 +148,7 @@ export class WebBuf extends Uint8Array {
   }
 
   toHex(): string {
-    if (this.length > 1000) {
+    if (this.length > WebBuf.TO_HEX_ALGO_THRESHOLD) {
       return encode_hex(this);
     }
     return Array.from(this)
@@ -160,7 +165,7 @@ export class WebBuf extends Uint8Array {
    * @throws {Error} if the input string is not valid base64
    */
   static fromBase64(b64: string, stripWhitespace = false): WebBuf {
-    if (b64.length < 1000) {
+    if (b64.length < WebBuf.FROM_BASE64_ALGO_THRESHOLD) {
       if (stripWhitespace) {
         b64 = b64.replace(/\s+/g, "");
       }
@@ -181,7 +186,7 @@ export class WebBuf extends Uint8Array {
   }
 
   toBase64() {
-    if (this.length > 1000) {
+    if (this.length > WebBuf.TO_BASE64_ALGO_THRESHOLD) {
       return encode_base64(this);
     }
     return btoa(String.fromCharCode(...new Uint8Array(this)));
