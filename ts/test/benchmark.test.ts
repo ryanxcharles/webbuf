@@ -24,7 +24,7 @@ function uint8ArrayToBase64(arr: Uint8Array): string {
   return btoa(binaryString);
 }
 
-describe("WebBuf", () => {
+describe.skip("WebBuf Benchmarks", () => {
   describe("benchmarks", () => {
     it("should encode this large buffer to base64", () => {
       const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking

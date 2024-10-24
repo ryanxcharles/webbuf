@@ -1,12 +1,13 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  test: {
-    browser: {
-      enabled: true,    // Enable browser testing
-      provider: 'playwright',  // You can specify 'playwright' or 'webdriver'
-      name: 'chromium',   // You can specify 'chrome' or 'firefox'
-      headless: true,   // Set to false if you want to see the browser window
-    },
-  },
+  // Enable for benchmarks
+  // test: {
+  //   browser: {
+  //     enabled: true,
+  //     provider: 'playwright',
+  //     name: 'chromium',
+  //     headless: true,
+  //   },
+  // },
 });
