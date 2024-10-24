@@ -5,8 +5,8 @@ import { WebBuf } from "../src/webbuf.js";
 const SIZE = 10_000_000;
 
 describe("WebBuf Benchmarks", () => {
-  describe("threshold speed tests", () => {
-    it.only("to hex: should get the same speed for both values", () => {
+  describe.skip("threshold speed tests", () => {
+    it.skip("to hex: should get the same speed for both values", () => {
       for (let i = 0; i < 10; i++) {
         const TO_HEX_ALGO_THRESHOLD = WebBuf.TO_HEX_ALGO_THRESHOLD;
         const smallBufLength = TO_HEX_ALGO_THRESHOLD - 1;
