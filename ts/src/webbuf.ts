@@ -1,4 +1,6 @@
-//import { encode_bas64, decode_base64, encode_hex, decode_hex } from "./rs.
+import { encode_base64, decode_base64, encode_hex, decode_hex } from "./rs-webbuf-inline-base64/webbuf.js";
+
+export { encode_base64, decode_base64, encode_hex, decode_hex };
 
 function verifyOffset(offset: number, ext: number, length: number) {
   if (offset % 1 !== 0 || offset < 0) {
@@ -215,6 +217,7 @@ export class WebBuf extends Uint8Array {
 
   toBase64() {
     return uint8ArrayToBase64(this);
+    //return encode_base64(this);
   }
 
   toString(encoding?: "utf8" | "hex" | "base64") {

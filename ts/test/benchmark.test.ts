@@ -4,6 +4,8 @@ import {
   WebBuf,
   uint8ArrayToBase64,
   newUint8ArrayToBase64,
+  encode_base64,
+  decode_base64
 } from "../src/webbuf.js";
 import { Buffer as NpmBuffer } from "buffer";
 
@@ -34,6 +36,12 @@ describe("WebBuf", () => {
       const endNpm = performance.now();
       console.log(`Npm method time: ${endNpm - startNpm} ms`);
 
+      // wasm methods
+      const startWasm = performance.now();
+      const base64Wasm = encode_base64(testArray);
+      const endWasm = performance.now();
+      console.log(`Wasm method time: ${endWasm - startWasm} ms`);
+
       // Native Buffer
       // const startNative = performance.now();
       // const base64Native = Buffer.from(testArray.buffer).toString("base64");
@@ -43,6 +51,7 @@ describe("WebBuf", () => {
       // Make sure they are all equal
       expect(base64Old).toBe(base64New);
       expect(base64Old).toBe(base64Npm);
+      expect(base64Old).toBe(base64Wasm);
       // expect(base64Old).toBe(base64Native);
     });
   });
