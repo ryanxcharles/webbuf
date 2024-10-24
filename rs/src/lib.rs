@@ -24,3 +24,26 @@ pub fn encode_hex(data: &[u8]) -> String {
 pub fn decode_hex(encoded: &str) -> Result<Vec<u8>, String> {
     lib_hex_decode(encoded).map_err(|_| "invalid hex".to_string())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_base64() {
+        let data = b"Hello, world!";
+        let encoded = encode_base64(data);
+        assert_eq!(encoded, "SGVsbG8sIHdvcmxkIQ==");
+        let decoded = decode_base64(&encoded).unwrap();
+        assert_eq!(decoded, data);
+    }
+
+    #[test]
+    fn test_hex() {
+        let data = b"Hello, world!";
+        let encoded = encode_hex(data);
+        assert_eq!(encoded, "48656c6c6f2c20776f726c6421");
+        let decoded = decode_hex(&encoded).unwrap();
+        assert_eq!(decoded, data);
+    }
+}
