@@ -189,6 +189,9 @@ export class WebBuf extends Uint8Array {
     if (typeof source === "string") {
       return WebBuf.fromString(source);
     }
+    if (source instanceof Uint8Array) {
+      return WebBuf.fromUint8Array(source);
+    }
     const sourceArray = Array.from(source);
     // biome-ignore lint:
     const uint8Array = super.from(sourceArray, mapFn, thisArg);
