@@ -34,63 +34,67 @@ describe("WebBuf Benchmarks", () => {
       expect(fromLargeHex.toHex()).toBe(largeHex);
     });
 
-    it("to base64: should get the same speed for both values", () => {
-      const TO_BASE64_ALGO_THRESHOLD = WebBuf.TO_BASE64_ALGO_THRESHOLD;
-      const smallBufLength = TO_BASE64_ALGO_THRESHOLD - 1;
-      const largeBufLength = TO_BASE64_ALGO_THRESHOLD + 1;
-      const smallBuf = WebBuf.alloc(smallBufLength);
-      const largeBuf = WebBuf.alloc(largeBufLength);
-      for (let i = 0; i < smallBufLength; i++) {
-        const val = i % 256;
-        smallBuf.writeUint8(val, i);
+    it.only("to base64: should get the same speed for both values", () => {
+      for (let i = 0; i < 10; i++) {
+        const TO_BASE64_ALGO_THRESHOLD = WebBuf.TO_BASE64_ALGO_THRESHOLD;
+        const smallBufLength = TO_BASE64_ALGO_THRESHOLD - 1;
+        const largeBufLength = TO_BASE64_ALGO_THRESHOLD + 1;
+        const smallBuf = WebBuf.alloc(smallBufLength);
+        const largeBuf = WebBuf.alloc(largeBufLength);
+        for (let i = 0; i < smallBufLength; i++) {
+          const val = i % 256;
+          smallBuf.writeUint8(val, i);
+        }
+        for (let i = 0; i < largeBufLength; i++) {
+          const val = i % 255;
+          largeBuf.writeUint8(val, i);
+        }
+        const startSmall = performance.now();
+        const smallBase64 = smallBuf.toBase64();
+        const endSmall = performance.now();
+        const startLarge = performance.now();
+        const largeBase64 = largeBuf.toBase64();
+        const endLarge = performance.now();
+        console.log(`Small: ${endSmall - startSmall} ms`);
+        console.log(`Large: ${endLarge - startLarge} ms`);
+        const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
+        const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
+        expect(fromSmallBase64.toBase64()).toBe(smallBase64);
+        expect(fromLargeBase64.toBase64()).toBe(largeBase64);
       }
-      for (let i = 0; i < largeBufLength; i++) {
-        const val = i % 255;
-        largeBuf.writeUint8(val, i);
-      }
-      const startSmall = performance.now();
-      const smallBase64 = smallBuf.toBase64();
-      const endSmall = performance.now();
-      const startLarge = performance.now();
-      const largeBase64 = largeBuf.toBase64();
-      const endLarge = performance.now();
-      console.log(`Small: ${endSmall - startSmall} ms`);
-      console.log(`Large: ${endLarge - startLarge} ms`);
-      const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
-      const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
-      expect(fromSmallBase64.toBase64()).toBe(smallBase64);
-      expect(fromLargeBase64.toBase64()).toBe(largeBase64);
     });
 
     it("from hex: should get the same speed for both values", () => {
-      const FROM_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
-      const smallBufLength = FROM_HEX_ALGO_THRESHOLD / 2 - 1;
-      const largeBufLength = FROM_HEX_ALGO_THRESHOLD / 2 + 1;
-      const smallBuf = WebBuf.alloc(smallBufLength);
-      const largeBuf = WebBuf.alloc(largeBufLength);
-      for (let i = 0; i < smallBufLength; i++) {
-        const val = i % 256;
-        smallBuf.writeUint8(val, i);
+      for (let i = 0; i < 10; i++) {
+        const FROM_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
+        const smallBufLength = FROM_HEX_ALGO_THRESHOLD / 2 - 1;
+        const largeBufLength = FROM_HEX_ALGO_THRESHOLD / 2 + 1;
+        const smallBuf = WebBuf.alloc(smallBufLength);
+        const largeBuf = WebBuf.alloc(largeBufLength);
+        for (let i = 0; i < smallBufLength; i++) {
+          const val = i % 256;
+          smallBuf.writeUint8(val, i);
+        }
+        for (let i = 0; i < largeBufLength; i++) {
+          const val = i % 255;
+          largeBuf.writeUint8(val, i);
+        }
+        const smallHex = smallBuf.toHex();
+        const largeHex = largeBuf.toHex();
+        const startSmall = performance.now();
+        const fromSmallHex = WebBuf.fromHex(smallHex);
+        const endSmall = performance.now();
+        const startLarge = performance.now();
+        const fromLargeHex = WebBuf.fromHex(largeHex);
+        const endLarge = performance.now();
+        console.log(`Small: ${endSmall - startSmall} ms`);
+        console.log(`Large: ${endLarge - startLarge} ms`);
+        expect(fromSmallHex.toHex()).toBe(smallHex);
+        expect(fromLargeHex.toHex()).toBe(largeHex);
       }
-      for (let i = 0; i < largeBufLength; i++) {
-        const val = i % 255;
-        largeBuf.writeUint8(val, i);
-      }
-      const smallHex = smallBuf.toHex();
-      const largeHex = largeBuf.toHex();
-      const startSmall = performance.now();
-      const fromSmallHex = WebBuf.fromHex(smallHex);
-      const endSmall = performance.now();
-      const startLarge = performance.now();
-      const fromLargeHex = WebBuf.fromHex(largeHex);
-      const endLarge = performance.now();
-      console.log(`Small: ${endSmall - startSmall} ms`);
-      console.log(`Large: ${endLarge - startLarge} ms`);
-      expect(fromSmallHex.toHex()).toBe(smallHex);
-      expect(fromLargeHex.toHex()).toBe(largeHex);
     });
 
-    it.only("from base64: should get the same speed for both values", () => {
+    it("from base64: should get the same speed for both values", () => {
       for (let i = 0; i < 10; i++) {
         const FROM_BASE64_ALGO_THRESHOLD = WebBuf.FROM_BASE64_ALGO_THRESHOLD;
         // make two buffers:
@@ -120,8 +124,6 @@ describe("WebBuf Benchmarks", () => {
           }
           largeBase64 = largeBuf.toBase64();
         } while (largeBase64.length - 3 < FROM_BASE64_ALGO_THRESHOLD + 1);
-        console.log(smallBase64.length);
-        console.log(largeBase64.length);
         const startSmall = performance.now();
         const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
         const endSmall = performance.now();
