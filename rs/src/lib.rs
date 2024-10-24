@@ -2,6 +2,11 @@ use base64::{engine::general_purpose as lib_base64, Engine};
 use hex::{decode as lib_hex_decode, encode as lib_hex_encode};
 use wasm_bindgen::prelude::*;
 
+/// Remove whitespace (spaces, tabs, newlines) from the input string
+fn strip_whitespace(input: &str) -> String {
+    input.chars().filter(|c| !c.is_whitespace()).collect()
+}
+
 /// Encode a byte slice into a base64 string using the default engine
 #[wasm_bindgen]
 pub fn encode_base64(data: &[u8]) -> String {
@@ -10,6 +15,14 @@ pub fn encode_base64(data: &[u8]) -> String {
 
 /// Decode a base64 string into a byte vector
 /// Returns an error string if decoding fails
+#[wasm_bindgen]
+pub fn decode_base64_strip_whitespace(encoded: &str) -> Result<Vec<u8>, String> {
+   let stripped_encoded = strip_whitespace(encoded);
+    lib_base64::STANDARD
+        .decode(&stripped_encoded)
+        .map_err(|_| "invalid base64".to_string())
+}
+
 #[wasm_bindgen]
 pub fn decode_base64(encoded: &str) -> Result<Vec<u8>, String> {
     lib_base64::STANDARD
