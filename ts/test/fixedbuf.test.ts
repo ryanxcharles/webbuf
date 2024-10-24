@@ -11,8 +11,8 @@ describe("FixedBuf", () => {
     });
   });
 
-  describe('to/from base64', () => {
-    it('should convert to and from base64', () => {
+  describe("to/from base64", () => {
+    it("should convert to and from base64", () => {
       const base64 = "3q2+7w==";
       const buf = FixedBuf.fromBase64(4, base64);
       expect(buf.toBase64()).toBe(base64);

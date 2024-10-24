@@ -56,4 +56,3 @@ export class FixedBuf<N extends number> {
     return FixedBuf.fromBuf(this._size, WebBuf.from(this._buf));
   }
 }
-
