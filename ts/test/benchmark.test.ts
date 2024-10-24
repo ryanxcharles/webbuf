@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf, encode_base64, decode_base64, encode_hex, decode_hex } from "../src/webbuf.js";
+import {
+  WebBuf,
+  encode_base64,
+  decode_base64,
+  encode_hex,
+  decode_hex,
+} from "../src/webbuf.js";
 import { Buffer as NpmBuffer } from "buffer";
 
 function uint8ArrayToBinaryString(arr: Uint8Array): string {
@@ -44,9 +50,9 @@ function fromHex(hex: string) {
 
 function toHex(buf: WebBuf) {
   // return encode_hex(buf);
-  return Array.from(new Uint8Array(buf.buffer)).map((v) =>
-    v.toString(16).padStart(2, "0")
-  ).join("");
+  return Array.from(new Uint8Array(buf.buffer))
+    .map((v) => v.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 describe("WebBuf", () => {
@@ -94,6 +100,33 @@ describe("WebBuf", () => {
       expect(base64Old).toBe(base64Npm);
       expect(base64Old).toBe(base64Wasm);
       // expect(base64Old).toBe(base64Native);
+    });
+
+    it.only("should decode this large base64 string", () => {
+      const testArray = new Uint8Array(1_000_000); // Large Uint8Array for benchmarking
+      // fill with iterating count
+      for (let i = 0; i < testArray.length; i++) {
+        testArray[i] = i % 256;
+      }
+      const npmBuffer = NpmBuffer.from(testArray.buffer);
+      const base64 = newUint8ArrayToBase64(testArray);
+
+      // Npm Buffer
+      const startNpm = performance.now();
+      const decodedNpm = NpmBuffer.from(base64, "base64");
+      const endNpm = performance.now();
+      console.log(`Npm method time: ${endNpm - startNpm} ms`);
+
+      // wasm methods
+      const startWasm = performance.now();
+      const decodedWasm = decode_base64(base64);
+      const endWasm = performance.now();
+      console.log(`Wasm method time: ${endWasm - startWasm} ms`);
+
+      // Make sure they are all equal
+      expect(NpmBuffer.from(decodedWasm).toString("hex")).toBe(
+        decodedNpm.toString("hex"),
+      );
     });
 
     it("should encode this large buffer to hex", () => {
