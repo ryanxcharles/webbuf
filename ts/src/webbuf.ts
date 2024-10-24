@@ -27,32 +27,6 @@ function verifySize(
   }
 }
 
-export function uint8ArrayToBinaryString(arr: Uint8Array): string {
-  const CHUNK_SIZE = 0x8000; // 32KB chunk size
-  const chunks: string[] = [];
-
-  for (let i = 0; i < arr.length; i += CHUNK_SIZE) {
-    const chunk = arr.subarray(i, i + CHUNK_SIZE);
-    chunks.push(String.fromCharCode.apply(null, chunk as unknown as number[]));
-  }
-
-  return chunks.join("");
-}
-
-export function uint8ArrayToBase64(arr: Uint8Array): string {
-  const binaryString = uint8ArrayToBinaryString(arr);
-  return btoa(binaryString);
-}
-
-export function newUint8ArrayToBinaryString(arr: Uint8Array): string {
-  return new TextDecoder("latin1").decode(arr); // latin1 ensures each byte is converted to a character directly
-}
-
-export function newUint8ArrayToBase64(arr: Uint8Array): string {
-  const binaryString = uint8ArrayToBinaryString(arr);
-  return btoa(binaryString);
-}
-
 export class WebBuf extends Uint8Array {
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
@@ -168,6 +142,7 @@ export class WebBuf extends Uint8Array {
       result[i] = binary.charCodeAt(i);
     }
     return result;
+    //return decode_base64(b64);
   }
 
   /**
@@ -216,8 +191,8 @@ export class WebBuf extends Uint8Array {
   }
 
   toBase64() {
-    return uint8ArrayToBase64(this);
-    //return encode_base64(this);
+    //return uint8ArrayToBase64(this);
+    return encode_base64(this);
   }
 
   toString(encoding?: "utf8" | "hex" | "base64") {
