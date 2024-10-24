@@ -2,23 +2,6 @@ import { describe, it, expect } from "vitest";
 import { Buffer as NpmBuffer } from "buffer/index.js";
 import { WebBuf } from "../src/webbuf.js";
 
-function uint8ArrayToBinaryString(arr: Uint8Array): string {
-  const CHUNK_SIZE = 0x8000; // 32KB chunk size
-  const chunks: string[] = [];
-
-  for (let i = 0; i < arr.length; i += CHUNK_SIZE) {
-    const chunk = arr.subarray(i, i + CHUNK_SIZE);
-    chunks.push(String.fromCharCode.apply(null, chunk as unknown as number[]));
-  }
-
-  return chunks.join("");
-}
-
-function uint8ArrayToBase64(arr: Uint8Array): string {
-  const binaryString = uint8ArrayToBinaryString(arr);
-  return btoa(binaryString);
-}
-
 describe("WebBuf Benchmarks", () => {
   describe("benchmarks", () => {
     it("should encode this large buffer to base64", () => {
@@ -52,7 +35,7 @@ describe("WebBuf Benchmarks", () => {
         testArray[i] = i % 256;
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
-      const base64 = uint8ArrayToBase64(testArray);
+      const base64 = npmBuffer.toString("base64");
 
       // Npm Buffer
       const startNpm = performance.now();
