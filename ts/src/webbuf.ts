@@ -123,18 +123,32 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(encoder.encode(str));
   }
 
-  static fromHex(hex: string) {
-    // const result = new WebBuf(hex.length / 2);
-    // for (let i = 0; i < hex.length; i += 2) {
-    //   result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
-    // }
-    // return result;
+  static fromHex(hex: string): WebBuf {
+    if (hex.length % 2 !== 0) {
+      throw new Error("Invalid hex string");
+    }
+    if (hex.length < 1000) {
+      const result = new WebBuf(hex.length / 2);
+      for (let i = 0; i < hex.length; i += 2) {
+        result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
+      }
+      return result;
+    }
     const uint8array = decode_hex(hex);
     return new WebBuf(
       uint8array.buffer,
       uint8array.byteOffset,
       uint8array.byteLength,
     );
+  }
+
+  toHex(): string {
+    if (this.length > 1000) {
+      return encode_hex(this);
+    }
+    return Array.from(this)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
   }
 
   /**
@@ -145,7 +159,17 @@ export class WebBuf extends Uint8Array {
    * @returns Uint8Array
    * @throws {Error} if the input string is not valid base64
    */
-  static fromBase64(b64: string, stripWhitespace = false) {
+  static fromBase64(b64: string, stripWhitespace = false): WebBuf {
+    if (b64.length < 1000) {
+      if (stripWhitespace) {
+        b64 = b64.replace(/\s+/g, "");
+      }
+      return new WebBuf(
+        atob(b64)
+          .split("")
+          .map((c) => c.charCodeAt(0)),
+      );
+    }
     const uint8array = stripWhitespace
       ? decode_base64_strip_whitespace(b64)
       : decode_base64(b64);
@@ -154,6 +178,13 @@ export class WebBuf extends Uint8Array {
       uint8array.byteOffset,
       uint8array.byteLength,
     );
+  }
+
+  toBase64() {
+    if (this.length > 1000) {
+      return encode_base64(this);
+    }
+    return btoa(String.fromCharCode(...new Uint8Array(this)));
   }
 
   /**
@@ -201,11 +232,6 @@ export class WebBuf extends Uint8Array {
     );
   }
 
-  toBase64() {
-    //return uint8ArrayToBase64(this);
-    return encode_base64(this);
-  }
-
   toString(encoding?: "utf8" | "hex" | "base64") {
     if (encoding === "hex") {
       return this.toHex();
@@ -219,10 +245,6 @@ export class WebBuf extends Uint8Array {
     }
     const decoder = new TextDecoder();
     return decoder.decode(this);
-  }
-
-  toHex() {
-    return encode_hex(this);
   }
 
   toArray() {
