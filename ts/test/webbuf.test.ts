@@ -1,7 +1,33 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "../src/webbuf.js";
+import {
+  WebBuf,
+  uint8ArrayToBase64,
+  newUint8ArrayToBase64,
+} from "../src/webbuf.js";
 
 describe("WebBuf", () => {
+  describe("benchmarks", () => {
+    it.only("should encode this large buffer to base64", () => {
+      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      // fill with iterating count
+      for (let i = 0; i < testArray.length; i++) {
+        testArray[i] = i % 256;
+      }
+
+      // Old approach (chunking)
+      const startOld = performance.now();
+      const base64Old = uint8ArrayToBase64(testArray);
+      const endOld = performance.now();
+      console.log(`Old method time: ${endOld - startOld} ms`);
+
+      // New optimized approach
+      const startNew = performance.now();
+      const base64New = newUint8ArrayToBase64(testArray);
+      const endNew = performance.now();
+      console.log(`New method time: ${endNew - startNew} ms`);
+    });
+  });
+
   describe("compare", () => {
     it("should pass these known test vectors", () => {
       const b = WebBuf.fromString("a");
