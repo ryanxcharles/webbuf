@@ -20,6 +20,7 @@ crate-type = ["cdylib"]  # Required for generating WebAssembly bindings later if
 
 [features]
 default = ["wasm"]
+wasm = ["wasm-bindgen"]
 
 [dependencies.wasm-bindgen]
 version = "0.2"
