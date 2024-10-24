@@ -124,17 +124,16 @@ export class WebBuf extends Uint8Array {
   }
 
   // we use wasm for big data, because small data is faster in js
-  static FROM_BASE64_ALGO_THRESHOLD = 1_000;
-  static TO_BASE64_ALGO_THRESHOLD = 6_000;
-  static FROM_HEX_ALGO_THRESHOLD = 12_000;
-  static TO_HEX_ALGO_THRESHOLD = 6_000;
+  static FROM_BASE64_ALGO_THRESHOLD = 10_000; // str len
+  static TO_BASE64_ALGO_THRESHOLD = 6_000; // buf len
+  static FROM_HEX_ALGO_THRESHOLD = 24_000; // str len
+  static TO_HEX_ALGO_THRESHOLD = 6_000; // buf len
 
   static fromHex(hex: string): WebBuf {
     if (hex.length % 2 !== 0) {
       throw new Error("Invalid hex string");
     }
-    // disabled: experiments show this is always slower
-    if (hex.length / 2 < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
+    if (hex.length < WebBuf.FROM_HEX_ALGO_THRESHOLD) {
       const result = new WebBuf(hex.length / 2);
       for (let i = 0; i < hex.length; i += 2) {
         result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
@@ -171,10 +170,8 @@ export class WebBuf extends Uint8Array {
       if (stripWhitespace) {
         b64 = b64.replace(/\s+/g, "");
       }
-      return new WebBuf(
-        atob(b64)
-          .split("")
-          .map((c) => c.charCodeAt(0)),
+      return WebBuf.fromUint8Array(
+        Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)),
       );
     }
     const uint8array = stripWhitespace

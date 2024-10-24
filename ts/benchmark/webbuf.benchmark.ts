@@ -62,10 +62,10 @@ describe("WebBuf Benchmarks", () => {
       expect(fromLargeBase64.toBase64()).toBe(largeBase64);
     });
 
-    it.only("from hex: should get the same speed for both values", () => {
-      const TO_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
-      const smallBufLength = TO_HEX_ALGO_THRESHOLD - 1;
-      const largeBufLength = TO_HEX_ALGO_THRESHOLD + 1;
+    it("from hex: should get the same speed for both values", () => {
+      const FROM_HEX_ALGO_THRESHOLD = WebBuf.FROM_HEX_ALGO_THRESHOLD;
+      const smallBufLength = FROM_HEX_ALGO_THRESHOLD / 2 - 1;
+      const largeBufLength = FROM_HEX_ALGO_THRESHOLD / 2 + 1;
       const smallBuf = WebBuf.alloc(smallBufLength);
       const largeBuf = WebBuf.alloc(largeBufLength);
       for (let i = 0; i < smallBufLength; i++) {
@@ -88,6 +88,51 @@ describe("WebBuf Benchmarks", () => {
       console.log(`Large: ${endLarge - startLarge} ms`);
       expect(fromSmallHex.toHex()).toBe(smallHex);
       expect(fromLargeHex.toHex()).toBe(largeHex);
+    });
+
+    it.only("from base64: should get the same speed for both values", () => {
+      for (let i = 0; i < 10; i++) {
+        const FROM_BASE64_ALGO_THRESHOLD = WebBuf.FROM_BASE64_ALGO_THRESHOLD;
+        // make two buffers:
+        // the small one must have a base64 length of FROM_BASE64_ALGO_THRESHOLD - 1
+        // the large one must have a base64 length of FROM_BASE64_ALGO_THRESHOLD + 1
+        let smallBuf: WebBuf;
+        let largeBuf: WebBuf;
+        let smallBase64: string;
+        let largeBase64: string;
+        let smallLength = Math.round(FROM_BASE64_ALGO_THRESHOLD / 2);
+        let largeLength = Math.round(FROM_BASE64_ALGO_THRESHOLD / 2);
+        do {
+          smallLength++;
+          smallBuf = WebBuf.alloc(smallLength);
+          for (let i = 0; i < smallLength; i++) {
+            const val = i % 256;
+            smallBuf.writeUint8(val, i);
+          }
+          smallBase64 = smallBuf.toBase64();
+        } while (smallBase64.length + 3 < FROM_BASE64_ALGO_THRESHOLD - 1);
+        do {
+          largeLength++;
+          largeBuf = WebBuf.alloc(largeLength);
+          for (let i = 0; i < largeLength; i++) {
+            const val = i % 256;
+            largeBuf.writeUint8(val, i);
+          }
+          largeBase64 = largeBuf.toBase64();
+        } while (largeBase64.length - 3 < FROM_BASE64_ALGO_THRESHOLD + 1);
+        console.log(smallBase64.length);
+        console.log(largeBase64.length);
+        const startSmall = performance.now();
+        const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
+        const endSmall = performance.now();
+        const startLarge = performance.now();
+        const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
+        const endLarge = performance.now();
+        console.log(`Small: ${endSmall - startSmall} ms`);
+        console.log(`Large: ${endLarge - startLarge} ms`);
+        expect(fromSmallBase64.toBase64()).toBe(smallBase64);
+        expect(fromLargeBase64.toBase64()).toBe(largeBase64);
+      }
     });
   });
 
