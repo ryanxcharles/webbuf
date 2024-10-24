@@ -23,7 +23,7 @@ function verifySize(
   }
 }
 
-function uint8ArrayToBinaryString(arr: Uint8Array): string {
+export function uint8ArrayToBinaryString(arr: Uint8Array): string {
   const CHUNK_SIZE = 0x8000; // 32KB chunk size
   const chunks: string[] = [];
 
@@ -35,7 +35,16 @@ function uint8ArrayToBinaryString(arr: Uint8Array): string {
   return chunks.join("");
 }
 
-function uint8ArrayToBase64(arr: Uint8Array): string {
+export function uint8ArrayToBase64(arr: Uint8Array): string {
+  const binaryString = uint8ArrayToBinaryString(arr);
+  return btoa(binaryString);
+}
+
+export function newUint8ArrayToBinaryString(arr: Uint8Array): string {
+  return new TextDecoder("latin1").decode(arr); // latin1 ensures each byte is converted to a character directly
+}
+
+export function newUint8ArrayToBase64(arr: Uint8Array): string {
   const binaryString = uint8ArrayToBinaryString(arr);
   return btoa(binaryString);
 }
