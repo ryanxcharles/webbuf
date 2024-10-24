@@ -125,11 +125,17 @@ export class WebBuf extends Uint8Array {
   }
 
   static fromHex(hex: string) {
-    const result = new WebBuf(hex.length / 2);
-    for (let i = 0; i < hex.length; i += 2) {
-      result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
-    }
-    return result;
+    // const result = new WebBuf(hex.length / 2);
+    // for (let i = 0; i < hex.length; i += 2) {
+    //   result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
+    // }
+    // return result;
+    const uint8array = decode_hex(hex);
+    return new WebBuf(
+      uint8array.buffer,
+      uint8array.byteOffset,
+      uint8array.byteLength,
+    );
   }
 
   /**
@@ -141,12 +147,6 @@ export class WebBuf extends Uint8Array {
    * @throws {Error} if the input string is not valid base64
    */
   static fromBase64(b64: string) {
-    // const binary = atob(b64);
-    // const result = new WebBuf(binary.length);
-    // for (let i = 0; i < binary.length; i++) {
-    //   result[i] = binary.charCodeAt(i);
-    // }
-    // return result;
     let uint8array = decode_base64(b64);
     return new WebBuf(
       uint8array.buffer,
@@ -221,9 +221,7 @@ export class WebBuf extends Uint8Array {
   }
 
   toHex() {
-    return Array.from(this)
-      .map((byte) => byte.toString(16).padStart(2, "0"))
-      .join("");
+    return encode_hex(this);
   }
 
   toArray() {

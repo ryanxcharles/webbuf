@@ -1,10 +1,5 @@
-
 import { describe, it, expect } from "vitest";
-import {
-  WebBuf,
-  encode_base64,
-  decode_base64
-} from "../src/webbuf.js";
+import { WebBuf, encode_base64, decode_base64, encode_hex, decode_hex } from "../src/webbuf.js";
 import { Buffer as NpmBuffer } from "buffer";
 
 function uint8ArrayToBinaryString(arr: Uint8Array): string {
@@ -31,6 +26,27 @@ function newUint8ArrayToBinaryString(arr: Uint8Array): string {
 function newUint8ArrayToBase64(arr: Uint8Array): string {
   const binaryString = uint8ArrayToBinaryString(arr);
   return btoa(binaryString);
+}
+
+function fromHex(hex: string) {
+  const result = new WebBuf(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    result[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
+  }
+  return result;
+  // const uint8array = decode_hex(hex);
+  // return new WebBuf(
+  //   uint8array.buffer,
+  //   uint8array.byteOffset,
+  //   uint8array.byteLength,
+  // );
+}
+
+function toHex(buf: WebBuf) {
+  // return encode_hex(buf);
+  return Array.from(new Uint8Array(buf.buffer)).map((v) =>
+    v.toString(16).padStart(2, "0")
+  ).join("");
 }
 
 describe("WebBuf", () => {
@@ -72,12 +88,36 @@ describe("WebBuf", () => {
       // const base64Native = Buffer.from(testArray.buffer).toString("base64");
       // const endNative = performance.now();
       // console.log(`Native method time: ${endNative - startNative} ms`);
-      
+
       // Make sure they are all equal
       expect(base64Old).toBe(base64New);
       expect(base64Old).toBe(base64Npm);
       expect(base64Old).toBe(base64Wasm);
       // expect(base64Old).toBe(base64Native);
+    });
+
+    it("should encode this large buffer to hex", () => {
+      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
+      // fill with iterating count
+      for (let i = 0; i < testArray.length; i++) {
+        testArray[i] = i % 256;
+      }
+      const npmBuffer = NpmBuffer.from(testArray.buffer);
+
+      // Npm Buffer
+      const startNpm = performance.now();
+      const hexNpm = npmBuffer.toString("hex");
+      const endNpm = performance.now();
+      console.log(`Npm method time: ${endNpm - startNpm} ms`);
+
+      // wasm methods
+      const startWasm = performance.now();
+      const hexWasm = encode_hex(testArray);
+      const endWasm = performance.now();
+      console.log(`Wasm method time: ${endWasm - startWasm} ms`);
+
+      // Make sure they are all equal
+      expect(hexNpm).toBe(hexWasm);
     });
   });
 });
