@@ -5,6 +5,7 @@ import {
   uint8ArrayToBase64,
   newUint8ArrayToBase64,
 } from "../src/webbuf.js";
+import { Buffer as NpmBuffer } from "buffer";
 
 describe("WebBuf", () => {
   describe("benchmarks", () => {
@@ -27,15 +28,22 @@ describe("WebBuf", () => {
       const endNew = performance.now();
       console.log(`New method time: ${endNew - startNew} ms`);
 
-      // Native Buffer
-      const startNative = performance.now();
-      const base64Native = Buffer.from(testArray.buffer).toString("base64");
-      const endNative = performance.now();
-      console.log(`Native method time: ${endNative - startNative} ms`);
+      // Npm Buffer
+      const startNpm = performance.now();
+      const base64Npm = NpmBuffer.from(testArray.buffer).toString("base64");
+      const endNpm = performance.now();
+      console.log(`Npm method time: ${endNpm - startNpm} ms`);
 
+      // Native Buffer
+      // const startNative = performance.now();
+      // const base64Native = Buffer.from(testArray.buffer).toString("base64");
+      // const endNative = performance.now();
+      // console.log(`Native method time: ${endNative - startNative} ms`);
+      
       // Make sure they are all equal
       expect(base64Old).toBe(base64New);
-      expect(base64Old).toBe(base64Native);
+      expect(base64Old).toBe(base64Npm);
+      // expect(base64Old).toBe(base64Native);
     });
   });
 });
