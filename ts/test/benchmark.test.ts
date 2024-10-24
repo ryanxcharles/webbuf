@@ -25,16 +25,6 @@ function uint8ArrayToBase64(arr: Uint8Array): string {
   return btoa(binaryString);
 }
 
-function newUint8ArrayToBinaryString(arr: Uint8Array): string {
-  return new TextDecoder("latin1").decode(arr); // latin1 ensures each byte is converted to a character directly
-}
-
-function newUint8ArrayToBase64(arr: Uint8Array): string {
-  //const binaryString = newUint8ArrayToBinaryString(arr);
-  const binaryString = uint8ArrayToBinaryString(arr);
-  return btoa(binaryString);
-}
-
 function fromHex(hex: string) {
   const result = new WebBuf(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
@@ -60,17 +50,11 @@ describe("WebBuf", () => {
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
 
-      // Old approach (chunking)
-      const startOld = performance.now();
-      const base64Old = uint8ArrayToBase64(testArray);
-      const endOld = performance.now();
-      console.log(`Old method time: ${endOld - startOld} ms`);
-
-      // New optimized approach
-      const startNew = performance.now();
-      const base64New = newUint8ArrayToBase64(testArray);
-      const endNew = performance.now();
-      console.log(`New method time: ${endNew - startNew} ms`);
+      // // Old approach (chunking)
+      // const startOld = performance.now();
+      // const base64Old = uint8ArrayToBase64(testArray);
+      // const endOld = performance.now();
+      // console.log(`Old method time: ${endOld - startOld} ms`);
 
       // Npm Buffer
       const startNpm = performance.now();
@@ -91,20 +75,20 @@ describe("WebBuf", () => {
       // console.log(`Native method time: ${endNative - startNative} ms`);
 
       // Make sure they are all equal
-      expect(base64Old).toBe(base64New);
-      expect(base64Old).toBe(base64Npm);
-      expect(base64Old).toBe(base64Wasm);
+      // expect(base64Old).toBe(base64Npm);
+      // expect(base64Old).toBe(base64Wasm);
       // expect(base64Old).toBe(base64Native);
+      expect(base64Npm).toBe(base64Wasm);
     });
 
     it("should decode this large base64 string", () => {
-      const testArray = new Uint8Array(1_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
-      const base64 = newUint8ArrayToBase64(testArray);
+      const base64 = uint8ArrayToBase64(testArray);
 
       // Npm Buffer
       const startNpm = performance.now();
@@ -149,7 +133,7 @@ describe("WebBuf", () => {
     });
 
     it("should decode this large hex string", () => {
-      const testArray = new Uint8Array(1_000_000); // Large Uint8Array for benchmarking
+      const testArray = new Uint8Array(10_000_000); // Large Uint8Array for benchmarking
       // fill with iterating count
       for (let i = 0; i < testArray.length; i++) {
         testArray[i] = i % 256;
