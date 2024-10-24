@@ -146,7 +146,9 @@ export class WebBuf extends Uint8Array {
    * @throws {Error} if the input string is not valid base64
    */
   static fromBase64(b64: string, stripWhitespace = false) {
-    const uint8array = stripWhitespace ? decode_base64_strip_whitespace(b64) : decode_base64(b64);
+    const uint8array = stripWhitespace
+      ? decode_base64_strip_whitespace(b64)
+      : decode_base64(b64);
     return new WebBuf(
       uint8array.buffer,
       uint8array.byteOffset,
@@ -254,378 +256,484 @@ export class WebBuf extends Uint8Array {
     return this.compare(other) === 0;
   }
 
-  readUintLE(offset: number, byteLength: number) {
+  readUintLE(byteLength: number, offset = 0): number {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
-    let val = this[offset] as number;
-    let mul = 1;
-    let i = 0;
-    // biome-ignore lint:
-    while (++i < byteLength && (mul *= 0x100)) {
-      val += (this[offset + i] as number) * mul;
+    let value = this[offset] as number;
+    let multiplier = 1;
+    for (let i = 1; i < byteLength; i++) {
+      multiplier *= 0x100;
+      value += (this[offset + i] as number) * multiplier;
     }
 
-    return val;
+    return value;
   }
 
-  readUintBE(offset: number, byteLength: number) {
+  readUintBE(byteLength: number, offset = 0): number {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
-    let val = this[offset + --byteLength] as number;
-    let mul = 1;
-    // biome-ignore lint:
-    while (byteLength > 0 && (mul *= 0x100)) {
-      val += (this[offset + --byteLength] as number) * mul;
+    let value = this[offset + byteLength - 1] as number;
+    let multiplier = 1;
+    for (let i = byteLength - 2; i >= 0; i--) {
+      multiplier *= 0x100;
+      value += (this[offset + i] as number) * multiplier;
     }
 
-    return val;
+    return value;
   }
 
-  readUint8(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 1, this.length);
-    return this[offset] as number;
-  }
-
-  readUint16LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
-    return (this[offset] as number) | ((this[offset + 1] as number) << 8);
-  }
-
-  readUint16BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
-    return ((this[offset] as number) << 8) | (this[offset + 1] as number);
-  }
-
-  readUint32LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
-
-    const lo = this.readUint16LE(offset);
-    const hi = this.readUint16LE(offset + 2);
-    return lo + hi * 0x10000;
-  }
-
-  readUint32BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
-
-    const hi = this.readUint16BE(offset);
-    const lo = this.readUint16BE(offset + 2);
-    return lo + hi * 0x10000;
-  }
-
-  readBigUint64LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
-
-    const lo = BigInt(this.readUint32LE(offset));
-    const hi = BigInt(this.readUint32LE(offset + 4));
-    return lo + (hi << 32n);
-  }
-
-  readBigUint64BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
-
-    const hi = BigInt(this.readUint32BE(offset));
-    const lo = BigInt(this.readUint32BE(offset + 4));
-    return lo + (hi << 32n);
-  }
-
-  readBigUint128LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
-
-    const lo = this.readBigUint64LE(offset);
-    const hi = this.readBigUint64LE(offset + 8);
-    return lo + (hi << 64n);
-  }
-
-  readBigUint128BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
-
-    const hi = this.readBigUint64BE(offset);
-    const lo = this.readBigUint64BE(offset + 8);
-    return lo + (hi << 64n);
-  }
-
-  readBigUint256LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
-
-    const lo = this.readBigUint64LE(offset);
-    const hi = this.readBigUint64LE(offset + 8);
-    const hi2 = this.readBigUint64LE(offset + 16);
-    const hi3 = this.readBigUint64LE(offset + 24);
-    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
-  }
-
-  readBigUint256BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
-
-    const hi3 = this.readBigUint64BE(offset);
-    const hi2 = this.readBigUint64BE(offset + 8);
-    const hi = this.readBigUint64BE(offset + 16);
-    const lo = this.readBigUint64BE(offset + 24);
-    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
-  }
-
-  readIntLE(offset: number, byteLength: number) {
+  readBigUintLE(byteLength: number, offset = 0): bigint {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
-    let val = this[offset] as number;
-    let mul = 1;
-    let i = 0;
-    // biome-ignore lint:
-    while (++i < byteLength && (mul *= 0x100)) {
-      val += (this[offset + i] as number) * mul;
-    }
-    mul *= 0x80;
-
-    if (val >= mul) {
-      val -= 2 ** (8 * byteLength);
+    let value = BigInt(this[offset] as number);
+    let multiplier = 1n;
+    for (let i = 1; i < byteLength; i++) {
+      multiplier *= 0x100n;
+      value += BigInt(this[offset + i] as number) * multiplier;
     }
 
-    return val;
+    return value;
   }
 
-  readIntBE(offset: number, byteLength: number) {
+  readBigUintBE(byteLength: number, offset = 0): bigint {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
-    let i = byteLength;
-    let mul = 1;
-    let val = this[offset + --i] as number;
-    // biome-ignore lint:
-    while (i > 0 && (mul *= 0x100)) {
-      val += (this[offset + --i] as number) * mul;
-    }
-    mul *= 0x80;
-
-    if (val >= mul) {
-      val -= 2 ** (8 * byteLength);
+    let value = BigInt(this[offset + byteLength - 1] as number);
+    let multiplier = 1n;
+    for (let i = byteLength - 2; i >= 0; i--) {
+      multiplier *= 0x100n;
+      value += BigInt(this[offset + i] as number) * multiplier;
     }
 
-    return val;
+    return value;
   }
 
-  readInt8(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 1, this.length);
-    const val = this[offset] as number;
-    return val & 0x80 ? val | 0xffffff00 : val;
-  }
-
-  readInt16LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
-    const val = (this[offset] as number) | ((this[offset + 1] as number) << 8);
-    return val & 0x8000 ? val | 0xffff0000 : val;
-  }
-
-  readInt16BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
-    const val = ((this[offset] as number) << 8) | (this[offset + 1] as number);
-    return val & 0x8000 ? val | 0xffff0000 : val;
-  }
-
-  readInt32LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
-    return (
-      (this[offset] as number) |
-      ((this[offset + 1] as number) << 8) |
-      ((this[offset + 2] as number) << 16) |
-      ((this[offset + 3] as number) << 24)
-    );
-  }
-
-  readInt32BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
-    return (
-      ((this[offset] as number) << 24) |
-      ((this[offset + 1] as number) << 16) |
-      ((this[offset + 2] as number) << 8) |
-      (this[offset + 3] as number)
-    );
-  }
-
-  readBigInt64LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
-
-    const lo = this.readUint32LE(offset);
-    const hi = this.readInt32LE(offset + 4);
-    return BigInt(lo) + (BigInt(hi) << BigInt(32));
-  }
-
-  readBigInt64BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
-
-    const lo = this.readUint32BE(offset + 4);
-    const hi = this.readInt32BE(offset);
-    return BigInt(lo) + (BigInt(hi) << BigInt(32));
-  }
-
-  readBigInt128LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
-
-    const lo = this.readBigUint64LE(offset);
-    const hi = this.readBigInt64LE(offset + 8);
-    return lo + (hi << BigInt(64));
-  }
-
-  readBigInt128BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
-
-    const lo = this.readBigUint64BE(offset + 8);
-    const hi = this.readBigInt64BE(offset);
-    return lo + (hi << 64n);
-  }
-
-  readBigInt256LE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
-
-    const lo = this.readBigUint64LE(offset);
-    const hi = this.readBigUint64LE(offset + 8);
-    const hi2 = this.readBigUint64LE(offset + 16);
-    const hi3 = this.readBigInt64LE(offset + 24);
-    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
-  }
-
-  readBigInt256BE(offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
-
-    const hi3 = this.readBigInt64BE(offset);
-    const hi2 = this.readBigUint64BE(offset + 8);
-    const hi = this.readBigUint64BE(offset + 16);
-    const lo = this.readBigUint64BE(offset + 24);
-    return lo + (hi << 64n) + (hi2 << 128n) + (hi3 << 192n);
-  }
-
-  // writing numbers
-
-  writeUintLE(value: number, offset: number, byteLength: number) {
+  readIntLE(byteLength: number, offset = 0): number {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
-    let mul = 1;
+    let value = this[offset] as number;
+    let multiplier = 1;
+    for (let i = 1; i < byteLength; i++) {
+      multiplier *= 0x100;
+      value += (this[offset + i] as number) * multiplier;
+    }
+    multiplier *= 0x80;
+
+    if (value >= multiplier) {
+      value -= 2 ** (8 * byteLength);
+    }
+
+    return value;
+  }
+
+  readIntBE(byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let value = this[offset + byteLength - 1] as number;
+    let multiplier = 1;
+    for (let i = byteLength - 2; i >= 0; i--) {
+      multiplier *= 0x100;
+      value += (this[offset + i] as number) * multiplier;
+    }
+    multiplier *= 0x80;
+
+    if (value >= multiplier) {
+      value -= 2 ** (8 * byteLength);
+    }
+
+    return value;
+  }
+
+  readBigIntLE(byteLength: number, offset = 0): bigint {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let value = BigInt(this[offset] as number);
+    let multiplier = 1n;
+    for (let i = 1; i < byteLength; i++) {
+      multiplier *= 0x100n;
+      value += BigInt(this[offset + i] as number) * multiplier;
+    }
+    multiplier *= 0x80n;
+
+    if (value >= multiplier) {
+      value -= 1n << BigInt(8 * byteLength);
+    }
+
+    return value;
+  }
+
+  readBigIntBE(byteLength: number, offset = 0): bigint {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let value = BigInt(this[offset + byteLength - 1] as number);
+    let multiplier = 1n;
+    for (let i = byteLength - 2; i >= 0; i--) {
+      multiplier *= 0x100n;
+      value += BigInt(this[offset + i] as number) * multiplier;
+    }
+    multiplier *= 0x80n;
+
+    if (value >= multiplier) {
+      value -= 1n << BigInt(8 * byteLength);
+    }
+
+    return value;
+  }
+
+  writeUintLE(value: number, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
     let i = 0;
     this[offset] = value & 0xff;
-    // biome-ignore lint:
-    while (++i < byteLength && (mul *= 0x100)) {
-      this[offset + i] = (value / mul) & 0xff;
+    while (++i < byteLength) {
+      (this[offset + i] as number) = (value >>> (i * 8)) & 0xff;
     }
 
     return offset + byteLength;
   }
 
-  writeUintBE(value: number, offset: number, byteLength: number) {
+  writeUintBE(value: number, byteLength: number, offset = 0): number {
     offset = offset >>> 0;
     byteLength = byteLength >>> 0;
     verifyOffset(offset, byteLength, this.length);
 
     let i = byteLength - 1;
-    let mul = 1;
-    this[offset + i] = value & 0xff;
-    // biome-ignore lint:
-    while (--i >= 0 && (mul *= 0x100)) {
-      this[offset + i] = (value / mul) & 0xff;
+    (this[offset + i] as number) = value & 0xff;
+    while (i > 0) {
+      i--;
+      (this[offset + i] as number) =
+        (value >>> ((byteLength - 1 - i) * 8)) & 0xff;
     }
 
     return offset + byteLength;
   }
 
-  writeUint8(value: number, offset = 0) {
+  writeBigUintLE(value: bigint, byteLength: number, offset = 0): number {
     offset = offset >>> 0;
-    verifyOffset(offset, 1, this.length);
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = 0;
+    this[offset] = Number(value & 0xffn);
+    while (++i < byteLength) {
+      (this[offset + i] as number) = Number((value >> BigInt(i * 8)) & 0xffn);
+    }
+
+    return offset + byteLength;
+  }
+
+  writeBigUintBE(value: bigint, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = byteLength - 1;
+    (this[offset + i] as number) = Number(value & 0xffn);
+    while (i > 0) {
+      i--;
+      (this[offset + i] as number) = Number(
+        (value >> BigInt((byteLength - 1 - i) * 8)) & 0xffn,
+      );
+    }
+
+    return offset + byteLength;
+  }
+
+  writeIntLE(value: number, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = 0;
+    this[offset] = value & 0xff;
+    while (++i < byteLength) {
+      (this[offset + i] as number) = (value >> (i * 8)) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeIntBE(value: number, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = byteLength - 1;
+    (this[offset + i] as number) = value & 0xff;
+    while (i > 0) {
+      i--;
+      (this[offset + i] as number) =
+        (value >> ((byteLength - 1 - i) * 8)) & 0xff;
+    }
+
+    return offset + byteLength;
+  }
+
+  writeBigIntLE(value: bigint, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = 0;
+    this[offset] = Number(value & 0xffn);
+    while (++i < byteLength) {
+      (this[offset + i] as number) = Number((value >> BigInt(i * 8)) & 0xffn);
+    }
+
+    return offset + byteLength;
+  }
+
+  writeBigIntBE(value: bigint, byteLength: number, offset = 0): number {
+    offset = offset >>> 0;
+    byteLength = byteLength >>> 0;
+    verifyOffset(offset, byteLength, this.length);
+
+    let i = byteLength - 1;
+    (this[offset + i] as number) = Number(value & 0xffn);
+    while (i > 0) {
+      i--;
+      (this[offset + i] as number) = Number(
+        (value >> BigInt((byteLength - 1 - i) * 8)) & 0xffn,
+      );
+    }
+
+    return offset + byteLength;
+  }
+
+  readUint8(offset = 0): number {
+    verifySize(this, 0xff, offset, 1, 0xff, 0);
+    return this.readUintLE(1, offset);
+  }
+
+  readUint16LE(offset = 0): number {
+    verifySize(this, 0xffff, offset, 2, 0xffff, 0);
+    return this.readUintLE(2, offset);
+  }
+
+  readUint16BE(offset = 0): number {
+    verifySize(this, 0xffff, offset, 2, 0xffff, 0);
+    return this.readUintBE(2, offset);
+  }
+
+  readUint32LE(offset = 0): number {
+    verifySize(this, 0xffffffff, offset, 4, 0xffffffff, 0);
+    return this.readUintLE(4, offset);
+  }
+
+  readUint32BE(offset = 0): number {
+    verifySize(this, 0xffffffff, offset, 4, 0xffffffff, 0);
+    return this.readUintBE(4, offset);
+  }
+
+  readBigUint64LE(offset = 0): bigint {
+    verifySize(this, 0xffffffffffffffffn, offset, 8, 0xffffffffffffffffn, 0n);
+    return this.readBigUintLE(8, offset);
+  }
+
+  readBigUint64BE(offset = 0): bigint {
+    verifySize(this, 0xffffffffffffffffn, offset, 8, 0xffffffffffffffffn, 0n);
+    return this.readBigUintBE(8, offset);
+  }
+
+  readBigUint128LE(offset = 0): bigint {
+    verifySize(
+      this,
+      0xffffffffffffffffffffffffffffffffn,
+      offset,
+      16,
+      0xffffffffffffffffffffffffffffffffn,
+      0n,
+    );
+    return this.readBigUintLE(16, offset);
+  }
+
+  readBigUint128BE(offset = 0): bigint {
+    verifySize(
+      this,
+      0xffffffffffffffffffffffffffffffffn,
+      offset,
+      16,
+      0xffffffffffffffffffffffffffffffffn,
+      0n,
+    );
+    return this.readBigUintBE(16, offset);
+  }
+
+  readBigUint256LE(offset = 0): bigint {
+    verifySize(
+      this,
+      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      offset,
+      32,
+      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      0n,
+    );
+    return this.readBigUintLE(32, offset);
+  }
+
+  readBigUint256BE(offset = 0): bigint {
+    verifySize(
+      this,
+      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      offset,
+      32,
+      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      0n,
+    );
+    return this.readBigUintBE(32, offset);
+  }
+
+  readInt8(offset = 0): number {
+    verifySize(this, 0x7f, offset, 1, 0x7f, -0x80);
+    return this.readIntLE(1, offset);
+  }
+
+  readInt16LE(offset = 0): number {
+    verifySize(this, 0x7fff, offset, 2, 0x7fff, -0x8000);
+    return this.readIntLE(2, offset);
+  }
+
+  readInt16BE(offset = 0): number {
+    verifySize(this, 0x7fff, offset, 2, 0x7fff, -0x8000);
+    return this.readIntBE(2, offset);
+  }
+
+  readInt32LE(offset = 0): number {
+    verifySize(this, 0x7fffffff, offset, 4, 0x7fffffff, -0x80000000);
+    return this.readIntLE(4, offset);
+  }
+
+  readInt32BE(offset = 0): number {
+    verifySize(this, 0x7fffffff, offset, 4, 0x7fffffff, -0x80000000);
+    return this.readIntBE(4, offset);
+  }
+
+  readBigInt64LE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffn,
+      offset,
+      8,
+      0x7fffffffffffffffn,
+      -0x8000000000000000n,
+    );
+    return this.readBigIntLE(8, offset);
+  }
+
+  readBigInt64BE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffn,
+      offset,
+      8,
+      0x7fffffffffffffffn,
+      -0x8000000000000000n,
+    );
+    return this.readBigIntBE(8, offset);
+  }
+
+  readBigInt128LE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffffffffffffffffffn,
+      offset,
+      16,
+      0x7fffffffffffffffffffffffffffffffn,
+      -0x80000000000000000000000000000000n,
+    );
+    return this.readBigIntLE(16, offset);
+  }
+
+  readBigInt128BE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffffffffffffffffffn,
+      offset,
+      16,
+      0x7fffffffffffffffffffffffffffffffn,
+      -0x80000000000000000000000000000000n,
+    );
+    return this.readBigIntBE(16, offset);
+  }
+
+  readBigInt256LE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      offset,
+      32,
+      0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      -0x80000000000000000000000000000000000000000000000000000000000000000n,
+    );
+    return this.readBigIntLE(32, offset);
+  }
+
+  readBigInt256BE(offset = 0): bigint {
+    verifySize(
+      this,
+      0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      offset,
+      32,
+      0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      -0x80000000000000000000000000000000000000000000000000000000000000000n,
+    );
+    return this.readBigIntBE(32, offset);
+  }
+
+  writeUint8(value: number, offset = 0): number {
     verifySize(this, value, offset, 1, 0xff, 0);
-    this[offset] = value & 0xff;
-    return offset + 1;
+    return this.writeUintLE(value, 1, offset);
   }
 
-  writeUint16LE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
+  writeUint16LE(value: number, offset = 0): number {
     verifySize(this, value, offset, 2, 0xffff, 0);
-    this[offset] = value & 0xff;
-    this[offset + 1] = (value >>> 8) & 0xff;
-    return offset + 2;
+    return this.writeUintLE(value, 2, offset);
   }
 
-  writeUint16BE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
+  writeUint16BE(value: number, offset = 0): number {
     verifySize(this, value, offset, 2, 0xffff, 0);
-    this[offset] = (value >>> 8) & 0xff;
-    this[offset + 1] = value & 0xff;
-    return offset + 2;
+    return this.writeUintBE(value, 2, offset);
   }
 
-  writeUint32LE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
+  writeUint32LE(value: number, offset = 0): number {
     verifySize(this, value, offset, 4, 0xffffffff, 0);
-    this[offset] = value & 0xff;
-    this[offset + 1] = (value >>> 8) & 0xff;
-    this[offset + 2] = (value >>> 16) & 0xff;
-    this[offset + 3] = (value >>> 24) & 0xff;
-    return offset + 4;
+    return this.writeUintLE(value, 4, offset);
   }
 
-  writeUint32BE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
+  writeUint32BE(value: number, offset = 0): number {
     verifySize(this, value, offset, 4, 0xffffffff, 0);
-    this[offset] = (value >>> 24) & 0xff;
-    this[offset + 1] = (value >>> 16) & 0xff;
-    this[offset + 2] = (value >>> 8) & 0xff;
-    this[offset + 3] = value & 0xff;
-    return offset + 4;
+    return this.writeUintBE(value, 4, offset);
   }
 
-  writeBigUint64LE(value: bigint, offset = 0) {
-    value = BigInt(value);
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
+  writeBigUint64LE(value: bigint, offset = 0): number {
     verifySize(this, value, offset, 8, 0xffffffffffffffffn, 0n);
-    this.writeUint32LE(Number(value & 0xffffffffn), offset);
-    this.writeUint32LE(Number((value >> 32n) & 0xffffffffn), offset + 4);
-    return offset + 8;
+    return this.writeBigUintLE(value, 8, offset);
   }
 
-  writeBigUint64BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
+  writeBigUint64BE(value: bigint, offset = 0): number {
     verifySize(this, value, offset, 8, 0xffffffffffffffffn, 0n);
-    this.writeUint32BE(Number(value >> 32n), offset);
-    this.writeUint32BE(Number(value & 0xffffffffn), offset + 4);
-    return offset + 8;
+    return this.writeBigUintBE(value, 8, offset);
   }
 
-  writeBigUint128LE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
+  writeBigUint128LE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -634,14 +742,10 @@ export class WebBuf extends Uint8Array {
       0xffffffffffffffffffffffffffffffffn,
       0n,
     );
-    this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
-    this.writeBigUint64LE(value >> 64n, offset + 8);
-    return offset + 16;
+    return this.writeBigUintLE(value, 16, offset);
   }
 
-  writeBigUint128BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
+  writeBigUint128BE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -650,14 +754,10 @@ export class WebBuf extends Uint8Array {
       0xffffffffffffffffffffffffffffffffn,
       0n,
     );
-    this.writeBigUint64BE(value >> 64n, offset);
-    this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 8);
-    return offset + 16;
+    return this.writeBigUintBE(value, 16, offset);
   }
 
-  writeBigUint256LE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
+  writeBigUint256LE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -666,16 +766,10 @@ export class WebBuf extends Uint8Array {
       0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
       0n,
     );
-    this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
-    this.writeBigUint64LE(value >> 64n, offset + 8);
-    this.writeBigUint64LE(value >> 128n, offset + 16);
-    this.writeBigUint64LE(value >> 192n, offset + 24);
-    return offset + 32;
+    return this.writeBigUintLE(value, 32, offset);
   }
 
-  writeBigUint256BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
+  writeBigUint256BE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -684,96 +778,35 @@ export class WebBuf extends Uint8Array {
       0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
       0n,
     );
-    this.writeBigUint64BE(value >> 192n, offset);
-    this.writeBigUint64BE(value >> 128n, offset + 8);
-    this.writeBigUint64BE(value >> 64n, offset + 16);
-    this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 24);
-    return offset;
+    return this.writeBigUintBE(value, 32, offset);
   }
 
-  writeIntLE(value: number, offset: number, byteLength: number) {
-    offset = offset >>> 0;
-    byteLength = byteLength >>> 0;
-    verifyOffset(offset, byteLength, this.length);
-
-    let mul = 1;
-    let i = 0;
-    this[offset] = value & 0xff;
-    // biome-ignore lint:
-    while (++i < byteLength && (mul *= 0x100)) {
-      this[offset + i] = (value / mul) & 0xff;
-    }
-
-    return offset + byteLength;
-  }
-
-  writeIntBE(value: number, offset: number, byteLength: number) {
-    offset = offset >>> 0;
-    byteLength = byteLength >>> 0;
-    verifyOffset(offset, byteLength, this.length);
-
-    let i = byteLength - 1;
-    let mul = 1;
-    this[offset + i] = value & 0xff;
-    // biome-ignore lint:
-    while (--i >= 0 && (mul *= 0x100)) {
-      this[offset + i] = (value / mul) & 0xff;
-    }
-
-    return offset + byteLength;
-  }
-
-  writeInt8(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 1, this.length);
+  writeInt8(value: number, offset = 0): number {
     verifySize(this, value, offset, 1, 0x7f, -0x80);
-    this[offset] = value & 0xff;
-    return offset + 1;
+    return this.writeIntLE(value, 1, offset);
   }
 
-  writeInt16LE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
+  writeInt16LE(value: number, offset = 0): number {
     verifySize(this, value, offset, 2, 0x7fff, -0x8000);
-    this[offset] = value & 0xff;
-    this[offset + 1] = (value >>> 8) & 0xff;
-    return offset + 2;
+    return this.writeIntLE(value, 2, offset);
   }
 
-  writeInt16BE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 2, this.length);
+  writeInt16BE(value: number, offset = 0): number {
     verifySize(this, value, offset, 2, 0x7fff, -0x8000);
-    this[offset] = (value >>> 8) & 0xff;
-    this[offset + 1] = value & 0xff;
-    return offset + 2;
+    return this.writeIntBE(value, 2, offset);
   }
 
-  writeInt32LE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
+  writeInt32LE(value: number, offset = 0): number {
     verifySize(this, value, offset, 4, 0x7fffffff, -0x80000000);
-    this[offset] = value & 0xff;
-    this[offset + 1] = (value >>> 8) & 0xff;
-    this[offset + 2] = (value >>> 16) & 0xff;
-    this[offset + 3] = (value >>> 24) & 0xff;
-    return offset + 4;
+    return this.writeIntLE(value, 4, offset);
   }
 
-  writeInt32BE(value: number, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 4, this.length);
+  writeInt32BE(value: number, offset = 0): number {
     verifySize(this, value, offset, 4, 0x7fffffff, -0x80000000);
-    this[offset] = (value >>> 24) & 0xff;
-    this[offset + 1] = (value >>> 16) & 0xff;
-    this[offset + 2] = (value >>> 8) & 0xff;
-    this[offset + 3] = value & 0xff;
-    return offset + 4;
+    return this.writeIntBE(value, 4, offset);
   }
 
-  writeBigInt64LE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
+  writeBigInt64LE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -782,14 +815,10 @@ export class WebBuf extends Uint8Array {
       0x7fffffffffffffffn,
       -0x8000000000000000n,
     );
-    this.writeUint32LE(Number(value & 0xffffffffn), offset);
-    this.writeInt32LE(Number(value >> 32n), offset + 4);
-    return offset + 8;
+    return this.writeBigIntLE(value, 8, offset);
   }
 
-  writeBigInt64BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 8, this.length);
+  writeBigInt64BE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -798,14 +827,10 @@ export class WebBuf extends Uint8Array {
       0x7fffffffffffffffn,
       -0x8000000000000000n,
     );
-    this.writeInt32BE(Number(value >> 32n), offset);
-    this.writeUint32BE(Number(value & 0xffffffffn), offset + 4);
-    return offset + 8;
+    return this.writeBigIntBE(value, 8, offset);
   }
 
-  writeBigInt128LE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
+  writeBigInt128LE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -814,14 +839,10 @@ export class WebBuf extends Uint8Array {
       0x7fffffffffffffffffffffffffffffffn,
       -0x80000000000000000000000000000000n,
     );
-    this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
-    this.writeBigInt64LE(value >> 64n, offset + 8);
-    return offset + 16;
+    return this.writeBigIntLE(value, 16, offset);
   }
 
-  writeBigInt128BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 16, this.length);
+  writeBigInt128BE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
@@ -830,44 +851,30 @@ export class WebBuf extends Uint8Array {
       0x7fffffffffffffffffffffffffffffffn,
       -0x80000000000000000000000000000000n,
     );
-    this.writeBigInt64BE(value >> 64n, offset);
-    this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 8);
-    return offset + 16;
+    return this.writeBigIntBE(value, 16, offset);
   }
 
-  writeBigInt256LE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
+  writeBigInt256LE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
       offset,
       32,
       0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
-      -0x8000000000000000000000000000000000000000000000000000000000000000n,
+      -0x80000000000000000000000000000000000000000000000000000000000000000n,
     );
-    this.writeBigUint64LE(value & 0xffffffffffffffffn, offset);
-    this.writeBigUint64LE((value >> 64n) & 0xffffffffffffffffn, offset + 8);
-    this.writeBigUint64LE((value >> 128n) & 0xffffffffffffffffn, offset + 16);
-    this.writeBigInt64LE(value >> 192n, offset + 24);
-    return offset + 32;
+    return this.writeBigIntLE(value, 32, offset);
   }
 
-  writeBigInt256BE(value: bigint, offset = 0) {
-    offset = offset >>> 0;
-    verifyOffset(offset, 32, this.length);
+  writeBigInt256BE(value: bigint, offset = 0): number {
     verifySize(
       this,
       value,
       offset,
       32,
       0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
-      -0x8000000000000000000000000000000000000000000000000000000000000000n,
+      -0x80000000000000000000000000000000000000000000000000000000000000000n,
     );
-    this.writeBigInt64BE(value >> 192n, offset);
-    this.writeBigUint64BE((value >> 128n) & 0xffffffffffffffffn, offset + 8);
-    this.writeBigUint64BE((value >> 64n) & 0xffffffffffffffffn, offset + 16);
-    this.writeBigUint64BE(value & 0xffffffffffffffffn, offset + 24);
-    return offset + 32;
+    return this.writeBigIntBE(value, 32, offset);
   }
 }

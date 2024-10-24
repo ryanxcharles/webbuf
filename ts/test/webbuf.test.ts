@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { WebBuf } from "../src/webbuf.js";
 
-describe("WebBuf", () => {
+describe("WebBuf 2", () => {
   describe("compare", () => {
     it("should pass these known test vectors", () => {
       const b = WebBuf.fromString("a");
@@ -402,7 +402,7 @@ describe("WebBuf", () => {
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(32);
         expect(() =>
-          buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffn + 1n, 0),
+          buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn + 1n, 0),
         ).toThrow();
       });
 
@@ -419,9 +419,9 @@ describe("WebBuf", () => {
 
       it("should write and read the biggest u256le", () => {
         const buf = WebBuf.alloc(32);
-        buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffn, 0);
+        buf.writeBigUint256LE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn, 0);
         expect(buf.readBigUint256LE(0)).toBe(
-          0xffffffffffffffffffffffffffffffffn,
+          0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
         );
       });
     });
@@ -436,7 +436,7 @@ describe("WebBuf", () => {
       it("should throw if writing a number that is too big", () => {
         const buf = WebBuf.alloc(32);
         expect(() =>
-          buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffn + 1n, 0),
+          buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn + 1n, 0),
         ).toThrow();
       });
 
@@ -453,9 +453,9 @@ describe("WebBuf", () => {
 
       it("should write and read the biggest u256be", () => {
         const buf = WebBuf.alloc(32);
-        buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffn, 0);
+        buf.writeBigUint256BE(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn, 0);
         expect(buf.readBigUint256BE(0)).toBe(
-          0xffffffffffffffffffffffffffffffffn,
+          0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
         );
       });
     });
