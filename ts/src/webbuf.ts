@@ -1,4 +1,9 @@
-import { encode_base64, decode_base64, encode_hex, decode_hex } from "./rs-webbuf-inline-base64/webbuf.js";
+import {
+  encode_base64,
+  decode_base64,
+  encode_hex,
+  decode_hex,
+} from "./rs-webbuf-inline-base64/webbuf.js";
 
 export { encode_base64, decode_base64, encode_hex, decode_hex };
 
@@ -136,13 +141,18 @@ export class WebBuf extends Uint8Array {
    * @throws {Error} if the input string is not valid base64
    */
   static fromBase64(b64: string) {
-    const binary = atob(b64);
-    const result = new WebBuf(binary.length);
-    for (let i = 0; i < binary.length; i++) {
-      result[i] = binary.charCodeAt(i);
-    }
-    return result;
-    //return decode_base64(b64);
+    // const binary = atob(b64);
+    // const result = new WebBuf(binary.length);
+    // for (let i = 0; i < binary.length; i++) {
+    //   result[i] = binary.charCodeAt(i);
+    // }
+    // return result;
+    let uint8array = decode_base64(b64);
+    return new WebBuf(
+      uint8array.buffer,
+      uint8array.byteOffset,
+      uint8array.byteLength,
+    );
   }
 
   /**
