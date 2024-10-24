@@ -1,11 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  encode_base64,
-  decode_base64,
-  encode_hex,
-  decode_hex,
-} from "../src/webbuf.js";
 import { Buffer as NpmBuffer } from "buffer/index.js";
+import { WebBuf } from "../src/webbuf.js";
 
 function uint8ArrayToBinaryString(arr: Uint8Array): string {
   const CHUNK_SIZE = 0x8000; // 32KB chunk size
@@ -33,6 +28,7 @@ describe("WebBuf Benchmarks", () => {
         testArray[i] = i % 256;
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
+      const wasmBuffer = WebBuf.from(testArray);
 
       // Npm Buffer
       const startNpm = performance.now();
@@ -42,7 +38,7 @@ describe("WebBuf Benchmarks", () => {
 
       // wasm methods
       const startWasm = performance.now();
-      const base64Wasm = encode_base64(testArray);
+      const base64Wasm = wasmBuffer.toString("base64");
       const endWasm = performance.now();
       console.log(`Wasm method time: ${endWasm - startWasm} ms`);
 
@@ -66,7 +62,7 @@ describe("WebBuf Benchmarks", () => {
 
       // wasm methods
       const startWasm = performance.now();
-      const decodedWasm = decode_base64(base64);
+      const decodedWasm = WebBuf.from(base64, "base64");
       const endWasm = performance.now();
       console.log(`Wasm method time: ${endWasm - startWasm} ms`);
 
@@ -83,6 +79,7 @@ describe("WebBuf Benchmarks", () => {
         testArray[i] = i % 256;
       }
       const npmBuffer = NpmBuffer.from(testArray.buffer);
+      const wasmBuffer = WebBuf.from(testArray);
 
       // Npm Buffer
       const startNpm = performance.now();
@@ -92,7 +89,7 @@ describe("WebBuf Benchmarks", () => {
 
       // wasm methods
       const startWasm = performance.now();
-      const hexWasm = encode_hex(testArray);
+      const hexWasm = wasmBuffer.toString("hex");
       const endWasm = performance.now();
       console.log(`Wasm method time: ${endWasm - startWasm} ms`);
 
@@ -117,7 +114,7 @@ describe("WebBuf Benchmarks", () => {
 
       // wasm methods
       const startWasm = performance.now();
-      const decodedWasm = decode_hex(hex);
+      const decodedWasm = WebBuf.from(hex, "hex");
       const endWasm = performance.now();
       console.log(`Wasm method time: ${endWasm - startWasm} ms`);
 
