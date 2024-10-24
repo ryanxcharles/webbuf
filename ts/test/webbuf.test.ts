@@ -68,6 +68,28 @@ describe("WebBuf 2", () => {
       expect(fromSmallBase64.toBase64()).toBe(smallBase64);
       expect(fromLargeBase64.toBase64()).toBe(largeBase64);
     });
+
+    it("should handle algo threshold for from base64", () => {
+      const FROM_BASE64_ALGO_THRESHOLD = WebBuf.FROM_BASE64_ALGO_THRESHOLD;
+      const smallBufLength = FROM_BASE64_ALGO_THRESHOLD - 1;
+      const largeBufLength = FROM_BASE64_ALGO_THRESHOLD + 1;
+      const smallBuf = WebBuf.alloc(smallBufLength);
+      const largeBuf = WebBuf.alloc(largeBufLength);
+      for (let i = 0; i < smallBufLength; i++) {
+        const val = i % 256;
+        smallBuf.writeUint8(val, i);
+      }
+      for (let i = 0; i < largeBufLength; i++) {
+        const val = i % 255;
+        largeBuf.writeUint8(val, i);
+      }
+      const smallBase64 = smallBuf.toBase64();
+      const largeBase64 = largeBuf.toBase64();
+      const fromSmallBase64 = WebBuf.fromBase64(smallBase64);
+      const fromLargeBase64 = WebBuf.fromBase64(largeBase64);
+      expect(fromSmallBase64.toBase64()).toBe(smallBase64);
+      expect(fromLargeBase64.toBase64()).toBe(largeBase64);
+    });
   });
 
   describe("compare", () => {
