@@ -18,6 +18,7 @@
     "format": "biome format --write",
     "fix": "pnpm run typecheck && pnpm run lint && pnpm run format",
     "build": "tsc -p tsconfig.build.json",
+    "sync:from-rust": "cp -r ../rs/build/bundler/* src/rs-webbuf-bundler/",
     "prepublishOnly": "pnpm run clean && pnpm run build"
   },
   "engines": {
