@@ -11,12 +11,10 @@ pub fn encode_base64(data: &[u8]) -> String {
 /// Decode a base64 string into a byte vector
 /// Returns an error string if decoding fails
 #[wasm_bindgen]
-pub fn decode_base64(encoded: &str) -> Result<String, String> {
-    let decoded_bytes = lib_base64::STANDARD
+pub fn decode_base64(encoded: &str) -> Result<Vec<u8>, String> {
+    lib_base64::STANDARD
         .decode(encoded)
-        .map_err(|_| "invalid base64".to_string())?;
-
-    String::from_utf8(decoded_bytes).map_err(|_| "invalid UTF-8".to_string())
+        .map_err(|_| "invalid base64".to_string())
 }
 
 /// Encode a byte slice into a hex string
@@ -25,13 +23,11 @@ pub fn encode_hex(data: &[u8]) -> String {
     lib_hex_encode(data)
 }
 
-/// Decode a hex string into a regular UTF-8 string
-/// Returns an error string if decoding fails or if the decoded data is not valid UTF-8
+/// Decode a hex string into a byte vector
+/// Returns an error string if decoding fails
 #[wasm_bindgen]
-pub fn decode_hex(encoded: &str) -> Result<String, String> {
-    let decoded_bytes = lib_hex_decode(encoded).map_err(|_| "invalid hex".to_string())?;
-
-    String::from_utf8(decoded_bytes).map_err(|_| "invalid UTF-8".to_string())
+pub fn decode_hex(encoded: &str) -> Result<Vec<u8>, String> {
+    lib_hex_decode(encoded).map_err(|_| "invalid hex".to_string())
 }
 
 #[cfg(test)]
@@ -49,7 +45,7 @@ mod tests {
     #[test]
     fn test_decode_base64_valid() {
         let input = "SGVsbG8sIHdvcmxkIQ==";
-        let expected_output = "Hello, world!";
+        let expected_output = b"Hello, world!";
         let result = decode_base64(input).unwrap();
         assert_eq!(result, expected_output);
     }
@@ -73,7 +69,7 @@ mod tests {
     #[test]
     fn test_decode_hex_valid() {
         let input = "48656c6c6f2c20776f726c6421";
-        let expected_output = "Hello, world!";
+        let expected_output = b"Hello, world!";
         let result = decode_hex(input).unwrap();
         assert_eq!(result, expected_output);
     }
