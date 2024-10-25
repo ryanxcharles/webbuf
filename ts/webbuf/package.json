@@ -1,6 +1,6 @@
 {
   "name": "webbuf",
-  "version": "3.0.13",
+  "version": "3.0.14",
   "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
   "repository": {
     "type": "git",
@@ -43,6 +43,10 @@
   ],
   "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
   "license": "MIT",
+  "dependencies": {
+    "@webbuf/fixedbuf": "workspace:^",
+    "@webbuf/webbuf": "workspace:^"
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.7.9",

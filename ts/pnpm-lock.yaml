@@ -7,6 +7,13 @@ settings:
 importers:
 
   webbuf:
+    dependencies:
+      '@webbuf/fixedbuf':
+        specifier: workspace:^
+        version: link:../webbuf-fixedbuf
+      '@webbuf/webbuf':
+        specifier: workspace:^
+        version: link:../webbuf-webbuf
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4

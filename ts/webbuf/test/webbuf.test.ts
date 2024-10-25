@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "../src/webbuf.js";
+import { WebBuf } from "../src/index.js";
 
 describe("WebBuf 2", () => {
   describe("to/from hex/base64 algo threshold", () => {

@@ -1,1 +1,1 @@
-export { WebBuf } from "./webbuf.js";
+export { WebBuf } from "@webbuf/webbuf";
