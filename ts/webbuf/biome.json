@@ -3,6 +3,7 @@
   "formatter": {
     "ignore": [
       "**/node_modules/**",
+      "**/src/rs-*/**",
       "**/dist/**",
       "**/build/**",
       "**/public/**"
@@ -17,7 +18,13 @@
   },
   "organizeImports": { "enabled": true },
   "linter": {
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/build/**"],
+    "ignore": [
+      "**/node_modules/**",
+      "**/src/rs-*/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/public/**"
+    ],
     "enabled": true,
     "rules": {
       "recommended": true,
