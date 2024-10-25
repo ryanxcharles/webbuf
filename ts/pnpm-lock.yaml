@@ -8,9 +8,15 @@ importers:
 
   webbuf:
     dependencies:
+      '@webbuf/blake3':
+        specifier: workspace:^
+        version: link:../webbuf-blake3
       '@webbuf/fixedbuf':
         specifier: workspace:^
         version: link:../webbuf-fixedbuf
+      '@webbuf/secp256k1':
+        specifier: workspace:^
+        version: link:../webbuf-secp256k1
       '@webbuf/webbuf':
         specifier: workspace:^
         version: link:../webbuf-webbuf
