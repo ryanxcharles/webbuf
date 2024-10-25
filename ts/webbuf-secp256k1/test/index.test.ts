@@ -21,4 +21,14 @@ describe("secp256k1", () => {
     const signature = sign(digest, privateKey, FixedBuf.fromRandom(32));
     expect(verify(signature, digest, publicKey)).toBe(true);
   });
+
+  it("should correctly compute shared secret", () => {
+    const privKey1 = FixedBuf.fromRandom(32);
+    const privKey2 = FixedBuf.fromRandom(32);
+    const pubKey1 = publicKeyCreate(privKey1);
+    const pubKey2 = publicKeyCreate(privKey2);
+    const shared1 = sharedSecret(privKey1, pubKey2);
+    const shared2 = sharedSecret(privKey2, pubKey1);
+    expect(shared1.toHex()).toBe(shared2.toHex());
+  });
 });

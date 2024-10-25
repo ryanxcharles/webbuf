@@ -38,9 +38,9 @@ export function verify(
 export function sharedSecret(
   privateKey: FixedBuf<32>,
   publicKey: FixedBuf<33>,
-): FixedBuf<32> {
+): FixedBuf<33> {
   return FixedBuf.fromBuf(
-    32,
+    33,
     WebBuf.fromUint8Array(shared_secret(privateKey.buf, publicKey.buf)),
   );
 }
