@@ -1,11 +1,11 @@
 [package]
-name = "earthbucks_secp256k1"
-description = "Elliptic curve secp256k1 for EarthBucks with optional support for WASM."
+name = "webbuf_secp256k1"
+description = "Rust WASM elliptic curve secp256k1 for digital signatures and Diffie-Hellman key exchange"
 version = "0.8.5"
 edition = "2021"
 license = "MIT"
 authors = ["Ryan X. Charles <ryan@ryanxcharles.com>"]
-repository = "https://github.com/earthbucks/earthbucks"
+repository = "https://github.com/ryanxcharles/webbuf"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

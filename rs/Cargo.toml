@@ -2,9 +2,11 @@
 members = [
   "webbuf",
   "webbuf_blake3",
+  "webbuf_secp256k1",
 ]
 resolver = "2"
 
 [patch.crates-io]
 webbuf = { path = "./webbuf" }
 webbuf_blake3 = { path = "./webbuf_blake3" }
+webbuf_secp256k1 = { path = "./webbuf_secp256k1" }
