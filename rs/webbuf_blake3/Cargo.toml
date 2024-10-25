@@ -1,6 +1,6 @@
 [package]
-name = "earthbucks_blake3"
-description = "Blake3 hash function for EarthBucks with optional support for WASM."
+name = "webbuf_blake3"
+description = "Blake3 hash function for WebBuf with optional support for WASM."
 version = "0.8.5"
 edition = "2021"
 license = "MIT"
