@@ -11,12 +11,10 @@ repository = "https://github.com/ryanxcharles/webbuf"
 crate-type = ["cdylib", "rlib"]
 
 [features]
-# The 'wasm' feature enables the wasm-bindgen dependency and other wasm-specific code.
 wasm = ["wasm-bindgen"]
 
 [dependencies]
 k256 = { version = "0.13.4", default-features = false, features = ["arithmetic"] }
-# Conditionally include wasm-bindgen only when the 'wasm' feature is enabled
 wasm-bindgen = { version = "0.2", optional = true }
 
 [dev-dependencies]
