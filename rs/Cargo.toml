@@ -1,10 +1,10 @@
 [workspace]
 members = [
   "webbuf",
-  "webbuf-blake3",
+  "webbuf_blake3",
 ]
 resolver = "2"
 
 [patch.crates-io]
 webbuf = { path = "./webbuf" }
-webbuf-blake3 = { path = "./webbuf-blake3" }
+webbuf_blake3 = { path = "./webbuf_blake3" }
