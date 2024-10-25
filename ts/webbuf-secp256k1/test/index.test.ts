@@ -31,4 +31,13 @@ describe("secp256k1", () => {
     const shared2 = sharedSecret(privKey2, pubKey1);
     expect(shared1.toHex()).toBe(shared2.toHex());
   });
+
+  it("should correctly add public keys", () => {
+    const privKey1 = FixedBuf.fromRandom(32);
+    const privKey2 = FixedBuf.fromRandom(32);
+    const pubKey1 = publicKeyCreate(privKey1);
+    const pubKey2 = publicKeyCreate(privKey2);
+    const sum = publicKeyAdd(pubKey1, pubKey2);
+    expect(publicKeyVerify(sum)).toBe(true);
+  });
 });

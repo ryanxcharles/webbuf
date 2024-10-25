@@ -48,8 +48,11 @@ export function sharedSecret(
 export function publicKeyAdd(
   publicKey1: FixedBuf<33>,
   publicKey2: FixedBuf<33>,
-): WebBuf {
-  return WebBuf.fromUint8Array(public_key_add(publicKey1.buf, publicKey2.buf));
+): FixedBuf<33> {
+  return FixedBuf.fromBuf(
+    33,
+    WebBuf.fromUint8Array(public_key_add(publicKey1.buf, publicKey2.buf)),
+  );
 }
 
 export function publicKeyCreate(privateKey: FixedBuf<32>): FixedBuf<33> {
