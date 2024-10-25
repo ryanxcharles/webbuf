@@ -52,10 +52,11 @@ export function publicKeyAdd(
   return WebBuf.fromUint8Array(public_key_add(publicKey1.buf, publicKey2.buf));
 }
 
-export function publicKeyCreate(
-  privateKey: FixedBuf<32>
-): WebBuf {
-  return WebBuf.fromUint8Array(public_key_create(privateKey.buf));
+export function publicKeyCreate(privateKey: FixedBuf<32>): FixedBuf<33> {
+  return FixedBuf.fromBuf(
+    33,
+    WebBuf.fromUint8Array(public_key_create(privateKey.buf)),
+  );
 }
 
 export function publicKeyVerify(publicKey: FixedBuf<33>): boolean {

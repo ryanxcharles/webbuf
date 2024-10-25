@@ -48,6 +48,7 @@
     "webbuf": "workspace:^"
   },
   "devDependencies": {
+    "@webbuf/blake3": "^3.0.13",
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.7.9",
     "buffer": "^6.0.3",
