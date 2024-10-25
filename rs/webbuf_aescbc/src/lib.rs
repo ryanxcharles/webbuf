@@ -9,6 +9,12 @@ pub enum AesKeySize {
 }
 
 pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    if key.len() != 16 && key.len() != 24 && key.len() != 32 {
+        panic!("Invalid key size: expected 16, 24, or 32 bytes");
+    }
+    if data.len() != 16 {
+        panic!("Data length must be 16 bytes");
+    }
     match key.len() {
         16 => {
             let cipher = Aes128::new(GenericArray::from_slice(key));
@@ -36,6 +42,12 @@ pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
 }
 
 pub fn aes_decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    if key.len() != 16 && key.len() != 24 && key.len() != 32 {
+        panic!("Invalid key size: expected 16, 24, or 32 bytes");
+    }
+    if data.len() != 16 {
+        panic!("Data length must be 16 bytes");
+    }
     match key.len() {
         16 => {
             let cipher = Aes128::new(GenericArray::from_slice(key));
