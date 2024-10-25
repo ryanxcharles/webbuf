@@ -22,6 +22,16 @@ describe("secp256k1", () => {
     expect(verify(signature, digest, publicKey)).toBe(true);
   });
 
+  it("should correctly not verify an invalid signature", () => {
+    const privateKey = FixedBuf.fromRandom(32);
+    const publicKey = publicKeyCreate(privateKey);
+    const message = WebBuf.fromString("test message");
+    const digest = blake3Hash(message);
+    //const signature = sign(digest, privateKey, FixedBuf.fromRandom(32));
+    const invalidSignature = FixedBuf.fromRandom(64);
+    expect(verify(invalidSignature, digest, publicKey)).toBe(false);
+  });
+
   it("should correctly compute shared secret", () => {
     const privKey1 = FixedBuf.fromRandom(32);
     const privKey2 = FixedBuf.fromRandom(32);
