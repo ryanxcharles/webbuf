@@ -8,12 +8,12 @@ pub enum AesKeySize {
     Aes256,
 }
 
-pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
     if key.len() != 16 && key.len() != 24 && key.len() != 32 {
-        panic!("Invalid key size: expected 16, 24, or 32 bytes");
+        return Err("Invalid key size: expected 16, 24, or 32 bytes".to_string());
     }
     if data.len() != 16 {
-        panic!("Data length must be 16 bytes");
+        return Err("Data length must be 16 bytes".to_string());
     }
     match key.len() {
         16 => {
@@ -21,32 +21,32 @@ pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.encrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
         24 => {
             let cipher = Aes192::new(GenericArray::from_slice(key));
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.encrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
         32 => {
             let cipher = Aes256::new(GenericArray::from_slice(key));
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.encrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
-        _ => panic!("Invalid key size: expected 16, 24, or 32 bytes"),
+        _ => Err("Invalid key size: expected 16, 24, or 32 bytes".to_string()),
     }
 }
 
-pub fn aes_decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+pub fn aes_decrypt(key: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
     if key.len() != 16 && key.len() != 24 && key.len() != 32 {
-        panic!("Invalid key size: expected 16, 24, or 32 bytes");
+        return Err("Invalid key size: expected 16, 24, or 32 bytes".to_string());
     }
     if data.len() != 16 {
-        panic!("Data length must be 16 bytes");
+        return Err("Data length must be 16 bytes".to_string());
     }
     match key.len() {
         16 => {
@@ -54,23 +54,23 @@ pub fn aes_decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.decrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
         24 => {
             let cipher = Aes192::new(GenericArray::from_slice(key));
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.decrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
         32 => {
             let cipher = Aes256::new(GenericArray::from_slice(key));
             let mut data = data.to_vec();
             let block = GenericArray::from_mut_slice(&mut data);
             cipher.decrypt_block(block);
-            block.to_vec()
+            Ok(block.to_vec())
         }
-        _ => panic!("Invalid key size: expected 16, 24, or 32 bytes"),
+        _ => Err("Invalid key size: expected 16, 24, or 32 bytes".to_string()),
     }
 }
 
@@ -85,10 +85,10 @@ mod tests {
         let plaintext = [0u8; 16]; // A block of 16 bytes (128 bits)
 
         // Encrypt the plaintext
-        let encrypted = aes_encrypt(&key, &plaintext);
+        let encrypted = aes_encrypt(&key, &plaintext).unwrap();
 
         // Decrypt the encrypted text
-        let decrypted = aes_decrypt(&key, &encrypted);
+        let decrypted = aes_decrypt(&key, &encrypted).unwrap();
 
         // Check if the decrypted text matches the original plaintext
         assert_eq!(
@@ -105,7 +105,7 @@ mod tests {
         let plaintext = [0u8; 16];
 
         // Encrypt the plaintext
-        let encrypted = aes_encrypt(&key, &plaintext);
+        let encrypted = aes_encrypt(&key, &plaintext).unwrap();
 
         // Check that the encrypted text is not the same as the plaintext
         assert_ne!(
@@ -140,10 +140,10 @@ mod tests {
         let plaintext = [0u8; 16]; // A block of 16 bytes (128 bits)
 
         // Encrypt the plaintext
-        let encrypted = aes_encrypt(&key, &plaintext);
+        let encrypted = aes_encrypt(&key, &plaintext).unwrap();
 
         // Decrypt the encrypted text
-        let decrypted = aes_decrypt(&key, &encrypted);
+        let decrypted = aes_decrypt(&key, &encrypted).unwrap();
 
         // Check if the decrypted text matches the original plaintext
         assert_eq!(
@@ -160,10 +160,10 @@ mod tests {
         let plaintext = [0u8; 16]; // A block of 16 bytes (128 bits)
 
         // Encrypt the plaintext
-        let encrypted = aes_encrypt(&key, &plaintext);
+        let encrypted = aes_encrypt(&key, &plaintext).unwrap();
 
         // Decrypt the encrypted text
-        let decrypted = aes_decrypt(&key, &encrypted);
+        let decrypted = aes_decrypt(&key, &encrypted).unwrap();
 
         // Check if the decrypted text matches the original plaintext
         assert_eq!(
@@ -180,10 +180,10 @@ mod tests {
         let plaintext = [0u8; 16]; // A block of 16 bytes (128 bits)
 
         // Encrypt the plaintext
-        let encrypted = aes_encrypt(&key, &plaintext);
+        let encrypted = aes_encrypt(&key, &plaintext).unwrap();
 
         // Decrypt the encrypted text
-        let decrypted = aes_decrypt(&key, &encrypted);
+        let decrypted = aes_decrypt(&key, &encrypted).unwrap();
 
         // Check if the decrypted text matches the original plaintext
         assert_eq!(
