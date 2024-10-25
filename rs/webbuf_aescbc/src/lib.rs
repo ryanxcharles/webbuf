@@ -192,4 +192,57 @@ mod tests {
             "Decrypted data does not match the original plaintext"
         );
     }
+
+    use serde::Deserialize;
+    use std::fs;
+    use std::path::Path;
+
+    // Import AES encryption functions
+    //use super::{aes_decrypt, aes_encrypt};
+
+    #[derive(Deserialize)]
+    struct TestVector {
+        key: Vec<u32>,
+        pt: Vec<u32>,
+        ct: Vec<u32>,
+    }
+
+    fn words_to_bytes(words: &[u32]) -> Vec<u8> {
+        words
+            .iter()
+            .flat_map(|&word| word.to_be_bytes()) // Convert each u32 to 4 big-endian bytes
+            .collect()
+    }
+
+    fn load_test_vectors<P: AsRef<Path>>(path: P) -> Vec<TestVector> {
+        let data = fs::read_to_string(path).expect("Unable to read test vectors file");
+        serde_json::from_str(&data).expect("Error parsing JSON test vectors")
+    }
+
+    #[test]
+    fn test_aes_vectors() {
+        let vectors = load_test_vectors("vectors/vectors-aes.json");
+
+        for (i, vector) in vectors.iter().enumerate() {
+            let key_bytes = words_to_bytes(&vector.key);
+            let pt_bytes = words_to_bytes(&vector.pt);
+            let ct_bytes = words_to_bytes(&vector.ct);
+
+            // Test encryption
+            let encrypted = aes_encrypt(&key_bytes, &pt_bytes).expect("Encryption failed");
+            assert_eq!(
+                encrypted, ct_bytes,
+                "Encryption mismatch in test vector {}",
+                i
+            );
+
+            // Test decryption
+            let decrypted = aes_decrypt(&key_bytes, &ct_bytes).expect("Decryption failed");
+            assert_eq!(
+                decrypted, pt_bytes,
+                "Decryption mismatch in test vector {}",
+                i
+            );
+        }
+    }
 }
