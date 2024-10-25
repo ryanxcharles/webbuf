@@ -5,8 +5,8 @@ TypeScript and Rust/WASM. We give up backwards compatibility for modern
 convenience and speed. Please see the readme for the specific language for more
 information.
 
-- [WebBuf (TypeScript)](./ts/README.md)
-- [WebBuf (Rust)](./rs/README.md)
+- [WebBuf (TypeScript)](./ts/webbuf/README.md)
+- [WebBuf (Rust)](./rs/webbuf/README.md)
 
 # WebBuf (TypeScript)
 
