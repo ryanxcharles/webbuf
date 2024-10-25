@@ -11,15 +11,15 @@ const __dirname = dirname(__filename);
 console.log("Current directory:", __dirname);
 
 // First: Convert WASM to Base64 and write to a JS file
-const wasmPath = join(__dirname, "src", "rs-webbuf-bundler", `${NAME}_bg.wasm`);
+const wasmPath = join(__dirname, "src", `rs-${NAME}-bundler`, `${NAME}_bg.wasm`);
 const wasmBase64 = readFileSync(wasmPath).toString("base64");
 
 const wasmJsCode = `
-import * as webbuf_bg from './webbuf_bg.js';
+import * as ${NAME}_bg from './${NAME}_bg.js';
 const wasmBase64 = "${wasmBase64}";
 const wasmBinary = Uint8Array.from(atob(wasmBase64), c => c.charCodeAt(0));
 const wasmModule = new WebAssembly.Module(wasmBinary);
-const importObject = { './webbuf_bg.js': webbuf_bg };
+const importObject = { './${NAME}_bg.js': ${NAME}_bg };
 const wasm = new WebAssembly.Instance(wasmModule, importObject).exports;
 export { wasm };
 `;
@@ -27,7 +27,7 @@ export { wasm };
 const wasmJsOutputPath = join(
   __dirname,
   "src",
-  "rs-webbuf-inline-base64",
+  "rs-${NAME}-inline-base64",
   `${NAME}_bg.wasm.js`,
 );
 writeFileSync(wasmJsOutputPath, wasmJsCode);
@@ -40,7 +40,7 @@ export { wasm };
 const wasmDTsOutputPath = join(
   __dirname,
   "src",
-  "rs-webbuf-inline-base64",
+  `rs-${NAME}-inline-base64`,
   `${NAME}_bg.wasm.d.ts`,
 );
 writeFileSync(wasmDTsOutputPath, wasmDTsCode);
@@ -49,7 +49,7 @@ writeFileSync(wasmDTsOutputPath, wasmDTsCode);
 const originalFilePath = join(
   __dirname,
   "src",
-  "rs-webbuf-bundler",
+  `rs-${NAME}-bundler`,
   `${NAME}.js`,
 );
 const originalCode = readFileSync(originalFilePath, "utf-8");
@@ -86,7 +86,7 @@ const modifiedCode = originalCode.replace(
 const outputFilePath = join(
   __dirname,
   "src",
-  "rs-webbuf-inline-base64",
+  `rs-${NAME}-inline-base64`,
   `${NAME}.js`,
 );
 writeFileSync(outputFilePath, modifiedCode);
