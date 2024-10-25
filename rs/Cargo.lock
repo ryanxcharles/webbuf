@@ -1854,6 +1854,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "webbuf_aescbc"
+version = "0.8.0"
+dependencies = [
+ "aes",
+]
+
+[[package]]
 name = "webbuf_blake3"
 version = "0.8.5"
 dependencies = [

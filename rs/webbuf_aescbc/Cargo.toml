@@ -1,6 +1,6 @@
 [package]
-name = "earthbucks_aescbc"
-description = "EarthBucks AES-CBC library"
+name = "webbuf_aescbc"
+description = "WebBuf AES-CBC library"
 version = "0.8.0"
 edition = "2021"
 license = "MIT"

@@ -3,6 +3,7 @@ members = [
   "webbuf",
   "webbuf_blake3",
   "webbuf_secp256k1",
+  "webbuf_aescbc",
 ]
 resolver = "2"
 
@@ -10,3 +11,4 @@ resolver = "2"
 webbuf = { path = "./webbuf" }
 webbuf_blake3 = { path = "./webbuf_blake3" }
 webbuf_secp256k1 = { path = "./webbuf_secp256k1" }
+webbuf_aescbc = { path = "./webbuf_aescbc" }
