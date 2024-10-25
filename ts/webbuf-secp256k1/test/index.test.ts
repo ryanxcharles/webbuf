@@ -40,4 +40,11 @@ describe("secp256k1", () => {
     const sum = publicKeyAdd(pubKey1, pubKey2);
     expect(publicKeyVerify(sum)).toBe(true);
   });
+
+  it("should correctly add private keys", () => {
+    const privKey1 = FixedBuf.fromRandom(32);
+    const privKey2 = FixedBuf.fromRandom(32);
+    const sum = privateKeyAdd(privKey1, privKey2);
+    expect(publicKeyVerify(publicKeyCreate(sum))).toBe(true);
+  });
 });
