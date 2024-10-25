@@ -1,6 +1,6 @@
 import {
-  sign as rawSign,
-  verify as rawVerify,
+  sign as raw_sign,
+  verify as raw_verify,
   shared_secret,
   public_key_add,
   public_key_create,
@@ -18,7 +18,7 @@ export function sign(
 ): FixedBuf<64> {
   return FixedBuf.fromBuf(
     64,
-    WebBuf.fromUint8Array(rawSign(digest.buf, privateKey.buf, k.buf)),
+    WebBuf.fromUint8Array(raw_sign(digest.buf, privateKey.buf, k.buf)),
   );
 }
 
@@ -28,7 +28,7 @@ export function verify(
   publicKey: FixedBuf<33>,
 ): boolean {
   try {
-    rawVerify(signature.buf, digest.buf, publicKey.buf);
+    raw_verify(signature.buf, digest.buf, publicKey.buf);
   } catch (e) {
     return false;
   }
