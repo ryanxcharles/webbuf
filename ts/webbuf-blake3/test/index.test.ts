@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { blake3Hash, doubleBlake3Hash, blake3Mac } from "../src/index.js";
-import { WebBuf } from "webbuf";
+import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
 describe("Blake3", () => {

@@ -3,7 +3,7 @@ import {
   double_blake3_hash,
   blake3_mac,
 } from "./rs-webbuf_blake3-inline-base64/webbuf_blake3.js";
-import { WebBuf } from "webbuf";
+import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
 export function blake3Hash(buf: WebBuf): FixedBuf<32> {

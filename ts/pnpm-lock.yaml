@@ -38,9 +38,9 @@ importers:
       '@webbuf/fixedbuf':
         specifier: workspace:^
         version: link:../webbuf-fixedbuf
-      webbuf:
+      '@webbuf/webbuf':
         specifier: workspace:^
-        version: link:../webbuf
+        version: link:../webbuf-webbuf
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
