@@ -95,6 +95,40 @@ importers:
         specifier: ^2.1.3
         version: 2.1.3(@types/node@22.7.9)
 
+  webbuf-secp256k1:
+    dependencies:
+      '@webbuf/fixedbuf':
+        specifier: workspace:^
+        version: link:../webbuf-fixedbuf
+      webbuf:
+        specifier: workspace:^
+        version: link:../webbuf
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^1.9.4
+        version: 1.9.4
+      '@types/node':
+        specifier: ^22.7.9
+        version: 22.7.9
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.10(@types/node@22.7.9)
+      vitest:
+        specifier: ^2.1.3
+        version: 2.1.3(@types/node@22.7.9)
+
 packages:
 
   '@biomejs/biome@1.9.4':
