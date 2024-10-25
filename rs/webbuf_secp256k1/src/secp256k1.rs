@@ -233,7 +233,7 @@ pub fn shared_secret(priv_key_buf: &[u8], pub_key_buf: &[u8]) -> Result<Vec<u8>,
 #[cfg(test)]
 mod tests {
     use super::*;
-    use earthbucks_blake3;
+    use webbuf_blake3;
     use hex_literal::hex;
     use log::debug;
     use rfc6979::consts::U32;
@@ -284,7 +284,7 @@ mod tests {
         let priv_key = [0x01; 32];
         let message = [0x02; 32];
 
-        let blake3_k: [u8; 32] = earthbucks_blake3::hash::blake3_mac(&priv_key, &message)
+        let blake3_k: [u8; 32] = webbuf_blake3::blake3_mac(&priv_key, &message)
             .unwrap()
             .try_into()
             .unwrap();
@@ -302,7 +302,7 @@ mod tests {
         let message = [0x02; 32];
         let invalid_message = [0x03; 32];
 
-        let blake3_k: [u8; 32] = earthbucks_blake3::hash::blake3_mac(&priv_key, &message)
+        let blake3_k: [u8; 32] = webbuf_blake3::blake3_mac(&priv_key, &message)
             .unwrap()
             .try_into()
             .unwrap();
