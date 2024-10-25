@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "webbuf"
+]
+resolver = "2"
+
+[patch.crates-io]
+webbuf = { path = "./webbuf" }
