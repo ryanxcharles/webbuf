@@ -27,7 +27,7 @@ export { wasm };
 const wasmJsOutputPath = join(
   __dirname,
   "src",
-  "rs-${NAME}-inline-base64",
+  `rs-${NAME}-inline-base64`,
   `${NAME}_bg.wasm.js`,
 );
 writeFileSync(wasmJsOutputPath, wasmJsCode);
