@@ -45,7 +45,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@webbuf/fixedbuf": "workspace:^",
-    "webbuf": "workspace:^"
+    "@webbuf/webbuf": "workspace:^"
   },
   "devDependencies": {
     "@webbuf/blake3": "^3.0.13",

@@ -100,9 +100,9 @@ importers:
       '@webbuf/fixedbuf':
         specifier: workspace:^
         version: link:../webbuf-fixedbuf
-      webbuf:
+      '@webbuf/webbuf':
         specifier: workspace:^
-        version: link:../webbuf
+        version: link:../webbuf-webbuf
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -112,7 +112,7 @@ importers:
         version: 22.7.9
       '@webbuf/blake3':
         specifier: ^3.0.13
-        version: 3.0.13(@webbuf/fixedbuf@webbuf-fixedbuf)(webbuf@webbuf)
+        version: 3.0.13(@webbuf/fixedbuf@webbuf-fixedbuf)(webbuf@3.0.12)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1249,10 +1249,10 @@ snapshots:
       loupe: 3.1.2
       tinyrainbow: 1.2.0
 
-  '@webbuf/blake3@3.0.13(@webbuf/fixedbuf@webbuf-fixedbuf)(webbuf@webbuf)':
+  '@webbuf/blake3@3.0.13(@webbuf/fixedbuf@webbuf-fixedbuf)(webbuf@3.0.12)':
     dependencies:
       '@webbuf/fixedbuf': link:webbuf-fixedbuf
-      webbuf: link:webbuf
+      webbuf: 3.0.12
 
   ansi-regex@5.0.1: {}
 

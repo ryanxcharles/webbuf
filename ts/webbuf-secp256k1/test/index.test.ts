@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "webbuf";
+import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 import {
   sign,

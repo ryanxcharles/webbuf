@@ -8,7 +8,7 @@ import {
   private_key_add,
   private_key_verify,
 } from "./rs-webbuf_secp256k1-inline-base64/webbuf_secp256k1.js";
-import { WebBuf } from "webbuf";
+import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
 export function sign(
