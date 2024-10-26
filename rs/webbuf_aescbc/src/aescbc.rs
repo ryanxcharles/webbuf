@@ -198,16 +198,13 @@ mod tests {
         let padded = pkcs7_pad(&buf, 16);
         assert_eq!(padded, vec![1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8]);
 
-        // Full block padding - you can't pad a full block
-        // let buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        // let padded = pkcs7_pad(&buf, 16);
-        // assert_eq!(
-        //     padded,
-        //     vec![
-        //         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16,
-        //         16, 16, 16, 16, 16, 16, 16, 16, 16
-        //     ]
-        // );
+        // Full block padding of empty block
+        let buf = vec![];
+        let padded = pkcs7_pad(&buf, 16);
+        assert_eq!(
+            padded,
+            vec![16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16]
+        );
 
         // Edge case: Empty buffer
         let buf: Vec<u8> = vec![];
@@ -222,7 +219,7 @@ mod tests {
         let unpadded = pkcs7_unpad(&padded_buf);
         assert_eq!(unpadded, vec![1, 2, 3, 4, 5, 6, 7, 8]);
 
-        // Full block padding
+        // Full block padding of empty block
         let padded_buf = vec![
             16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
         ];
