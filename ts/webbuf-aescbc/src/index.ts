@@ -11,7 +11,6 @@ import { FixedBuf } from "@webbuf/fixedbuf";
  * @param plaintext The plaintext to encrypte
  * @param aesKey The AES key to use
  * @param iv The IV to use (optional)
- * @param concatIv Whether to concatenate the IV with the ciphertext
  * @returns The encrypted ciphertext
  * @throws If the keys are not the correct length
  */
