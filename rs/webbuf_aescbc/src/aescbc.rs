@@ -129,6 +129,9 @@ pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Ve
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde::Deserialize;
+    use std::fs;
+    use std::path::Path;
 
     #[test]
     fn test_xor_bufs() {
@@ -370,5 +373,57 @@ mod tests {
 
         // Check that decrypted text matches the original plaintext
         assert_eq!(decrypted_text, plaintext);
+    }
+
+    // Struct for test vectors
+    #[derive(Deserialize)]
+    struct TestVector {
+        key: String,
+        iv: String,
+        pt: String,
+        ct: String,
+    }
+
+    // Convert hex string to Vec<u8>
+    fn hex_to_bytes(hex: &str) -> Vec<u8> {
+        (0..hex.len())
+            .step_by(2)
+            .map(|i| u8::from_str_radix(&hex[i..i + 2], 16).expect("Invalid hex"))
+            .collect()
+    }
+
+    // Load test vectors from a JSON file
+    fn load_test_vectors<P: AsRef<Path>>(path: P) -> Vec<TestVector> {
+        let data = fs::read_to_string(path).expect("Unable to read test vectors file");
+        serde_json::from_str(&data).expect("Error parsing JSON test vectors")
+    }
+
+    #[test]
+    fn test_aes_cbc_with_standard_vectors() {
+        let vectors = load_test_vectors("vectors/vectors-cbc.json");
+
+        for (i, vector) in vectors.iter().enumerate() {
+            // Convert hex strings to binary
+            let key = hex_to_bytes(&vector.key);
+            let iv = hex_to_bytes(&vector.iv);
+            let plaintext = hex_to_bytes(&vector.pt);
+            let expected_ciphertext = hex_to_bytes(&vector.ct);
+
+            // Test encryption
+            let ciphertext = encrypt_aescbc(&plaintext, &key, &iv).expect("Encryption failed");
+            assert_eq!(
+                ciphertext, expected_ciphertext,
+                "Encryption failed on test vector {}",
+                i
+            );
+
+            // Test decryption
+            let decrypted_text = decrypt_aescbc(&ciphertext, &key, &iv).expect("Decryption failed");
+            assert_eq!(
+                decrypted_text, plaintext,
+                "Decryption failed on test vector {}",
+                i
+            );
+        }
     }
 }
