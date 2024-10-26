@@ -53,7 +53,7 @@ fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
     if padded_buf.is_empty() {
         panic!("Empty buffer");
     }
-    if padded_buf.len() % 16 != 0 {
+    if padded_buf.len() > 16 {
         panic!("Invalid padding");
     }
 
@@ -224,14 +224,11 @@ mod tests {
 
         // Full block padding
         let padded_buf = vec![
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-            16, 16, 16, 16, 16, 16, 16, 16,
+            16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
         ];
         let unpadded = pkcs7_unpad(&padded_buf);
-        assert_eq!(
-            unpadded,
-            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-        );
+        let empty_vec: Vec<u8> = vec![];
+        assert_eq!(unpadded, empty_vec);
     }
 
     #[test]
