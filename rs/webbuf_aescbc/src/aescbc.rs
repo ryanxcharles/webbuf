@@ -11,15 +11,6 @@ fn xor_bufs(buf1: &[u8], buf2: &[u8]) -> Vec<u8> {
         .collect()
 }
 
-// export function pkcs7Pad(buf: WebBuf, blockSize: number) {
-//   const bytesize = blockSize / 8;
-//   const padbytesize = bytesize - buf.length;
-//   const pad = WebBuf.alloc(padbytesize);
-//   pad.fill(padbytesize);
-//   const paddedbuf = WebBuf.concat([buf, pad]);
-//   return paddedbuf;
-// }
-
 // PKCS#7 Padding
 fn pkcs7_pad(buf: &[u8], block_size: usize) -> Vec<u8> {
     if block_size == 0 {
@@ -33,20 +24,6 @@ fn pkcs7_pad(buf: &[u8], block_size: usize) -> Vec<u8> {
     padded_buf.extend(vec![pad_size as u8; pad_size]);
     padded_buf
 }
-
-// export function pkcs7Unpad(paddedbuf: WebBuf) {
-//   const padlength = paddedbuf[paddedbuf.length - 1] as number;
-//   const padbuf = paddedbuf.slice(
-//     (paddedbuf.length as number) - padlength,
-//     paddedbuf.length as number,
-//   );
-//   const padbuf2 = WebBuf.alloc(padlength);
-//   padbuf2.fill(padlength);
-//   if (!padbuf.equals(padbuf2)) {
-//     throw new Error("invalid padding");
-//   }
-//   return paddedbuf.slice(0, paddedbuf.length - padlength);
-// }
 
 // PKCS#7 Unpadding
 fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
@@ -71,23 +48,6 @@ fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
     // Return buffer without the padding bytes
     padded_buf[..padded_buf.len() - pad_size].to_vec()
 }
-
-// export function buf2BlocksBuf(buf: WebBuf, blockSize: number) {
-//   const bytesize = blockSize / 8;
-//   const blockBufs = [];
-
-//   for (let i = 0; i <= buf.length / bytesize; i++) {
-//     let blockBuf = buf.slice(i * bytesize, i * bytesize + bytesize);
-
-//     if (blockBuf.length < blockSize) {
-//       blockBuf = pkcs7Pad(blockBuf, blockSize);
-//     }
-
-//     blockBufs.push(blockBuf);
-//   }
-
-//   return blockBufs;
-// }
 
 // Splits a buffer into blocks of a specified size, padding if necessary
 fn buf_to_blocks(buf: &[u8], block_size: usize) -> Vec<Vec<u8>> {
@@ -123,7 +83,7 @@ pub fn encrypt_aescbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec
     let block_size = 16;
 
     if iv.len() != block_size || ![16, 24, 32].contains(&aes_key.len()) {
-        panic!("Invalid IV or key size");
+        return Err("Invalid IV or key size".to_string());
     }
 
     let blocks = buf_to_blocks(plaintext, block_size);
@@ -144,17 +104,20 @@ pub fn encrypt_aescbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec
 pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
-    let ciphertext_blocks = if iv.len() == block_size {
-        ciphertext[block_size..]
-            .chunks(block_size)
-            .map(|chunk| chunk.to_vec())
-            .collect::<Vec<_>>()
-    } else {
-        panic!("Invalid IV size")
-    };
+    if iv.len() != block_size {
+        return Err("Invalid IV size".to_string());
+    }
+
+    let ciphertext_blocks = ciphertext
+        .chunks(block_size)
+        .map(|chunk| chunk.to_vec())
+        .collect::<Vec<_>>();
 
     let mut plaintext_blocks = vec![];
     let mut prev_block = iv.to_vec();
+
+    // println!("ciphertext: {:?}", ciphertext);
+    // println!("ciphertext_blocks: {:?}", ciphertext_blocks);
 
     for block in ciphertext_blocks {
         let decrypted_block = aes_decrypt(aes_key, &block)?;
@@ -299,5 +262,116 @@ mod tests {
         let blocks = vec![vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1]];
         let buf = blocks_to_buf(blocks);
         assert_eq!(buf, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    }
+
+    // Sample AES key and IV for tests
+    const AES_KEY_128: [u8; 16] = [0x00; 16];
+    const AES_KEY_192: [u8; 24] = [0x00; 24];
+    const AES_KEY_256: [u8; 32] = [0x00; 32];
+    const IV: [u8; 16] = [0x00; 16];
+
+    #[test]
+    fn test_encrypt_decrypt_aescbc_128bit_key() {
+        let plaintext = b"Hello, AES-CBC!";
+
+        // Encrypt with AES-128 and verify it decrypts correctly
+        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let decrypted_text =
+            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+
+        // Check that decrypted text matches the original plaintext
+        assert_eq!(decrypted_text, plaintext);
+    }
+
+    #[test]
+    fn test_encrypt_decrypt_aescbc_192bit_key() {
+        let plaintext = b"Testing AES with 192-bit key.";
+
+        // Encrypt with AES-192 and verify it decrypts correctly
+        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_192, &IV).expect("Encryption failed");
+        let decrypted_text =
+            decrypt_aescbc(&ciphertext, &AES_KEY_192, &IV).expect("Decryption failed");
+
+        // Check that decrypted text matches the original plaintext
+        assert_eq!(decrypted_text, plaintext);
+    }
+
+    #[test]
+    fn test_encrypt_decrypt_aescbc_256bit_key() {
+        let plaintext = b"Testing AES with 256-bit key.";
+
+        // Encrypt with AES-256 and verify it decrypts correctly
+        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_256, &IV).expect("Encryption failed");
+        let decrypted_text =
+            decrypt_aescbc(&ciphertext, &AES_KEY_256, &IV).expect("Decryption failed");
+
+        // Check that decrypted text matches the original plaintext
+        assert_eq!(decrypted_text, plaintext);
+    }
+
+    #[test]
+    fn test_encrypt_decrypt_empty_plaintext() {
+        let plaintext = b"";
+
+        // Encrypt and decrypt an empty plaintext
+        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let decrypted_text =
+            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+
+        // Check that decrypted text matches the original (empty) plaintext
+        assert_eq!(decrypted_text, plaintext);
+    }
+
+    #[test]
+    fn test_invalid_iv_length() {
+        let plaintext = b"Invalid IV length test.";
+        let invalid_iv = [0x00; 8]; // IV that is not 16 bytes
+
+        // Ensure that encryption with an invalid IV length fails
+        let result = encrypt_aescbc(plaintext, &AES_KEY_128, &invalid_iv);
+        assert!(
+            result.is_err(),
+            "Expected an error due to invalid IV length"
+        );
+
+        // Ensure that decryption with an invalid IV length fails
+        let result = decrypt_aescbc(plaintext, &AES_KEY_128, &invalid_iv);
+        assert!(
+            result.is_err(),
+            "Expected an error due to invalid IV length"
+        );
+    }
+
+    #[test]
+    fn test_invalid_key_length() {
+        let plaintext = b"Invalid key length test.";
+        let invalid_key = [0x00; 10]; // Key that is not 128, 192, or 256 bits
+
+        // Ensure that encryption with an invalid key length fails
+        let result = encrypt_aescbc(plaintext, &invalid_key, &IV);
+        assert!(
+            result.is_err(),
+            "Expected an error due to invalid key length"
+        );
+
+        // Ensure that decryption with an invalid key length fails
+        let result = decrypt_aescbc(plaintext, &invalid_key, &IV);
+        assert!(
+            result.is_err(),
+            "Expected an error due to invalid key length"
+        );
+    }
+
+    #[test]
+    fn test_encrypt_decrypt_with_padding() {
+        let plaintext = b"Plaintext with length not multiple of block size";
+
+        // Encrypt and decrypt a plaintext that requires padding
+        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let decrypted_text =
+            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+
+        // Check that decrypted text matches the original plaintext
+        assert_eq!(decrypted_text, plaintext);
     }
 }
