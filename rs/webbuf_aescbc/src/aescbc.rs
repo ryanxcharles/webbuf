@@ -1,5 +1,8 @@
 use crate::aes::{aes_decrypt, aes_encrypt};
 
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
+
 // Helper function to XOR two byte slices
 fn xor_bufs(buf1: &[u8], buf2: &[u8]) -> Vec<u8> {
     if buf1.len() != buf2.len() {
@@ -79,6 +82,7 @@ fn blocks_to_buf(blocks: Vec<Vec<u8>>) -> Vec<u8> {
 }
 
 // AES-CBC Encrypt
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub fn aescbc_encrypt(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
@@ -101,6 +105,7 @@ pub fn aescbc_encrypt(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec
 }
 
 // AES-CBC Decrypt
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub fn aescbc_decrypt(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 

@@ -2,12 +2,16 @@ use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockDecrypt, BlockEncrypt, KeyInit};
 use aes::{Aes128, Aes192, Aes256}; // Import AES with different key sizes
 
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
+
 pub enum AesKeySize {
     Aes128,
     Aes192,
     Aes256,
 }
 
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
     if key.len() != 16 && key.len() != 24 && key.len() != 32 {
         return Err("Invalid key size: expected 16, 24, or 32 bytes".to_string());
@@ -41,6 +45,7 @@ pub fn aes_encrypt(key: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
     }
 }
 
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub fn aes_decrypt(key: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
     if key.len() != 16 && key.len() != 24 && key.len() != 32 {
         return Err("Invalid key size: expected 16, 24, or 32 bytes".to_string());
