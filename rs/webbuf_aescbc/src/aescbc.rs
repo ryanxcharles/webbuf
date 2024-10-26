@@ -52,7 +52,7 @@ fn blocks_to_buf(blocks: Vec<Vec<u8>>) -> Vec<u8> {
 }
 
 // AES-CBC Encrypt
-pub fn encrypt_cbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
+pub fn encrypt_aescbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     if iv.len() != block_size || ![16, 24, 32].contains(&aes_key.len()) {
@@ -74,7 +74,7 @@ pub fn encrypt_cbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8
 }
 
 // AES-CBC Decrypt
-pub fn decrypt_cbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
+pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     let ciphertext_blocks = if iv.len() == block_size {
