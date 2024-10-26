@@ -4,7 +4,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 // Define constants for filenames
-const NAME = "webbuf_secp256k1";
+const NAME = "webbuf_aescbc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
