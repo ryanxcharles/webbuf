@@ -15,7 +15,7 @@ import { FixedBuf } from "@webbuf/fixedbuf";
  * @returns The encrypted ciphertext
  * @throws If the keys are not the correct length
  */
-export function aescbEncrypt(
+export function aescbcEncrypt(
   plaintext: WebBuf,
   aesKey: FixedBuf<32>,
   iv: FixedBuf<16> = FixedBuf.fromRandom(16),
@@ -34,7 +34,7 @@ export function aescbEncrypt(
  * @throws If the data is not a multiple of 16 bytes
  * @throws If the data is less than 16 bytes long and no IV is provided
  */
-export function aescbDecrypt(ciphertext: WebBuf, aesKey: FixedBuf<32>): WebBuf {
+export function aescbcDecrypt(ciphertext: WebBuf, aesKey: FixedBuf<32>): WebBuf {
   if (ciphertext.length < 16) {
     throw new Error("Data must be at least 16 bytes long");
   }
