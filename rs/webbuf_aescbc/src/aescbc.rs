@@ -52,7 +52,7 @@ fn blocks_to_buf(blocks: Vec<Vec<u8>>) -> Vec<u8> {
 }
 
 // AES-CBC Encrypt
-pub fn encrypt_cbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Vec<u8> {
+pub fn encrypt_cbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     if iv.len() != block_size || ![16, 24, 32].contains(&aes_key.len()) {
@@ -65,16 +65,16 @@ pub fn encrypt_cbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Vec<u8> {
 
     for block in blocks {
         let xored = xor_bufs(&block, &prev_block);
-        let encrypted_block = aes_encrypt(aes_key, &xored);
+        let encrypted_block = aes_encrypt(aes_key, &xored)?;
         ciphertext.extend(&encrypted_block);
         prev_block = encrypted_block;
     }
 
-    ciphertext
+    Ok(ciphertext)
 }
 
 // AES-CBC Decrypt
-pub fn decrypt_cbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Vec<u8> {
+pub fn decrypt_cbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     let ciphertext_blocks = if iv.len() == block_size {
@@ -90,11 +90,11 @@ pub fn decrypt_cbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Vec<u8> {
     let mut prev_block = iv.to_vec();
 
     for block in ciphertext_blocks {
-        let decrypted_block = aes_decrypt(aes_key, &block);
+        let decrypted_block = aes_decrypt(aes_key, &block)?;
         let plaintext_block = xor_bufs(&decrypted_block, &prev_block);
         plaintext_blocks.push(plaintext_block);
         prev_block = block;
     }
 
-    blocks_to_buf(plaintext_blocks)
+    Ok(blocks_to_buf(plaintext_blocks))
 }
