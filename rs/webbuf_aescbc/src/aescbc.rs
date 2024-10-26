@@ -2,6 +2,9 @@ use crate::aes::{aes_decrypt, aes_encrypt};
 
 // Helper function to XOR two byte slices
 fn xor_bufs(buf1: &[u8], buf2: &[u8]) -> Vec<u8> {
+    if buf1.len() != buf2.len() {
+        panic!("Buffers must be the same length");
+    }
     buf1.iter()
         .zip(buf2.iter())
         .map(|(&x1, &x2)| x1 ^ x2)
@@ -10,6 +13,9 @@ fn xor_bufs(buf1: &[u8], buf2: &[u8]) -> Vec<u8> {
 
 // PKCS#7 Padding
 fn pkcs7_pad(buf: &[u8], block_size: usize) -> Vec<u8> {
+    if block_size > 256 {
+        panic!("Block size must be less than 256");
+    }
     let pad_size = block_size - (buf.len() % block_size);
     let mut padded_buf = buf.to_vec();
     padded_buf.extend(vec![pad_size as u8; pad_size]);
@@ -18,7 +24,16 @@ fn pkcs7_pad(buf: &[u8], block_size: usize) -> Vec<u8> {
 
 // PKCS#7 Unpadding
 fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
+    if padded_buf.is_empty() {
+        panic!("Empty buffer");
+    }
+    if padded_buf.len() % 16 != 0 {
+        panic!("Invalid padding");
+    }
     let pad_size = *padded_buf.last().unwrap() as usize;
+    if pad_size > padded_buf.len() {
+        panic!("Invalid padding");
+    }
     padded_buf[..padded_buf.len() - pad_size].to_vec()
 }
 
