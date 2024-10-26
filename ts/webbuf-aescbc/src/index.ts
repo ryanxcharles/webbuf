@@ -5,38 +5,44 @@ import {
 import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
-export function aescbDecrypt(
-  ciphertext: WebBuf,
-  aesKey: FixedBuf<32>,
-  iv?: FixedBuf<16>,
-): WebBuf {
-  if (iv === undefined) {
-    if (ciphertext.length < 16) {
-      throw new Error("Data must be at least 16 bytes long");
-    }
-    const iv = FixedBuf.fromBuf(16, ciphertext.slice(0, 16));
-    ciphertext = ciphertext.slice(16);
-    if (ciphertext.length % 16 !== 0) {
-      throw new Error("Data length must be a multiple of 16");
-    }
-
-    return WebBuf.fromUint8Array(aescbc_decrypt(ciphertext, aesKey.buf, iv.buf));
-  }
-  if (ciphertext.length % 16 !== 0) {
-    throw new Error("Data length must be a multiple of 16");
-  }
-  return WebBuf.fromUint8Array(aescbc_decrypt(ciphertext, aesKey.buf, iv.buf));
-}
-
+/**
+ * Encrypts a plaintext using AES-CBC with the provided key and IV.
+ * If the IV is not provided, a random IV is generated.
+ * @param plaintext The plaintext to encrypte
+ * @param aesKey The AES key to use
+ * @param iv The IV to use (optional)
+ * @param concatIv Whether to concatenate the IV with the ciphertext
+ * @returns The encrypted ciphertext
+ * @throws If the keys are not the correct length
+ */
 export function aescbEncrypt(
   plaintext: WebBuf,
   aesKey: FixedBuf<32>,
   iv: FixedBuf<16> = FixedBuf.fromRandom(16),
-  concatIv: boolean = true,
 ): WebBuf {
   const encrypted = aescbc_encrypt(plaintext, aesKey.buf, iv.buf);
-  if (concatIv) {
-    return WebBuf.concat([iv.buf, WebBuf.fromUint8Array(encrypted)]);
+  return WebBuf.concat([iv.buf, WebBuf.fromUint8Array(encrypted)]);
+}
+
+/**
+ * Decrypts a ciphertext using AES-CBC with the provided key and IV.
+ * If the IV is not provided, the first 16 bytes of the ciphertext are used.
+ * @param ciphertext The ciphertext to decrypt
+ * @param aesKey The AES key to use
+ * @param iv The IV to use
+ * @returns The decrypted plaintext
+ * @throws If the data is not a multiple of 16 bytes
+ * @throws If the data is less than 16 bytes long and no IV is provided
+ */
+export function aescbDecrypt(ciphertext: WebBuf, aesKey: FixedBuf<32>): WebBuf {
+  if (ciphertext.length < 16) {
+    throw new Error("Data must be at least 16 bytes long");
   }
-  return WebBuf.fromUint8Array(encrypted);
+  const iv = FixedBuf.fromBuf(16, ciphertext.slice(0, 16));
+  ciphertext = ciphertext.slice(16);
+  if (ciphertext.length % 16 !== 0) {
+    throw new Error("Data length must be a multiple of 16");
+  }
+
+  return WebBuf.fromUint8Array(aescbc_decrypt(ciphertext, aesKey.buf, iv.buf));
 }
