@@ -79,7 +79,7 @@ fn blocks_to_buf(blocks: Vec<Vec<u8>>) -> Vec<u8> {
 }
 
 // AES-CBC Encrypt
-pub fn encrypt_aescbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
+pub fn aescbc_encrypt(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     if iv.len() != block_size || ![16, 24, 32].contains(&aes_key.len()) {
@@ -101,7 +101,7 @@ pub fn encrypt_aescbc(plaintext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec
 }
 
 // AES-CBC Decrypt
-pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
+pub fn aescbc_decrypt(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Vec<u8>, String> {
     let block_size = 16;
 
     if iv.len() != block_size {
@@ -275,9 +275,9 @@ mod tests {
         let plaintext = b"Hello, AES-CBC!";
 
         // Encrypt with AES-128 and verify it decrypts correctly
-        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let ciphertext = aescbc_encrypt(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
         let decrypted_text =
-            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+            aescbc_decrypt(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
 
         // Check that decrypted text matches the original plaintext
         assert_eq!(decrypted_text, plaintext);
@@ -288,9 +288,9 @@ mod tests {
         let plaintext = b"Testing AES with 192-bit key.";
 
         // Encrypt with AES-192 and verify it decrypts correctly
-        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_192, &IV).expect("Encryption failed");
+        let ciphertext = aescbc_encrypt(plaintext, &AES_KEY_192, &IV).expect("Encryption failed");
         let decrypted_text =
-            decrypt_aescbc(&ciphertext, &AES_KEY_192, &IV).expect("Decryption failed");
+            aescbc_decrypt(&ciphertext, &AES_KEY_192, &IV).expect("Decryption failed");
 
         // Check that decrypted text matches the original plaintext
         assert_eq!(decrypted_text, plaintext);
@@ -301,9 +301,9 @@ mod tests {
         let plaintext = b"Testing AES with 256-bit key.";
 
         // Encrypt with AES-256 and verify it decrypts correctly
-        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_256, &IV).expect("Encryption failed");
+        let ciphertext = aescbc_encrypt(plaintext, &AES_KEY_256, &IV).expect("Encryption failed");
         let decrypted_text =
-            decrypt_aescbc(&ciphertext, &AES_KEY_256, &IV).expect("Decryption failed");
+            aescbc_decrypt(&ciphertext, &AES_KEY_256, &IV).expect("Decryption failed");
 
         // Check that decrypted text matches the original plaintext
         assert_eq!(decrypted_text, plaintext);
@@ -314,9 +314,9 @@ mod tests {
         let plaintext = b"";
 
         // Encrypt and decrypt an empty plaintext
-        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let ciphertext = aescbc_encrypt(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
         let decrypted_text =
-            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+            aescbc_decrypt(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
 
         // Check that decrypted text matches the original (empty) plaintext
         assert_eq!(decrypted_text, plaintext);
@@ -328,14 +328,14 @@ mod tests {
         let invalid_iv = [0x00; 8]; // IV that is not 16 bytes
 
         // Ensure that encryption with an invalid IV length fails
-        let result = encrypt_aescbc(plaintext, &AES_KEY_128, &invalid_iv);
+        let result = aescbc_encrypt(plaintext, &AES_KEY_128, &invalid_iv);
         assert!(
             result.is_err(),
             "Expected an error due to invalid IV length"
         );
 
         // Ensure that decryption with an invalid IV length fails
-        let result = decrypt_aescbc(plaintext, &AES_KEY_128, &invalid_iv);
+        let result = aescbc_decrypt(plaintext, &AES_KEY_128, &invalid_iv);
         assert!(
             result.is_err(),
             "Expected an error due to invalid IV length"
@@ -348,14 +348,14 @@ mod tests {
         let invalid_key = [0x00; 10]; // Key that is not 128, 192, or 256 bits
 
         // Ensure that encryption with an invalid key length fails
-        let result = encrypt_aescbc(plaintext, &invalid_key, &IV);
+        let result = aescbc_encrypt(plaintext, &invalid_key, &IV);
         assert!(
             result.is_err(),
             "Expected an error due to invalid key length"
         );
 
         // Ensure that decryption with an invalid key length fails
-        let result = decrypt_aescbc(plaintext, &invalid_key, &IV);
+        let result = aescbc_decrypt(plaintext, &invalid_key, &IV);
         assert!(
             result.is_err(),
             "Expected an error due to invalid key length"
@@ -367,9 +367,9 @@ mod tests {
         let plaintext = b"Plaintext with length not multiple of block size";
 
         // Encrypt and decrypt a plaintext that requires padding
-        let ciphertext = encrypt_aescbc(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
+        let ciphertext = aescbc_encrypt(plaintext, &AES_KEY_128, &IV).expect("Encryption failed");
         let decrypted_text =
-            decrypt_aescbc(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
+            aescbc_decrypt(&ciphertext, &AES_KEY_128, &IV).expect("Decryption failed");
 
         // Check that decrypted text matches the original plaintext
         assert_eq!(decrypted_text, plaintext);
@@ -410,7 +410,7 @@ mod tests {
             let expected_ciphertext = hex_to_bytes(&vector.ct);
 
             // Test encryption
-            let ciphertext = encrypt_aescbc(&plaintext, &key, &iv).expect("Encryption failed");
+            let ciphertext = aescbc_encrypt(&plaintext, &key, &iv).expect("Encryption failed");
             assert_eq!(
                 ciphertext, expected_ciphertext,
                 "Encryption failed on test vector {}",
@@ -418,7 +418,7 @@ mod tests {
             );
 
             // Test decryption
-            let decrypted_text = decrypt_aescbc(&ciphertext, &key, &iv).expect("Decryption failed");
+            let decrypted_text = aescbc_decrypt(&ciphertext, &key, &iv).expect("Decryption failed");
             assert_eq!(
                 decrypted_text, plaintext,
                 "Decryption failed on test vector {}",
