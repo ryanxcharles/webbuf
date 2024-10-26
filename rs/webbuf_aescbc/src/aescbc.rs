@@ -113,3 +113,72 @@ pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Ve
 
     Ok(blocks_to_buf(plaintext_blocks))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_xor_bufs() {
+        // Basic test case
+        let buf1 = [0b10101010, 0b11110000];
+        let buf2 = [0b01010101, 0b00001111];
+        let result = xor_bufs(&buf1, &buf2);
+        assert_eq!(result, vec![0b11111111, 0b11111111]);
+
+        // All zeros
+        let buf1 = [0u8; 4];
+        let buf2 = [0u8; 4];
+        let result = xor_bufs(&buf1, &buf2);
+        assert_eq!(result, vec![0, 0, 0, 0]);
+
+        // All ones
+        let buf1 = [0xFFu8; 4];
+        let buf2 = [0xFFu8; 4];
+        let result = xor_bufs(&buf1, &buf2);
+        assert_eq!(result, vec![0, 0, 0, 0]);
+    }
+
+    #[test]
+    fn test_pkcs7_pad() {
+        // Basic test case with 16-byte block size
+        let buf = vec![1, 2, 3, 4, 5, 6, 7, 8];
+        let padded = pkcs7_pad(&buf, 16);
+        assert_eq!(padded, vec![1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8]);
+
+        // Full block padding
+        let buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let padded = pkcs7_pad(&buf, 16);
+        assert_eq!(
+            padded,
+            vec![
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16,
+                16, 16, 16, 16, 16, 16, 16, 16, 16
+            ]
+        );
+
+        // Edge case: Empty buffer
+        let buf: Vec<u8> = vec![];
+        let padded = pkcs7_pad(&buf, 16);
+        assert_eq!(padded, vec![16; 16]);
+    }
+
+    #[test]
+    fn test_pkcs7_unpad() {
+        // Basic unpadding
+        let padded_buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+        let unpadded = pkcs7_unpad(&padded_buf);
+        assert_eq!(unpadded, vec![1, 2, 3, 4, 5, 6, 7, 8]);
+
+        // Full block padding
+        let padded_buf = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+            16, 16, 16, 16, 16, 16, 16, 16,
+        ];
+        let unpadded = pkcs7_unpad(&padded_buf);
+        assert_eq!(
+            unpadded,
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        );
+    }
+}
