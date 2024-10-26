@@ -116,9 +116,6 @@ pub fn decrypt_aescbc(ciphertext: &[u8], aes_key: &[u8], iv: &[u8]) -> Result<Ve
     let mut plaintext_blocks = vec![];
     let mut prev_block = iv.to_vec();
 
-    // println!("ciphertext: {:?}", ciphertext);
-    // println!("ciphertext_blocks: {:?}", ciphertext_blocks);
-
     for block in ciphertext_blocks {
         let decrypted_block = aes_decrypt(aes_key, &block)?;
         let plaintext_block = xor_bufs(&decrypted_block, &prev_block);
