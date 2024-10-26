@@ -11,16 +11,42 @@ fn xor_bufs(buf1: &[u8], buf2: &[u8]) -> Vec<u8> {
         .collect()
 }
 
+// export function pkcs7Pad(buf: WebBuf, blockSize: number) {
+//   const bytesize = blockSize / 8;
+//   const padbytesize = bytesize - buf.length;
+//   const pad = WebBuf.alloc(padbytesize);
+//   pad.fill(padbytesize);
+//   const paddedbuf = WebBuf.concat([buf, pad]);
+//   return paddedbuf;
+// }
+
 // PKCS#7 Padding
 fn pkcs7_pad(buf: &[u8], block_size: usize) -> Vec<u8> {
-    if block_size > 256 {
-        panic!("Block size must be less than 256");
+    if block_size == 0 {
+        panic!("Invalid block size");
+    }
+    if buf.len() >= block_size {
+        panic!("Buffer is already a full block");
     }
     let pad_size = block_size - (buf.len() % block_size);
     let mut padded_buf = buf.to_vec();
     padded_buf.extend(vec![pad_size as u8; pad_size]);
     padded_buf
 }
+
+// export function pkcs7Unpad(paddedbuf: WebBuf) {
+//   const padlength = paddedbuf[paddedbuf.length - 1] as number;
+//   const padbuf = paddedbuf.slice(
+//     (paddedbuf.length as number) - padlength,
+//     paddedbuf.length as number,
+//   );
+//   const padbuf2 = WebBuf.alloc(padlength);
+//   padbuf2.fill(padlength);
+//   if (!padbuf.equals(padbuf2)) {
+//     throw new Error("invalid padding");
+//   }
+//   return paddedbuf.slice(0, paddedbuf.length - padlength);
+// }
 
 // PKCS#7 Unpadding
 fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
@@ -30,18 +56,44 @@ fn pkcs7_unpad(padded_buf: &[u8]) -> Vec<u8> {
     if padded_buf.len() % 16 != 0 {
         panic!("Invalid padding");
     }
+
     let pad_size = *padded_buf.last().unwrap() as usize;
-    if pad_size > padded_buf.len() {
+    if pad_size == 0 || pad_size > padded_buf.len() {
         panic!("Invalid padding");
     }
+
+    // Check if all padding bytes match the pad_size value
+    let padding = &padded_buf[padded_buf.len() - pad_size..];
+    if !padding.iter().all(|&byte| byte as usize == pad_size) {
+        panic!("Invalid padding");
+    }
+
+    // Return buffer without the padding bytes
     padded_buf[..padded_buf.len() - pad_size].to_vec()
 }
+
+// export function buf2BlocksBuf(buf: WebBuf, blockSize: number) {
+//   const bytesize = blockSize / 8;
+//   const blockBufs = [];
+
+//   for (let i = 0; i <= buf.length / bytesize; i++) {
+//     let blockBuf = buf.slice(i * bytesize, i * bytesize + bytesize);
+
+//     if (blockBuf.length < blockSize) {
+//       blockBuf = pkcs7Pad(blockBuf, blockSize);
+//     }
+
+//     blockBufs.push(blockBuf);
+//   }
+
+//   return blockBufs;
+// }
 
 // Splits a buffer into blocks of a specified size, padding if necessary
 fn buf_to_blocks(buf: &[u8], block_size: usize) -> Vec<Vec<u8>> {
     let mut blocks = vec![];
     let mut i = 0;
-    while i < buf.len() {
+    while i <= buf.len() {
         let end = std::cmp::min(i + block_size, buf.len());
         let mut block = buf[i..end].to_vec();
         if block.len() < block_size {
@@ -146,16 +198,16 @@ mod tests {
         let padded = pkcs7_pad(&buf, 16);
         assert_eq!(padded, vec![1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8]);
 
-        // Full block padding
-        let buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let padded = pkcs7_pad(&buf, 16);
-        assert_eq!(
-            padded,
-            vec![
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16,
-                16, 16, 16, 16, 16, 16, 16, 16, 16
-            ]
-        );
+        // Full block padding - you can't pad a full block
+        // let buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        // let padded = pkcs7_pad(&buf, 16);
+        // assert_eq!(
+        //     padded,
+        //     vec![
+        //         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16,
+        //         16, 16, 16, 16, 16, 16, 16, 16, 16
+        //     ]
+        // );
 
         // Edge case: Empty buffer
         let buf: Vec<u8> = vec![];
@@ -180,5 +232,78 @@ mod tests {
             unpadded,
             vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
         );
+    }
+
+    #[test]
+    fn test_buf_to_blocks_exact_block_size() {
+        let buf = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let block_size = 16;
+        let blocks = buf_to_blocks(&buf, block_size);
+        assert_eq!(
+            blocks,
+            vec![
+                vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                vec![16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16]
+            ]
+        );
+    }
+
+    #[test]
+    fn test_buf_to_blocks_with_padding() {
+        let buf = vec![1, 2, 3, 4, 5, 6, 7, 8];
+        let block_size = 16;
+        let blocks = buf_to_blocks(&buf, block_size);
+        assert_eq!(
+            blocks,
+            vec![vec![1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+        );
+    }
+
+    #[test]
+    fn test_buf_to_blocks_multiple_blocks() {
+        let buf = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+        ];
+        let block_size = 16;
+        let blocks = buf_to_blocks(&buf, block_size);
+        assert_eq!(
+            blocks,
+            vec![
+                vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                vec![17, 18, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14]
+            ]
+        );
+    }
+
+    // this panics - as it should
+    // #[test]
+    // fn test_blocks_to_buf_no_padding() {
+    //     let blocks = vec![
+    //         vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+    //     ];
+    //     let buf = blocks_to_buf(blocks);
+    //     assert_eq!(buf, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+    // }
+
+    #[test]
+    fn test_blocks_to_buf_with_unpadding() {
+        let blocks = vec![
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            vec![
+                17, 18, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+            ],
+        ];
+        let buf = blocks_to_buf(blocks);
+        assert_eq!(
+            buf,
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        );
+    }
+
+    #[test]
+    fn test_blocks_to_buf_with_single_byte_padding() {
+        let blocks = vec![vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1]];
+        let buf = blocks_to_buf(blocks);
+        assert_eq!(buf, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     }
 }
