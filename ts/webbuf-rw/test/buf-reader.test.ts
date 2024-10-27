@@ -98,4 +98,38 @@ describe("BufReader", () => {
     // Check that the position has been updated correctly
     expect(bufferReader.pos).toBe(32);
   });
+
+  test("readVarIntBEBuf", () => {
+    let bufferReader = new BufReader(WebBuf.from([0xfd, 0x00, 0x01]));
+    expect(() => bufferReader.readVarIntBEBuf()).toThrow();
+
+    bufferReader = new BufReader(WebBuf.from([0xfe, 0x00, 0x00, 0x00, 0x01]));
+    expect(() => bufferReader.readVarIntBEBuf()).toThrow();
+
+    bufferReader = new BufReader(
+      WebBuf.from([0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01]),
+    );
+    expect(() => bufferReader.readVarIntBEBuf()).toThrow();
+
+    bufferReader = new BufReader(WebBuf.from([0x01]));
+    expect(bufferReader.readVarIntBEBuf().toString("hex")).toEqual(
+      WebBuf.from([0x01]).toString("hex"),
+    );
+  });
+
+  test("readVarInt", () => {
+    let bufferReader = new BufReader(WebBuf.from([0xfd, 0x00, 0x01]));
+    expect(() => bufferReader.readVarIntU64BE()).toThrow();
+
+    bufferReader = new BufReader(WebBuf.from([0xfe, 0x00, 0x00, 0x00, 0x01]));
+    expect(() => bufferReader.readVarIntU64BE()).toThrow();
+
+    bufferReader = new BufReader(
+      WebBuf.from([0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01]),
+    );
+    expect(() => bufferReader.readVarIntU64BE()).toThrow();
+
+    bufferReader = new BufReader(WebBuf.from([0x01]));
+    expect(bufferReader.readVarIntU64BE().bn).toEqual(BigInt(1));
+  });
 });

@@ -112,4 +112,52 @@ export class BufReader {
     this.pos += 32;
     return val;
   }
+
+  readVarIntBEBuf(): WebBuf {
+    const first = this.readU8().n;
+    if (first === 0xfd) {
+      const buf = this.read(2);
+      if (buf.readUint16BE(0) < 0xfd) {
+        throw new Error("non-minimal encoding");
+      }
+      return WebBuf.concat([WebBuf.from([first]), buf]);
+    }
+    if (first === 0xfe) {
+      const buf = this.read(4);
+      if (buf.readUint32BE(0) < 0x10000) {
+        throw new Error("non-minimal encoding");
+      }
+      return WebBuf.concat([WebBuf.from([first]), buf]);
+    }
+    if (first === 0xff) {
+      const buf = this.read(8);
+      const bn = buf.readBigUint64BE(0);
+      if (bn < 0x100000000n) {
+        throw new Error("non-minimal encoding");
+      }
+      return WebBuf.concat([WebBuf.from([first]), buf]);
+    }
+    return WebBuf.from([first]);
+  }
+
+  readVarIntU64BE(): U64BE {
+    const buf = this.readVarIntBEBuf();
+    const first = buf.readUint8(0);
+    let value: bigint;
+    switch (first) {
+      case 0xfd:
+        value = BigInt(buf.readUint16BE(1));
+        break;
+      case 0xfe:
+        value = BigInt(buf.readUint32BE(1));
+        break;
+      case 0xff:
+        value = buf.readBigUint64BE(1);
+        break;
+      default:
+        value = BigInt(first);
+        break;
+    }
+    return U64BE.fromBn(value);
+  }
 }
