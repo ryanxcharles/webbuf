@@ -1,6 +1,60 @@
 import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
+export abstract class FixedU<N extends number> {
+  protected buf: FixedBuf<N>;
+
+  constructor(buf: FixedBuf<N>) {
+    this.buf = buf;
+  }
+
+  abstract fromBn(bn: bigint): FixedU<N>;
+  abstract toBn(): bigint;
+  abstract add(other: FixedU<N>): FixedU<N>;
+  abstract sub(other: FixedU<N>): FixedU<N>;
+  abstract mul(other: FixedU<N>): FixedU<N>;
+  abstract div(other: FixedU<N>): FixedU<N>;
+  abstract get n(): number;
+  abstract get bn(): bigint;
+}
+
+export class FixedU8 extends FixedU<1> {
+  fromBn(bn: bigint): FixedU8 {
+    if (bn < 0 || bn > 0xffn) {
+      throw new Error("Invalid number");
+    }
+    return new FixedU8(FixedBuf.fromBuf(1, WebBuf.fromArray([Number(bn)])));
+  }
+
+  toBn(): bigint {
+    return BigInt(this.buf.buf[0] as number);
+  }
+
+  add(other: FixedU8): FixedU8 {
+    return this.fromBn(this.toBn() + other.toBn());
+  }
+
+  sub(other: FixedU8): FixedU8 {
+    return this.fromBn(this.toBn() - other.toBn());
+  }
+
+  mul(other: FixedU8): FixedU8 {
+    return this.fromBn(this.toBn() * other.toBn());
+  }
+
+  div(other: FixedU8): FixedU8 {
+    return this.fromBn(this.toBn() / other.toBn());
+  }
+
+  get n(): number {
+    return Number(this.toBn());
+  }
+
+  get bn(): bigint {
+    return this.toBn();
+  }
+}
+
 export abstract class BasicNumber<U extends BasicNumber<U>> {
   protected value: bigint;
   protected min: bigint;
