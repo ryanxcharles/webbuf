@@ -46,9 +46,8 @@
   "dependencies": {
     "@webbuf/fixedbuf": "workspace:^",
     "@webbuf/webbuf": "workspace:^",
-    "@webbuf/blake3": "workspace:^",
     "@webbuf/numbers": "workspace:^",
-    "@webbuf/secp256k1": "workspace:^"
+    "@webbuf/rw": "workspace:^"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

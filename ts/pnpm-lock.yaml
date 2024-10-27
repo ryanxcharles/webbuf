@@ -19,6 +19,9 @@ importers:
       '@webbuf/numbers':
         specifier: workspace:^
         version: link:../webbuf-numbers
+      '@webbuf/rw':
+        specifier: workspace:^
+        version: link:../webbuf-rw
       '@webbuf/secp256k1':
         specifier: workspace:^
         version: link:../webbuf-secp256k1
