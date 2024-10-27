@@ -1,6 +1,6 @@
 {
   "name": "@webbuf/webbuf",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
   "repository": {
     "type": "git",
