@@ -294,6 +294,9 @@ importers:
 
   webbuf-secp256k1:
     dependencies:
+      '@webbuf/blake3':
+        specifier: workspace:^
+        version: link:../webbuf-blake3
       '@webbuf/fixedbuf':
         specifier: workspace:^
         version: link:../webbuf-fixedbuf
@@ -307,9 +310,6 @@ importers:
       '@types/node':
         specifier: ^22.7.9
         version: 22.7.9
-      '@webbuf/blake3':
-        specifier: ^3.0.13
-        version: 3.0.13(@webbuf/fixedbuf@webbuf-fixedbuf)(webbuf@3.0.12)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
