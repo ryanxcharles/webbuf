@@ -150,11 +150,11 @@ importers:
   webbuf-numbers:
     dependencies:
       '@webbuf/fixedbuf':
-        specifier: ^3
-        version: 3.0.13(webbuf@3.0.12)
+        specifier: workspace:^
+        version: link:../webbuf-fixedbuf
       '@webbuf/webbuf':
-        specifier: ^3
-        version: 3.0.14
+        specifier: workspace:^
+        version: link:../webbuf-webbuf
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -708,16 +708,6 @@ packages:
     peerDependencies:
       '@webbuf/fixedbuf': ^3.0.13
       webbuf: ^3.0.13
-
-  '@webbuf/fixedbuf@3.0.13':
-    resolution: {integrity: sha512-kVBjVuVvRFqZtO06jM8fFTn/8jfT+ArKslEjftrJDS/g5Yt05+0ogEsoVx3VWmPBM2MNOaxZogzcpeV+lpEnZw==}
-    engines: {node: '>=20.8.0'}
-    peerDependencies:
-      webbuf: ^3.0.12
-
-  '@webbuf/webbuf@3.0.14':
-    resolution: {integrity: sha512-EkYKsKU6kMEc716/QvAZnS9ANPhWNCfEJ03Vy0Ai6ncZR1GHTquZ+FUDaKY/YOxQ83rDPX+rLmhg+pRbsPuoLA==}
-    engines: {node: '>=20.8.0'}
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1346,12 +1336,6 @@ snapshots:
     dependencies:
       '@webbuf/fixedbuf': link:webbuf-fixedbuf
       webbuf: 3.0.12
-
-  '@webbuf/fixedbuf@3.0.13(webbuf@3.0.12)':
-    dependencies:
-      webbuf: 3.0.12
-
-  '@webbuf/webbuf@3.0.14': {}
 
   ansi-regex@5.0.1: {}
 

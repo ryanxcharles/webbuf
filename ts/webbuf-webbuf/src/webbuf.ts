@@ -77,6 +77,15 @@ export class WebBuf extends Uint8Array {
     );
   }
 
+  /**
+   * Reverse the buffer in place
+   * @returns webbuf
+   */
+  reverse(): WebBuf {
+    super.reverse();
+    return this;
+  }
+
   clone() {
     return new WebBuf(this);
   }
@@ -110,7 +119,7 @@ export class WebBuf extends Uint8Array {
    * @param buffer
    * @returns WebBuf
    */
-  static view(buffer: Uint8Array) {
+  static view(buffer: Uint8Array): WebBuf {
     return new WebBuf(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   }
 
