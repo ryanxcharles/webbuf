@@ -24,36 +24,36 @@ export abstract class FixedNum<N extends number> {
   abstract get bn(): bigint;
 }
 
-export class U8 extends FixedNum<1> {
-  static fromBn(bn: bigint): U8 {
+export class U8BE extends FixedNum<1> {
+  static fromBn(bn: bigint): U8BE {
     if (bn < 0 || bn > 0xffn) {
       throw new Error("Invalid number");
     }
-    return new U8(FixedBuf.fromBuf(1, WebBuf.fromArray([Number(bn)])));
+    return new U8BE(FixedBuf.fromBuf(1, WebBuf.fromArray([Number(bn)])));
   }
 
-  static fromN(n: number): U8 {
-    return U8.fromBn(BigInt(n));
+  static fromN(n: number): U8BE {
+    return U8BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
     return BigInt(this.buf.buf[0] as number);
   }
 
-  add(other: U8): U8 {
-    return U8.fromBn(this.toBn() + other.toBn());
+  add(other: U8BE): U8BE {
+    return U8BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U8): U8 {
-    return U8.fromBn(this.toBn() - other.toBn());
+  sub(other: U8BE): U8BE {
+    return U8BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U8): U8 {
-    return U8.fromBn(this.toBn() * other.toBn());
+  mul(other: U8BE): U8BE {
+    return U8BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U8): U8 {
-    return U8.fromBn(this.toBn() / other.toBn());
+  div(other: U8BE): U8BE {
+    return U8BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<1> {
@@ -68,16 +68,16 @@ export class U8 extends FixedNum<1> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<1>): U8 {
-    return new U8(buf);
+  static fromBEBuf(buf: FixedBuf<1>): U8BE {
+    return new U8BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<1>): U8 {
-    return new U8(buf);
+  static fromLEBuf(buf: FixedBuf<1>): U8BE {
+    return new U8BE(buf);
   }
 
-  static fromHex(hex: string): U8 {
-    return new U8(FixedBuf.fromHex(1, hex));
+  static fromHex(hex: string): U8BE {
+    return new U8BE(FixedBuf.fromHex(1, hex));
   }
 
   get n(): number {
@@ -89,38 +89,38 @@ export class U8 extends FixedNum<1> {
   }
 }
 
-export class U16 extends FixedNum<2> {
-  static fromBn(bn: bigint): U16 {
+export class U16BE extends FixedNum<2> {
+  static fromBn(bn: bigint): U16BE {
     if (bn < 0 || bn > 0xffffn) {
       throw new Error("Invalid number");
     }
-    return new U16(
+    return new U16BE(
       FixedBuf.fromBuf(2, WebBuf.fromArray([Number(bn >> 8n), Number(bn)])),
     );
   }
 
-  static fromN(n: number): U16 {
-    return U16.fromBn(BigInt(n));
+  static fromN(n: number): U16BE {
+    return U16BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
     return (BigInt(this.buf.buf[0] as number) << 8n) + BigInt(this.buf.buf[1] as number);
   }
 
-  add(other: U16): U16 {
-    return U16.fromBn(this.toBn() + other.toBn());
+  add(other: U16BE): U16BE {
+    return U16BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U16): U16 {
-    return U16.fromBn(this.toBn() - other.toBn());
+  sub(other: U16BE): U16BE {
+    return U16BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U16): U16 {
-    return U16.fromBn(this.toBn() * other.toBn());
+  mul(other: U16BE): U16BE {
+    return U16BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U16): U16 {
-    return U16.fromBn(this.toBn() / other.toBn());
+  div(other: U16BE): U16BE {
+    return U16BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<2> {
@@ -135,18 +135,18 @@ export class U16 extends FixedNum<2> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<2>): U16 {
-    return new U16(buf);
+  static fromBEBuf(buf: FixedBuf<2>): U16BE {
+    return new U16BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<2>): U16 {
-    return new U16(
+  static fromLEBuf(buf: FixedBuf<2>): U16BE {
+    return new U16BE(
       buf.cloneReverse(),
     );
   }
 
-  static fromHex(hex: string): U16 {
-    return new U16(FixedBuf.fromHex(2, hex));
+  static fromHex(hex: string): U16BE {
+    return new U16BE(FixedBuf.fromHex(2, hex));
   }
 
   get n(): number {
@@ -158,8 +158,8 @@ export class U16 extends FixedNum<2> {
   }
 }
 
-export class U32 extends FixedNum<4> {
-  static fromBn(bn: bigint): U32 {
+export class U32BE extends FixedNum<4> {
+  static fromBn(bn: bigint): U32BE {
     const byteLen = 4;
     if (bn < 0 || bn > 0xffffffffffffffffn) {
       throw new Error("Invalid number");
@@ -169,11 +169,11 @@ export class U32 extends FixedNum<4> {
       bytes[i] = Number(bn & 0xffn);
       bn >>= 8n; // Shift right by 8 bits in-place
     }
-    return new U32(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
+    return new U32BE(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
-  static fromN(n: number): U32 {
-    return U32.fromBn(BigInt(n));
+  static fromN(n: number): U32BE {
+    return U32BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
@@ -185,20 +185,20 @@ export class U32 extends FixedNum<4> {
     return result;
   }
 
-  add(other: U32): U32 {
-    return U32.fromBn(this.toBn() + other.toBn());
+  add(other: U32BE): U32BE {
+    return U32BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U32): U32 {
-    return U32.fromBn(this.toBn() - other.toBn());
+  sub(other: U32BE): U32BE {
+    return U32BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U32): U32 {
-    return U32.fromBn(this.toBn() * other.toBn());
+  mul(other: U32BE): U32BE {
+    return U32BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U32): U32 {
-    return U32.fromBn(this.toBn() / other.toBn());
+  div(other: U32BE): U32BE {
+    return U32BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<4> {
@@ -213,18 +213,18 @@ export class U32 extends FixedNum<4> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<4>): U32 {
-    return new U32(buf);
+  static fromBEBuf(buf: FixedBuf<4>): U32BE {
+    return new U32BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<4>): U32 {
-    return new U32(
+  static fromLEBuf(buf: FixedBuf<4>): U32BE {
+    return new U32BE(
       buf.cloneReverse(),
     );
   }
 
-  static fromHex(hex: string): U32 {
-    return new U32(FixedBuf.fromHex(4, hex));
+  static fromHex(hex: string): U32BE {
+    return new U32BE(FixedBuf.fromHex(4, hex));
   }
 
   get n(): number {
@@ -236,8 +236,8 @@ export class U32 extends FixedNum<4> {
   }
 }
 
-export class U64 extends FixedNum<8> {
-  static fromBn(bn: bigint): U64 {
+export class U64BE extends FixedNum<8> {
+  static fromBn(bn: bigint): U64BE {
     const byteLen = 8;
     if (bn < 0 || bn > 0xffffffffffffffffn) {
       throw new Error("Invalid number");
@@ -247,11 +247,11 @@ export class U64 extends FixedNum<8> {
       bytes[i] = Number(bn & 0xffn);
       bn >>= 8n; // Shift right by 8 bits in-place
     }
-    return new U64(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
+    return new U64BE(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
-  static fromN(n: number): U64 {
-    return U64.fromBn(BigInt(n));
+  static fromN(n: number): U64BE {
+    return U64BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
@@ -263,20 +263,20 @@ export class U64 extends FixedNum<8> {
     return result;
   }
 
-  add(other: U64): U64 {
-    return U64.fromBn(this.toBn() + other.toBn());
+  add(other: U64BE): U64BE {
+    return U64BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U64): U64 {
-    return U64.fromBn(this.toBn() - other.toBn());
+  sub(other: U64BE): U64BE {
+    return U64BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U64): U64 {
-    return U64.fromBn(this.toBn() * other.toBn());
+  mul(other: U64BE): U64BE {
+    return U64BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U64): U64 {
-    return U64.fromBn(this.toBn() / other.toBn());
+  div(other: U64BE): U64BE {
+    return U64BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<8> {
@@ -291,18 +291,18 @@ export class U64 extends FixedNum<8> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<8>): U64 {
-    return new U64(buf);
+  static fromBEBuf(buf: FixedBuf<8>): U64BE {
+    return new U64BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<8>): U64 {
-    return new U64(
+  static fromLEBuf(buf: FixedBuf<8>): U64BE {
+    return new U64BE(
       buf.cloneReverse(),
     );
   }
 
-  static fromHex(hex: string): U64 {
-    return new U64(FixedBuf.fromHex(8, hex));
+  static fromHex(hex: string): U64BE {
+    return new U64BE(FixedBuf.fromHex(8, hex));
   }
 
   get n(): number {
@@ -314,8 +314,8 @@ export class U64 extends FixedNum<8> {
   }
 }
 
-export class U128 extends FixedNum<16> {
-  static fromBn(bn: bigint): U128 {
+export class U128BE extends FixedNum<16> {
+  static fromBn(bn: bigint): U128BE {
     const byteLen = 16;
     if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffn) {
       throw new Error("Invalid number");
@@ -325,11 +325,11 @@ export class U128 extends FixedNum<16> {
       bytes[i] = Number(bn & 0xffn);
       bn >>= 8n; // Shift right by 8 bits in-place
     }
-    return new U128(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
+    return new U128BE(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
-  static fromN(n: number): U128 {
-    return U128.fromBn(BigInt(n));
+  static fromN(n: number): U128BE {
+    return U128BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
@@ -341,20 +341,20 @@ export class U128 extends FixedNum<16> {
     return result;
   }
 
-  add(other: U128): U128 {
-    return U128.fromBn(this.toBn() + other.toBn());
+  add(other: U128BE): U128BE {
+    return U128BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U128): U128 {
-    return U128.fromBn(this.toBn() - other.toBn());
+  sub(other: U128BE): U128BE {
+    return U128BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U128): U128 {
-    return U128.fromBn(this.toBn() * other.toBn());
+  mul(other: U128BE): U128BE {
+    return U128BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U128): U128 {
-    return U128.fromBn(this.toBn() / other.toBn());
+  div(other: U128BE): U128BE {
+    return U128BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<16> {
@@ -369,18 +369,18 @@ export class U128 extends FixedNum<16> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<16>): U128 {
-    return new U128(buf);
+  static fromBEBuf(buf: FixedBuf<16>): U128BE {
+    return new U128BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<16>): U128 {
-    return new U128(
+  static fromLEBuf(buf: FixedBuf<16>): U128BE {
+    return new U128BE(
       buf.cloneReverse(),
     );
   }
 
-  static fromHex(hex: string): U128 {
-    return new U128(FixedBuf.fromHex(16, hex));
+  static fromHex(hex: string): U128BE {
+    return new U128BE(FixedBuf.fromHex(16, hex));
   }
 
   get n(): number {
@@ -392,8 +392,8 @@ export class U128 extends FixedNum<16> {
   }
 }
 
-export class U256 extends FixedNum<32> {
-  static fromBn(bn: bigint): U256 {
+export class U256BE extends FixedNum<32> {
+  static fromBn(bn: bigint): U256BE {
     const byteLen = 32;
     if (
       bn < 0 ||
@@ -406,11 +406,11 @@ export class U256 extends FixedNum<32> {
       bytes[i] = Number(bn & 0xffn);
       bn >>= 8n; // Shift right by 8 bits in-place
     }
-    return new U256(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
+    return new U256BE(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
-  static fromN(n: number): U256 {
-    return U256.fromBn(BigInt(n));
+  static fromN(n: number): U256BE {
+    return U256BE.fromBn(BigInt(n));
   }
 
   toBn(): bigint {
@@ -422,20 +422,20 @@ export class U256 extends FixedNum<32> {
     return result;
   }
 
-  add(other: U256): U256 {
-    return U256.fromBn(this.toBn() + other.toBn());
+  add(other: U256BE): U256BE {
+    return U256BE.fromBn(this.toBn() + other.toBn());
   }
 
-  sub(other: U256): U256 {
-    return U256.fromBn(this.toBn() - other.toBn());
+  sub(other: U256BE): U256BE {
+    return U256BE.fromBn(this.toBn() - other.toBn());
   }
 
-  mul(other: U256): U256 {
-    return U256.fromBn(this.toBn() * other.toBn());
+  mul(other: U256BE): U256BE {
+    return U256BE.fromBn(this.toBn() * other.toBn());
   }
 
-  div(other: U256): U256 {
-    return U256.fromBn(this.toBn() / other.toBn());
+  div(other: U256BE): U256BE {
+    return U256BE.fromBn(this.toBn() / other.toBn());
   }
 
   toBEBuf(): FixedBuf<32> {
@@ -450,18 +450,18 @@ export class U256 extends FixedNum<32> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<32>): U256 {
-    return new U256(buf);
+  static fromBEBuf(buf: FixedBuf<32>): U256BE {
+    return new U256BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<32>): U256 {
-    return new U256(
+  static fromLEBuf(buf: FixedBuf<32>): U256BE {
+    return new U256BE(
       buf.cloneReverse(),
     );
   }
 
-  static fromHex(hex: string): U256 {
-    return new U256(FixedBuf.fromHex(32, hex));
+  static fromHex(hex: string): U256BE {
+    return new U256BE(FixedBuf.fromHex(32, hex));
   }
 
   get n(): number {
