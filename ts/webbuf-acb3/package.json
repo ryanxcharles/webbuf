@@ -1,7 +1,7 @@
 {
   "name": "@webbuf/acb3",
   "version": "3.0.18",
-  "description": "AES+CBC encryption/decryption with blake3 hash for web, node.js, deno and bun.",
+  "description": "AES+CBC encryption/decryption with blake3 mac for web, node.js, deno and bun.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ryanxcharles/webbuf"
