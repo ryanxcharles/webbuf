@@ -18,11 +18,7 @@
     "lint": "biome lint --write --unsafe",
     "format": "biome format --write",
     "fix": "pnpm run typecheck && pnpm run lint && pnpm run format",
-    "sync:from-rust": "cp -r ../../rs/webbuf/build/bundler/* src/rs-webbuf-bundler/",
-    "build": "pnpm run build:wasm && pnpm run build:typescript",
-    "build:bundler-to-inline-base64": "cp -r src/rs-webbuf-bundler/* src/rs-webbuf-inline-base64/",
-    "build:inline-wasm": "tsx build-inline-wasm.ts",
-    "build:wasm": "pnpm run build:bundler-to-inline-base64 && pnpm run build:inline-wasm",
+    "build": "pnpm run build:typescript",
     "build:typescript": "tsc -p tsconfig.build.json",
     "prepublishOnly": "pnpm run clean && pnpm run build"
   },
