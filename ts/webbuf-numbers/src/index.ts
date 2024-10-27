@@ -99,6 +99,10 @@ export class U16 extends FixedNum<2> {
     );
   }
 
+  static fromN(n: number): U16 {
+    return U16.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
     return (BigInt(this.buf.buf[0] as number) << 8n) + BigInt(this.buf.buf[1]);
   }
@@ -124,7 +128,10 @@ export class U16 extends FixedNum<2> {
   }
 
   toLEBuf(): FixedBuf<2> {
-    return FixedBuf.fromBuf(2, WebBuf.fromArray([this.buf.buf[1], this.buf.buf[0]]));
+    return FixedBuf.fromBuf(
+      2,
+      WebBuf.fromArray([this.buf.buf[1], this.buf.buf[0]]),
+    );
   }
 
   toHex(): string {
@@ -136,7 +143,9 @@ export class U16 extends FixedNum<2> {
   }
 
   static fromLEBuf(buf: FixedBuf<2>): U16 {
-    return new U16(FixedBuf.fromBuf(2, WebBuf.fromArray([buf.buf[1], buf.buf[0]])));
+    return new U16(
+      FixedBuf.fromBuf(2, WebBuf.fromArray([buf.buf[1], buf.buf[0]])),
+    );
   }
 
   static fromHex(hex: string): U16 {
@@ -158,20 +167,29 @@ export class U32 extends FixedNum<4> {
       throw new Error("Invalid number");
     }
     return new U32(
-      FixedBuf.fromBuf(4, WebBuf.fromArray([
-        Number(bn >> 24n),
-        Number(bn >> 16n),
-        Number(bn >> 8n),
-        Number(bn),
-      ])),
+      FixedBuf.fromBuf(
+        4,
+        WebBuf.fromArray([
+          Number(bn >> 24n),
+          Number(bn >> 16n),
+          Number(bn >> 8n),
+          Number(bn),
+        ]),
+      ),
     );
   }
 
+  static fromN(n: number): U32 {
+    return U32.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 24n) +
+    return (
+      (BigInt(this.buf.buf[0] as number) << 24n) +
       (BigInt(this.buf.buf[1] as number) << 16n) +
       (BigInt(this.buf.buf[2] as number) << 8n) +
-      BigInt(this.buf.buf[3]);
+      BigInt(this.buf.buf[3])
+    );
   }
 
   add(other: U32): U32 {
@@ -195,7 +213,15 @@ export class U32 extends FixedNum<4> {
   }
 
   toLEBuf(): FixedBuf<4> {
-    return FixedBuf.fromBuf(4, WebBuf.fromArray([this.buf.buf[3], this.buf.buf[2], this.buf.buf[1], this.buf.buf[0]]));
+    return FixedBuf.fromBuf(
+      4,
+      WebBuf.fromArray([
+        this.buf.buf[3],
+        this.buf.buf[2],
+        this.buf.buf[1],
+        this.buf.buf[0],
+      ]),
+    );
   }
 
   toHex(): string {
@@ -207,7 +233,12 @@ export class U32 extends FixedNum<4> {
   }
 
   static fromLEBuf(buf: FixedBuf<4>): U32 {
-    return new U32(FixedBuf.fromBuf(4, WebBuf.fromArray([buf.buf[3], buf.buf[2], buf.buf[1], buf.buf[0]])));
+    return new U32(
+      FixedBuf.fromBuf(
+        4,
+        WebBuf.fromArray([buf.buf[3], buf.buf[2], buf.buf[1], buf.buf[0]]),
+      ),
+    );
   }
 
   static fromHex(hex: string): U32 {
@@ -229,28 +260,37 @@ export class U64 extends FixedNum<8> {
       throw new Error("Invalid number");
     }
     return new U64(
-      FixedBuf.fromBuf(8, WebBuf.fromArray([
-        Number(bn >> 56n),
-        Number(bn >> 48n),
-        Number(bn >> 40n),
-        Number(bn >> 32n),
-        Number(bn >> 24n),
-        Number(bn >> 16n),
-        Number(bn >> 8n),
-        Number(bn),
-      ])),
+      FixedBuf.fromBuf(
+        8,
+        WebBuf.fromArray([
+          Number(bn >> 56n),
+          Number(bn >> 48n),
+          Number(bn >> 40n),
+          Number(bn >> 32n),
+          Number(bn >> 24n),
+          Number(bn >> 16n),
+          Number(bn >> 8n),
+          Number(bn),
+        ]),
+      ),
     );
   }
 
+  static fromN(n: number): U64 {
+    return U64.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 56n) +
+    return (
+      (BigInt(this.buf.buf[0] as number) << 56n) +
       (BigInt(this.buf.buf[1] as number) << 48n) +
       (BigInt(this.buf.buf[2] as number) << 40n) +
       (BigInt(this.buf.buf[3] as number) << 32n) +
       (BigInt(this.buf.buf[4] as number) << 24n) +
       (BigInt(this.buf.buf[5] as number) << 16n) +
       (BigInt(this.buf.buf[6] as number) << 8n) +
-      BigInt(this.buf.buf[7]);
+      BigInt(this.buf.buf[7])
+    );
   }
 
   add(other: U64): U64 {
@@ -274,16 +314,19 @@ export class U64 extends FixedNum<8> {
   }
 
   toLEBuf(): FixedBuf<8> {
-    return FixedBuf.fromBuf(8, WebBuf.fromArray([
-      this.buf.buf[7],
-      this.buf.buf[6],
-      this.buf.buf[5],
-      this.buf.buf[4],
-      this.buf.buf[3],
-      this.buf.buf[2],
-      this.buf.buf[1],
-      this.buf.buf[0],
-    ]));
+    return FixedBuf.fromBuf(
+      8,
+      WebBuf.fromArray([
+        this.buf.buf[7],
+        this.buf.buf[6],
+        this.buf.buf[5],
+        this.buf.buf[4],
+        this.buf.buf[3],
+        this.buf.buf[2],
+        this.buf.buf[1],
+        this.buf.buf[0],
+      ]),
+    );
   }
 
   toHex(): string {
@@ -295,16 +338,21 @@ export class U64 extends FixedNum<8> {
   }
 
   static fromLEBuf(buf: FixedBuf<8>): U64 {
-    return new U64(FixedBuf.fromBuf(8, WebBuf.fromArray([
-      buf.buf[7],
-      buf.buf[6],
-      buf.buf[5],
-      buf.buf[4],
-      buf.buf[3],
-      buf.buf[2],
-      buf.buf[1],
-      buf.buf[0],
-    ])));
+    return new U64(
+      FixedBuf.fromBuf(
+        8,
+        WebBuf.fromArray([
+          buf.buf[7],
+          buf.buf[6],
+          buf.buf[5],
+          buf.buf[4],
+          buf.buf[3],
+          buf.buf[2],
+          buf.buf[1],
+          buf.buf[0],
+        ]),
+      ),
+    );
   }
 
   static fromHex(hex: string): U64 {
@@ -326,29 +374,37 @@ export class U128 extends FixedNum<16> {
       throw new Error("Invalid number");
     }
     return new U128(
-      FixedBuf.fromBuf(16, WebBuf.fromArray([
-        Number(bn >> 120n),
-        Number(bn >> 112n),
-        Number(bn >> 104n),
-        Number(bn >> 96n),
-        Number(bn >> 88n),
-        Number(bn >> 80n),
-        Number(bn >> 72n),
-        Number(bn >> 64n),
-        Number(bn >> 56n),
-        Number(bn >> 48n),
-        Number(bn >> 40n),
-        Number(bn >> 32n),
-        Number(bn >> 24n),
-        Number(bn >> 16n),
-        Number(bn >> 8n),
-        Number(bn),
-      ])),
+      FixedBuf.fromBuf(
+        16,
+        WebBuf.fromArray([
+          Number(bn >> 120n),
+          Number(bn >> 112n),
+          Number(bn >> 104n),
+          Number(bn >> 96n),
+          Number(bn >> 88n),
+          Number(bn >> 80n),
+          Number(bn >> 72n),
+          Number(bn >> 64n),
+          Number(bn >> 56n),
+          Number(bn >> 48n),
+          Number(bn >> 40n),
+          Number(bn >> 32n),
+          Number(bn >> 24n),
+          Number(bn >> 16n),
+          Number(bn >> 8n),
+          Number(bn),
+        ]),
+      ),
     );
   }
 
+  static fromN(n: number): U128 {
+    return U128.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 120n) +
+    return (
+      (BigInt(this.buf.buf[0] as number) << 120n) +
       (BigInt(this.buf.buf[1] as number) << 112n) +
       (BigInt(this.buf.buf[2] as number) << 104n) +
       (BigInt(this.buf.buf[3] as number) << 96n) +
@@ -363,7 +419,8 @@ export class U128 extends FixedNum<16> {
       (BigInt(this.buf.buf[12] as number) << 24n) +
       (BigInt(this.buf.buf[13] as number) << 16n) +
       (BigInt(this.buf.buf[14] as number) << 8n) +
-      BigInt(this.buf.buf[15]);
+      BigInt(this.buf.buf[15])
+    );
   }
 
   add(other: U128): U128 {
@@ -387,24 +444,27 @@ export class U128 extends FixedNum<16> {
   }
 
   toLEBuf(): FixedBuf<16> {
-    return FixedBuf.fromBuf(16, WebBuf.fromArray([
-      this.buf.buf[15],
-      this.buf.buf[14],
-      this.buf.buf[13],
-      this.buf.buf[12],
-      this.buf.buf[11],
-      this.buf.buf[10],
-      this.buf.buf[9],
-      this.buf.buf[8],
-      this.buf.buf[7],
-      this.buf.buf[6],
-      this.buf.buf[5],
-      this.buf.buf[4],
-      this.buf.buf[3],
-      this.buf.buf[2],
-      this.buf.buf[1],
-      this.buf.buf[0],
-    ]));
+    return FixedBuf.fromBuf(
+      16,
+      WebBuf.fromArray([
+        this.buf.buf[15],
+        this.buf.buf[14],
+        this.buf.buf[13],
+        this.buf.buf[12],
+        this.buf.buf[11],
+        this.buf.buf[10],
+        this.buf.buf[9],
+        this.buf.buf[8],
+        this.buf.buf[7],
+        this.buf.buf[6],
+        this.buf.buf[5],
+        this.buf.buf[4],
+        this.buf.buf[3],
+        this.buf.buf[2],
+        this.buf.buf[1],
+        this.buf.buf[0],
+      ]),
+    );
   }
 
   toHex(): string {
@@ -416,24 +476,29 @@ export class U128 extends FixedNum<16> {
   }
 
   static fromLEBuf(buf: FixedBuf<16>): U128 {
-    return new U128(FixedBuf.fromBuf(16, WebBuf.fromArray([
-      buf.buf[15],
-      buf.buf[14],
-      buf.buf[13],
-      buf.buf[12],
-      buf.buf[11],
-      buf.buf[10],
-      buf.buf[9],
-      buf.buf[8],
-      buf.buf[7],
-      buf.buf[6],
-      buf.buf[5],
-      buf.buf[4],
-      buf.buf[3],
-      buf.buf[2],
-      buf.buf[1],
-      buf.buf[0],
-    ])));
+    return new U128(
+      FixedBuf.fromBuf(
+        16,
+        WebBuf.fromArray([
+          buf.buf[15],
+          buf.buf[14],
+          buf.buf[13],
+          buf.buf[12],
+          buf.buf[11],
+          buf.buf[10],
+          buf.buf[9],
+          buf.buf[8],
+          buf.buf[7],
+          buf.buf[6],
+          buf.buf[5],
+          buf.buf[4],
+          buf.buf[3],
+          buf.buf[2],
+          buf.buf[1],
+          buf.buf[0],
+        ]),
+      ),
+    );
   }
 
   static fromHex(hex: string): U128 {
@@ -451,49 +516,60 @@ export class U128 extends FixedNum<16> {
 
 export class U256 extends FixedNum<32> {
   static fromBn(bn: bigint): U256 {
-    if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn) {
+    if (
+      bn < 0 ||
+      bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn
+    ) {
       throw new Error("Invalid number");
     }
     return new U256(
-      FixedBuf.fromBuf(32, WebBuf.fromArray([
-        Number(bn >> 248n),
-        Number(bn >> 240n),
-        Number(bn >> 232n),
-        Number(bn >> 224n),
-        Number(bn >> 216n),
-        Number(bn >> 208n),
-        Number(bn >> 200n),
-        Number(bn >> 192n),
-        Number(bn >> 184n),
-        Number(bn >> 176n),
-        Number(bn >> 168n),
-        Number(bn >> 160n),
-        Number(bn >> 152n),
-        Number(bn >> 144n),
-        Number(bn >> 136n),
-        Number(bn >> 128n),
-        Number(bn >> 120n),
-        Number(bn >> 112n),
-        Number(bn >> 104n),
-        Number(bn >> 96n),
-        Number(bn >> 88n),
-        Number(bn >> 80n),
-        Number(bn >> 72n),
-        Number(bn >> 64n),
-        Number(bn >> 56n),
-        Number(bn >> 48n),
-        Number(bn >> 40n),
-        Number(bn >> 32n),
-        Number(bn >> 24n),
-        Number(bn >> 16n),
-        Number(bn >> 8n),
-        Number(bn),
-      ])),
+      FixedBuf.fromBuf(
+        32,
+        WebBuf.fromArray([
+          Number(bn >> 248n),
+          Number(bn >> 240n),
+          Number(bn >> 232n),
+          Number(bn >> 224n),
+          Number(bn >> 216n),
+          Number(bn >> 208n),
+          Number(bn >> 200n),
+          Number(bn >> 192n),
+          Number(bn >> 184n),
+          Number(bn >> 176n),
+          Number(bn >> 168n),
+          Number(bn >> 160n),
+          Number(bn >> 152n),
+          Number(bn >> 144n),
+          Number(bn >> 136n),
+          Number(bn >> 128n),
+          Number(bn >> 120n),
+          Number(bn >> 112n),
+          Number(bn >> 104n),
+          Number(bn >> 96n),
+          Number(bn >> 88n),
+          Number(bn >> 80n),
+          Number(bn >> 72n),
+          Number(bn >> 64n),
+          Number(bn >> 56n),
+          Number(bn >> 48n),
+          Number(bn >> 40n),
+          Number(bn >> 32n),
+          Number(bn >> 24n),
+          Number(bn >> 16n),
+          Number(bn >> 8n),
+          Number(bn),
+        ]),
+      ),
     );
   }
 
+  static fromN(n: number): U256 {
+    return U256.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 248n) +
+    return (
+      (BigInt(this.buf.buf[0] as number) << 248n) +
       (BigInt(this.buf.buf[1] as number) << 240n) +
       (BigInt(this.buf.buf[2] as number) << 232n) +
       (BigInt(this.buf.buf[3] as number) << 224n) +
@@ -524,7 +600,8 @@ export class U256 extends FixedNum<32> {
       (BigInt(this.buf.buf[28] as number) << 24n) +
       (BigInt(this.buf.buf[29] as number) << 16n) +
       (BigInt(this.buf.buf[30] as number) << 8n) +
-      BigInt(this.buf.buf[31]);
+      BigInt(this.buf.buf[31])
+    );
   }
 
   add(other: U256): U256 {
@@ -548,40 +625,43 @@ export class U256 extends FixedNum<32> {
   }
 
   toLEBuf(): FixedBuf<32> {
-    return FixedBuf.fromBuf(32, WebBuf.fromArray([
-      this.buf.buf[31],
-      this.buf.buf[30],
-      this.buf.buf[29],
-      this.buf.buf[28],
-      this.buf.buf[27],
-      this.buf.buf[26],
-      this.buf.buf[25],
-      this.buf.buf[24],
-      this.buf.buf[23],
-      this.buf.buf[22],
-      this.buf.buf[21],
-      this.buf.buf[20],
-      this.buf.buf[19],
-      this.buf.buf[18],
-      this.buf.buf[17],
-      this.buf.buf[16],
-      this.buf.buf[15],
-      this.buf.buf[14],
-      this.buf.buf[13],
-      this.buf.buf[12],
-      this.buf.buf[11],
-      this.buf.buf[10],
-      this.buf.buf[9],
-      this.buf.buf[8],
-      this.buf.buf[7],
-      this.buf.buf[6],
-      this.buf.buf[5],
-      this.buf.buf[4],
-      this.buf.buf[3],
-      this.buf.buf[2],
-      this.buf.buf[1],
-      this.buf.buf[0],
-    ]));
+    return FixedBuf.fromBuf(
+      32,
+      WebBuf.fromArray([
+        this.buf.buf[31],
+        this.buf.buf[30],
+        this.buf.buf[29],
+        this.buf.buf[28],
+        this.buf.buf[27],
+        this.buf.buf[26],
+        this.buf.buf[25],
+        this.buf.buf[24],
+        this.buf.buf[23],
+        this.buf.buf[22],
+        this.buf.buf[21],
+        this.buf.buf[20],
+        this.buf.buf[19],
+        this.buf.buf[18],
+        this.buf.buf[17],
+        this.buf.buf[16],
+        this.buf.buf[15],
+        this.buf.buf[14],
+        this.buf.buf[13],
+        this.buf.buf[12],
+        this.buf.buf[11],
+        this.buf.buf[10],
+        this.buf.buf[9],
+        this.buf.buf[8],
+        this.buf.buf[7],
+        this.buf.buf[6],
+        this.buf.buf[5],
+        this.buf.buf[4],
+        this.buf.buf[3],
+        this.buf.buf[2],
+        this.buf.buf[1],
+        this.buf.buf[0],
+      ]),
+    );
   }
 
   toHex(): string {
@@ -593,40 +673,45 @@ export class U256 extends FixedNum<32> {
   }
 
   static fromLEBuf(buf: FixedBuf<32>): U256 {
-    return new U256(FixedBuf.fromBuf(32, WebBuf.fromArray([
-      buf.buf[31],
-      buf.buf[30],
-      buf.buf[29],
-      buf.buf[28],
-      buf.buf[27],
-      buf.buf[26],
-      buf.buf[25],
-      buf.buf[24],
-      buf.buf[23],
-      buf.buf[22],
-      buf.buf[21],
-      buf.buf[20],
-      buf.buf[19],
-      buf.buf[18],
-      buf.buf[17],
-      buf.buf[16],
-      buf.buf[15],
-      buf.buf[14],
-      buf.buf[13],
-      buf.buf[12],
-      buf.buf[11],
-      buf.buf[10],
-      buf.buf[9],
-      buf.buf[8],
-      buf.buf[7],
-      buf.buf[6],
-      buf.buf[5],
-      buf.buf[4],
-      buf.buf[3],
-      buf.buf[2],
-      buf.buf[1],
-      buf.buf[0],
-    ])));
+    return new U256(
+      FixedBuf.fromBuf(
+        32,
+        WebBuf.fromArray([
+          buf.buf[31],
+          buf.buf[30],
+          buf.buf[29],
+          buf.buf[28],
+          buf.buf[27],
+          buf.buf[26],
+          buf.buf[25],
+          buf.buf[24],
+          buf.buf[23],
+          buf.buf[22],
+          buf.buf[21],
+          buf.buf[20],
+          buf.buf[19],
+          buf.buf[18],
+          buf.buf[17],
+          buf.buf[16],
+          buf.buf[15],
+          buf.buf[14],
+          buf.buf[13],
+          buf.buf[12],
+          buf.buf[11],
+          buf.buf[10],
+          buf.buf[9],
+          buf.buf[8],
+          buf.buf[7],
+          buf.buf[6],
+          buf.buf[5],
+          buf.buf[4],
+          buf.buf[3],
+          buf.buf[2],
+          buf.buf[1],
+          buf.buf[0],
+        ]),
+      ),
+    );
   }
 
   static fromHex(hex: string): U256 {
