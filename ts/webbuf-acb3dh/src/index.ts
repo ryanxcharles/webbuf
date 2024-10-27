@@ -16,7 +16,7 @@ import { blake3Hash } from "@webbuf/blake3";
  * @returns The encrypted data.
  * @throws If there is an error encrypting the data.
  */
-export function encrypt(
+export function acb3dhEncrypt(
   alicePrivKey: FixedBuf<32>,
   bobPubKey: FixedBuf<33>,
   plaintext: WebBuf,
@@ -38,7 +38,7 @@ export function encrypt(
  * @returns The decrypted data.
  * @throws If there is an error decrypting the data.
  */
-export function decrypt(
+export function acb3dhDecrypt(
   alicePrivKey: FixedBuf<32>,
   bobPubKey: FixedBuf<33>,
   ciphertext: WebBuf,
