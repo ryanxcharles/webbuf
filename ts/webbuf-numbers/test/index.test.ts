@@ -88,6 +88,11 @@ describe("U16", () => {
     const u16 = U16.fromBn(0x0102n);
     expect(u16.toLEBuf().toHex()).toEqual("0201");
   });
+
+  it("should convert from LE buffer", () => {
+    const u16 = U16.fromLEBuf(U16.fromBn(0x0102n).toLEBuf());
+    expect(u16.bn).toBe(0x0102n);
+  });
 });
 
 describe("U32", () => {
@@ -129,6 +134,11 @@ describe("U32", () => {
   it("should convert to LE buffer", () => {
     const u32 = U32.fromBn(0x01020304n);
     expect(u32.toLEBuf().toHex()).toEqual("04030201");
+  });
+
+  it("should convert from LE buffer", () => {
+    const u32 = U32.fromLEBuf(U32.fromBn(0x01020304n).toLEBuf());
+    expect(u32.bn).toBe(0x01020304n);
   });
 });
 
@@ -172,6 +182,11 @@ describe("U64", () => {
     const u64 = U64.fromBn(0x0102030405060708n);
     expect(u64.toLEBuf().toHex()).toEqual("0807060504030201");
   });
+
+  it("should convert from LE buffer", () => {
+    const u64 = U64.fromLEBuf(U64.fromBn(0x0102030405060708n).toLEBuf());
+    expect(u64.bn).toBe(0x0102030405060708n);
+  });
 });
 
 describe("U128", () => {
@@ -213,6 +228,11 @@ describe("U128", () => {
   it("should convert to LE buffer", () => {
     const u128 = U128.fromBn(0x0102030405060708090a0b0c0d0e0f10n);
     expect(u128.toLEBuf().toHex()).toEqual("100f0e0d0c0b0a090807060504030201");
+  });
+
+  it("should convert from LE buffer", () => {
+    const u128 = U128.fromLEBuf(U128.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toLEBuf());
+    expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
   });
 });
 
@@ -269,6 +289,17 @@ describe("U256", () => {
       );
     expect(u256.toLEBuf().toHex()).toEqual(
       "201f1e1d1c1b1a191817161514131211100f0e0d0c0b0a090807060504030201",
+    );
+  });
+
+  it("should convert from LE buffer", () => {
+    const u256 = U256.fromLEBuf(
+      U256.fromBn(
+        0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+      ).toLEBuf(),
+    );
+    expect(u256.bn).toBe(
+      0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
     );
   });
 });
