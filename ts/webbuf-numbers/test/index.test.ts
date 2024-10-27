@@ -116,6 +116,16 @@ describe("U16BE", () => {
 });
 
 describe("U32BE", () => {
+  it("should create a new U32 instance from number using the constructor", () => {
+    const u32 = new U32BE(0);
+    expect(u32.n).toBe(0);
+  });
+
+  it("should create a new U32 instance from bigint using the constructor", () => {
+    const u32 = new U32BE(0n);
+    expect(u32.n).toBe(0);
+  });
+
   it("should create a new U32 instance from number", () => {
     const u32 = U32BE.fromN(0);
     expect(u32.n).toBe(0);
@@ -163,6 +173,16 @@ describe("U32BE", () => {
 });
 
 describe("U64BE", () => {
+  it("should create a new U64 instance from number using the constructor", () => {
+    const u64 = new U64BE(0);
+    expect(u64.n).toBe(0);
+  });
+
+  it("should create a new U64 instance from bigint using the constructor", () => {
+    const u64 = new U64BE(0n);
+    expect(u64.n).toBe(0);
+  });
+
   it("should create a new U64 instance from number", () => {
     const u64 = U64BE.fromN(0);
     expect(u64.n).toBe(0);
@@ -210,6 +230,11 @@ describe("U64BE", () => {
 });
 
 describe("U128BE", () => {
+  it("should create a new U128 instance from number using the constructor", () => {
+    const u128 = new U128BE(0);
+    expect(u128.n).toBe(0);
+  });
+
   it("should create a new U128 instance from number", () => {
     const u128 = U128BE.fromN(0);
     expect(u128.n).toBe(0);
@@ -251,12 +276,19 @@ describe("U128BE", () => {
   });
 
   it("should convert from LE buffer", () => {
-    const u128 = U128BE.fromLEBuf(U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toLEBuf());
+    const u128 = U128BE.fromLEBuf(
+      U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toLEBuf(),
+    );
     expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
   });
 });
 
 describe("U256BE", () => {
+  it("should create a new U256 instance from number using the constructor", () => {
+    const u256 = new U256BE(0);
+    expect(u256.n).toBe(0);
+  });
+
   it("should create a new U256 instance from number", () => {
     const u256 = U256BE.fromN(0);
     expect(u256.n).toBe(0);
