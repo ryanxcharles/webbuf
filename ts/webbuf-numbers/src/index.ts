@@ -256,24 +256,16 @@ export class U32 extends FixedNum<4> {
 
 export class U64 extends FixedNum<8> {
   static fromBn(bn: bigint): U64 {
+    const byteLen = 8;
     if (bn < 0 || bn > 0xffffffffffffffffn) {
       throw new Error("Invalid number");
     }
-    return new U64(
-      FixedBuf.fromBuf(
-        8,
-        WebBuf.fromArray([
-          Number(bn >> 56n),
-          Number(bn >> 48n),
-          Number(bn >> 40n),
-          Number(bn >> 32n),
-          Number(bn >> 24n),
-          Number(bn >> 16n),
-          Number(bn >> 8n),
-          Number(bn),
-        ]),
-      ),
-    );
+    const bytes = new Array(byteLen);
+    for (let i = byteLen - 1; i >= 0; i--) {
+      bytes[i] = Number(bn & 0xffn);
+      bn >>= 8n; // Shift right by 8 bits in-place
+    }
+    return new U64(FixedBuf.fromBuf(8, WebBuf.fromArray(bytes)));
   }
 
   static fromN(n: number): U64 {
@@ -281,16 +273,12 @@ export class U64 extends FixedNum<8> {
   }
 
   toBn(): bigint {
-    return (
-      (BigInt(this.buf.buf[0] as number) << 56n) +
-      (BigInt(this.buf.buf[1] as number) << 48n) +
-      (BigInt(this.buf.buf[2] as number) << 40n) +
-      (BigInt(this.buf.buf[3] as number) << 32n) +
-      (BigInt(this.buf.buf[4] as number) << 24n) +
-      (BigInt(this.buf.buf[5] as number) << 16n) +
-      (BigInt(this.buf.buf[6] as number) << 8n) +
-      BigInt(this.buf.buf[7])
-    );
+    const byteLen = 8;
+    let result = 0n;
+    for (let i = 0; i < byteLen; i++) {
+      result = (result << 8n) + BigInt(this.buf.buf[i] as number);
+    }
+    return result;
   }
 
   add(other: U64): U64 {
@@ -370,32 +358,16 @@ export class U64 extends FixedNum<8> {
 
 export class U128 extends FixedNum<16> {
   static fromBn(bn: bigint): U128 {
+    const byteLen = 16;
     if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffn) {
       throw new Error("Invalid number");
     }
-    return new U128(
-      FixedBuf.fromBuf(
-        16,
-        WebBuf.fromArray([
-          Number(bn >> 120n),
-          Number(bn >> 112n),
-          Number(bn >> 104n),
-          Number(bn >> 96n),
-          Number(bn >> 88n),
-          Number(bn >> 80n),
-          Number(bn >> 72n),
-          Number(bn >> 64n),
-          Number(bn >> 56n),
-          Number(bn >> 48n),
-          Number(bn >> 40n),
-          Number(bn >> 32n),
-          Number(bn >> 24n),
-          Number(bn >> 16n),
-          Number(bn >> 8n),
-          Number(bn),
-        ]),
-      ),
-    );
+    const bytes = new Array(byteLen);
+    for (let i = byteLen - 1; i >= 0; i--) {
+      bytes[i] = Number(bn & 0xffn);
+      bn >>= 8n; // Shift right by 8 bits in-place
+    }
+    return new U128(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
   static fromN(n: number): U128 {
@@ -403,24 +375,12 @@ export class U128 extends FixedNum<16> {
   }
 
   toBn(): bigint {
-    return (
-      (BigInt(this.buf.buf[0] as number) << 120n) +
-      (BigInt(this.buf.buf[1] as number) << 112n) +
-      (BigInt(this.buf.buf[2] as number) << 104n) +
-      (BigInt(this.buf.buf[3] as number) << 96n) +
-      (BigInt(this.buf.buf[4] as number) << 88n) +
-      (BigInt(this.buf.buf[5] as number) << 80n) +
-      (BigInt(this.buf.buf[6] as number) << 72n) +
-      (BigInt(this.buf.buf[7] as number) << 64n) +
-      (BigInt(this.buf.buf[8] as number) << 56n) +
-      (BigInt(this.buf.buf[9] as number) << 48n) +
-      (BigInt(this.buf.buf[10] as number) << 40n) +
-      (BigInt(this.buf.buf[11] as number) << 32n) +
-      (BigInt(this.buf.buf[12] as number) << 24n) +
-      (BigInt(this.buf.buf[13] as number) << 16n) +
-      (BigInt(this.buf.buf[14] as number) << 8n) +
-      BigInt(this.buf.buf[15])
-    );
+    const byteLen = 16;
+    let result = 0n;
+    for (let i = 0; i < byteLen; i++) {
+      result = (result << 8n) + BigInt(this.buf.buf[i] as number);
+    }
+    return result;
   }
 
   add(other: U128): U128 {
@@ -516,51 +476,16 @@ export class U128 extends FixedNum<16> {
 
 export class U256 extends FixedNum<32> {
   static fromBn(bn: bigint): U256 {
-    if (
-      bn < 0 ||
-      bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn
-    ) {
+    const byteLen = 32;
+    if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn) {
       throw new Error("Invalid number");
     }
-    return new U256(
-      FixedBuf.fromBuf(
-        32,
-        WebBuf.fromArray([
-          Number(bn >> 248n),
-          Number(bn >> 240n),
-          Number(bn >> 232n),
-          Number(bn >> 224n),
-          Number(bn >> 216n),
-          Number(bn >> 208n),
-          Number(bn >> 200n),
-          Number(bn >> 192n),
-          Number(bn >> 184n),
-          Number(bn >> 176n),
-          Number(bn >> 168n),
-          Number(bn >> 160n),
-          Number(bn >> 152n),
-          Number(bn >> 144n),
-          Number(bn >> 136n),
-          Number(bn >> 128n),
-          Number(bn >> 120n),
-          Number(bn >> 112n),
-          Number(bn >> 104n),
-          Number(bn >> 96n),
-          Number(bn >> 88n),
-          Number(bn >> 80n),
-          Number(bn >> 72n),
-          Number(bn >> 64n),
-          Number(bn >> 56n),
-          Number(bn >> 48n),
-          Number(bn >> 40n),
-          Number(bn >> 32n),
-          Number(bn >> 24n),
-          Number(bn >> 16n),
-          Number(bn >> 8n),
-          Number(bn),
-        ]),
-      ),
-    );
+    const bytes = new Array(byteLen);
+    for (let i = byteLen - 1; i >= 0; i--) {
+      bytes[i] = Number(bn & 0xffn);
+      bn >>= 8n; // Shift right by 8 bits in-place
+    }
+    return new U256(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
   static fromN(n: number): U256 {
@@ -568,40 +493,12 @@ export class U256 extends FixedNum<32> {
   }
 
   toBn(): bigint {
-    return (
-      (BigInt(this.buf.buf[0] as number) << 248n) +
-      (BigInt(this.buf.buf[1] as number) << 240n) +
-      (BigInt(this.buf.buf[2] as number) << 232n) +
-      (BigInt(this.buf.buf[3] as number) << 224n) +
-      (BigInt(this.buf.buf[4] as number) << 216n) +
-      (BigInt(this.buf.buf[5] as number) << 208n) +
-      (BigInt(this.buf.buf[6] as number) << 200n) +
-      (BigInt(this.buf.buf[7] as number) << 192n) +
-      (BigInt(this.buf.buf[8] as number) << 184n) +
-      (BigInt(this.buf.buf[9] as number) << 176n) +
-      (BigInt(this.buf.buf[10] as number) << 168n) +
-      (BigInt(this.buf.buf[11] as number) << 160n) +
-      (BigInt(this.buf.buf[12] as number) << 152n) +
-      (BigInt(this.buf.buf[13] as number) << 144n) +
-      (BigInt(this.buf.buf[14] as number) << 136n) +
-      (BigInt(this.buf.buf[15] as number) << 128n) +
-      (BigInt(this.buf.buf[16] as number) << 120n) +
-      (BigInt(this.buf.buf[17] as number) << 112n) +
-      (BigInt(this.buf.buf[18] as number) << 104n) +
-      (BigInt(this.buf.buf[19] as number) << 96n) +
-      (BigInt(this.buf.buf[20] as number) << 88n) +
-      (BigInt(this.buf.buf[21] as number) << 80n) +
-      (BigInt(this.buf.buf[22] as number) << 72n) +
-      (BigInt(this.buf.buf[23] as number) << 64n) +
-      (BigInt(this.buf.buf[24] as number) << 56n) +
-      (BigInt(this.buf.buf[25] as number) << 48n) +
-      (BigInt(this.buf.buf[26] as number) << 40n) +
-      (BigInt(this.buf.buf[27] as number) << 32n) +
-      (BigInt(this.buf.buf[28] as number) << 24n) +
-      (BigInt(this.buf.buf[29] as number) << 16n) +
-      (BigInt(this.buf.buf[30] as number) << 8n) +
-      BigInt(this.buf.buf[31])
-    );
+    const byteLen = 32;
+    let result = 0n;
+    for (let i = 0; i < byteLen; i++) {
+      result = (result << 8n) + BigInt(this.buf.buf[i] as number);
+    }
+    return result;
   }
 
   add(other: U256): U256 {
