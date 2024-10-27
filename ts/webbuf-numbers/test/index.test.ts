@@ -39,7 +39,12 @@ describe("U8", () => {
 
   it("should convert to LE buffer", () => {
     const u8 = U8.fromBn(0xffn);
-    expect(u8.toLEBuf().toHex()).toEqual('ff');
+    expect(u8.toLEBuf().toHex()).toEqual("ff");
+  });
+
+  it("should convert from LE buffer", () => {
+    const u8 = U8.fromLEBuf(U8.fromBn(0xffn).toLEBuf());
+    expect(u8.bn).toBe(0xffn);
   });
 });
 
@@ -81,7 +86,7 @@ describe("U16", () => {
 
   it("should convert to LE buffer", () => {
     const u16 = U16.fromBn(0x0102n);
-    expect(u16.toLEBuf().toHex()).toEqual('0201');
+    expect(u16.toLEBuf().toHex()).toEqual("0201");
   });
 });
 
@@ -123,7 +128,7 @@ describe("U32", () => {
 
   it("should convert to LE buffer", () => {
     const u32 = U32.fromBn(0x01020304n);
-    expect(u32.toLEBuf().toHex()).toEqual('04030201');
+    expect(u32.toLEBuf().toHex()).toEqual("04030201");
   });
 });
 
@@ -165,7 +170,7 @@ describe("U64", () => {
 
   it("should convert to LE buffer", () => {
     const u64 = U64.fromBn(0x0102030405060708n);
-    expect(u64.toLEBuf().toHex()).toEqual('0807060504030201');
+    expect(u64.toLEBuf().toHex()).toEqual("0807060504030201");
   });
 });
 
@@ -207,7 +212,7 @@ describe("U128", () => {
 
   it("should convert to LE buffer", () => {
     const u128 = U128.fromBn(0x0102030405060708090a0b0c0d0e0f10n);
-    expect(u128.toLEBuf().toHex()).toEqual('100f0e0d0c0b0a090807060504030201');
+    expect(u128.toLEBuf().toHex()).toEqual("100f0e0d0c0b0a090807060504030201");
   });
 });
 
@@ -238,17 +243,32 @@ describe("U256", () => {
   });
 
   it("should convert to hex string", () => {
-    const u256 = U256.fromBn(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
-    expect(u256.toHex()).toBe("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    const u256 =
+      U256.fromBn(
+        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      );
+    expect(u256.toHex()).toBe(
+      "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    );
   });
 
   it("should convert to a big number", () => {
-    const u256 = U256.fromBn(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
-    expect(u256.bn).toBe(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+    const u256 =
+      U256.fromBn(
+        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+      );
+    expect(u256.bn).toBe(
+      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+    );
   });
 
   it("should convert to LE buffer", () => {
-    const u256 = U256.fromBn(0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n);
-    expect(u256.toLEBuf().toHex()).toEqual('201f1e1d1c1b1a191817161514131211100f0e0d0c0b0a090807060504030201');
+    const u256 =
+      U256.fromBn(
+        0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+      );
+    expect(u256.toLEBuf().toHex()).toEqual(
+      "201f1e1d1c1b1a191817161514131211100f0e0d0c0b0a090807060504030201",
+    );
   });
 });

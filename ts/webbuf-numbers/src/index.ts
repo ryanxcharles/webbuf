@@ -473,7 +473,10 @@ export class U128 extends FixedNum<16> {
 export class U256 extends FixedNum<32> {
   static fromBn(bn: bigint): U256 {
     const byteLen = 32;
-    if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn) {
+    if (
+      bn < 0 ||
+      bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn
+    ) {
       throw new Error("Invalid number");
     }
     const bytes = new Array(byteLen);
