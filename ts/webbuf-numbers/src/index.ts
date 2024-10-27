@@ -104,7 +104,7 @@ export class U16 extends FixedNum<2> {
   }
 
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 8n) + BigInt(this.buf.buf[1]);
+    return (BigInt(this.buf.buf[0] as number) << 8n) + BigInt(this.buf.buf[1] as number);
   }
 
   add(other: U16): U16 {
@@ -128,10 +128,7 @@ export class U16 extends FixedNum<2> {
   }
 
   toLEBuf(): FixedBuf<2> {
-    return FixedBuf.fromBuf(
-      2,
-      WebBuf.fromArray([this.buf.buf[1], this.buf.buf[0]]),
-    );
+    return this.buf.cloneReverse();
   }
 
   toHex(): string {
@@ -144,7 +141,7 @@ export class U16 extends FixedNum<2> {
 
   static fromLEBuf(buf: FixedBuf<2>): U16 {
     return new U16(
-      FixedBuf.fromBuf(2, WebBuf.fromArray([buf.buf[1], buf.buf[0]])),
+      buf.cloneReverse(),
     );
   }
 
