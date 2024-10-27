@@ -1,7 +1,7 @@
 import { describe, test, it, expect } from "vitest";
 import { U8BE, U16BE, U32BE, U64BE, U128BE, U256BE } from "../src/index.js";
 
-describe("U8", () => {
+describe("U8BE", () => {
   it("should create a new U8 instance from number", () => {
     const u8 = U8BE.fromN(0);
     expect(u8.n).toBe(0);
@@ -48,7 +48,7 @@ describe("U8", () => {
   });
 });
 
-describe("U16", () => {
+describe("U16BE", () => {
   it("should create a new U16 instance from number", () => {
     const u16 = U16BE.fromN(0);
     expect(u16.n).toBe(0);
@@ -95,7 +95,7 @@ describe("U16", () => {
   });
 });
 
-describe("U32", () => {
+describe("U32BE", () => {
   it("should create a new U32 instance from number", () => {
     const u32 = U32BE.fromN(0);
     expect(u32.n).toBe(0);
@@ -142,7 +142,7 @@ describe("U32", () => {
   });
 });
 
-describe("U64", () => {
+describe("U64BE", () => {
   it("should create a new U64 instance from number", () => {
     const u64 = U64BE.fromN(0);
     expect(u64.n).toBe(0);
@@ -189,7 +189,7 @@ describe("U64", () => {
   });
 });
 
-describe("U128", () => {
+describe("U128BE", () => {
   it("should create a new U128 instance from number", () => {
     const u128 = U128BE.fromN(0);
     expect(u128.n).toBe(0);
@@ -236,7 +236,7 @@ describe("U128", () => {
   });
 });
 
-describe("U256", () => {
+describe("U256BE", () => {
   it("should create a new U256 instance from number", () => {
     const u256 = U256BE.fromN(0);
     expect(u256.n).toBe(0);
