@@ -9,8 +9,8 @@ import { blake3Hash } from "@webbuf/blake3";
  * (Diffie-Hellman) and use that shared secret at the encryption key for ACB3
  * encryption.
  *
- * @param alicePrivKey Alice's private key.
- * @param bobPubKey Bob's public key.
+ * @param alicePrivKey Alice's private key. (Or Bob's private key)
+ * @param bobPubKey Bob's public key. (Or Alice's public key)
  * @param plaintext The data to encrypt.
  * @param iv The initialization vector to use. Must be 128 bits.
  * @returns The encrypted data.
@@ -32,8 +32,8 @@ export function acb3dhEncrypt(
  * (Diffie-Hellman) and use that shared secret at the decryption key for ACB3
  * decryption.
  *
- * @param alicePrivKey Alice's private key.
- * @param bobPubKey Bob's public key.
+ * @param alicePrivKey Alice's private key. (Or Bob's private key)
+ * @param bobPubKey Bob's public key. (Or Alice's public key)
  * @param ciphertext The data to decrypt.
  * @returns The decrypted data.
  * @throws If there is an error decrypting the data.
