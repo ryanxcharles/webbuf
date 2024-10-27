@@ -45,10 +45,10 @@
   "license": "MIT",
   "peerDependencies": {
     "@webbuf/fixedbuf": "workspace:^",
-    "@webbuf/webbuf": "workspace:^",
-    "@webbuf/blake3": "workspace:^"
+    "@webbuf/webbuf": "workspace:^"
   },
   "devDependencies": {
+    "@webbuf/blake3": "workspace:^",
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.7.9",
     "buffer": "^6.0.3",
