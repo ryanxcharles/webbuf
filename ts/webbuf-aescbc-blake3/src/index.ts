@@ -15,7 +15,7 @@ import { FixedBuf } from "@webbuf/fixedbuf";
  * @returns The encrypted data.
  * @throws If the encrypted data is less than 256+128+128 bits
  */
-export function acb3Encrypt(
+export function aescbcBlake3Encrypt(
   plaintext: WebBuf,
   aesKey: FixedBuf<32>,
   iv?: FixedBuf<16>,
@@ -36,7 +36,7 @@ export function acb3Encrypt(
  * @throws If the encrypted data is less than 256+128+128 bits
  * @throws If the Hmacs are not equivalent
  */
-export function acb3Decrypt(ciphertext: WebBuf, aesKey: FixedBuf<32>) {
+export function aescbcBlake3Decrypt(ciphertext: WebBuf, aesKey: FixedBuf<32>) {
   if (ciphertext.length < (256 + 128 + 128) / 8) {
     throw new Error(
       "The encrypted data must be at least 256+128+128 bits, which is the length of the Hmac plus the iv plus the smallest encrypted data size",
