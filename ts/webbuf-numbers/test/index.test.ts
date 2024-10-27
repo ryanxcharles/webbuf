@@ -28,8 +28,13 @@ describe("U8", () => {
   });
 
   it("should convert to hex string", () => {
-    const u8 = U8.fromBn(255n);
+    const u8 = U8.fromBn(0xffn);
     expect(u8.toHex()).toBe("ff");
+  });
+
+  it("should convert to a big number", () => {
+    const u8 = U8.fromBn(0xffn);
+    expect(u8.bn).toBe(0xffn);
   });
 });
 
@@ -60,8 +65,13 @@ describe("U16", () => {
   });
 
   it("should convert to hex string", () => {
-    const u16 = U16.fromBn(65535n);
+    const u16 = U16.fromBn(0xffffn);
     expect(u16.toHex()).toBe("ffff");
+  });
+
+  it("should convert to a big number", () => {
+    const u16 = U16.fromBn(0xffffn);
+    expect(u16.bn).toBe(0xffffn);
   });
 });
 
@@ -92,8 +102,13 @@ describe("U32", () => {
   });
 
   it("should convert to hex string", () => {
-    const u32 = U32.fromBn(4294967295n);
+    const u32 = U32.fromBn(0xffffffffn);
     expect(u32.toHex()).toBe("ffffffff");
+  });
+
+  it("should convert to a big number", () => {
+    const u32 = U32.fromBn(0xffffffffn);
+    expect(u32.bn).toBe(0xffffffffn);
   });
 });
 
@@ -127,6 +142,11 @@ describe("U64", () => {
     const u64 = U64.fromBn(0xffffffffffffffffn);
     expect(u64.toHex()).toBe("ffffffffffffffff");
   });
+
+  it("should convert to a big number", () => {
+    const u64 = U64.fromBn(0xffffffffffffffffn);
+    expect(u64.bn).toBe(0xffffffffffffffffn);
+  });
 });
 
 describe("U128", () => {
@@ -156,8 +176,13 @@ describe("U128", () => {
   });
 
   it("should convert to hex string", () => {
-    const u128 = U128.fromBn(340282366920938463463374607431768211455n);
+    const u128 = U128.fromBn(0xffffffffffffffffffffffffffffffffn);
     expect(u128.toHex()).toBe("ffffffffffffffffffffffffffffffff");
+  });
+
+  it("should convert to a big number", () => {
+    const u128 = U128.fromBn(0xffffffffffffffffffffffffffffffffn);
+    expect(u128.bn).toBe(0xffffffffffffffffffffffffffffffffn);
   });
 });
 
@@ -188,7 +213,12 @@ describe("U256", () => {
   });
 
   it("should convert to hex string", () => {
-    const u256 = U256.fromBn(115792089237316195423570985008687907853269984665640564039457584007913129639935n);
+    const u256 = U256.fromBn(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
     expect(u256.toHex()).toBe("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  });
+
+  it("should convert to a big number", () => {
+    const u256 = U256.fromBn(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+    expect(u256.bn).toBe(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
   });
 });
