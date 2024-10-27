@@ -209,10 +209,7 @@ export class U32 extends FixedNum<4> {
   }
 
   toLEBuf(): FixedBuf<4> {
-    return FixedBuf.fromBuf(
-      4,
-      WebBuf.fromArray([...this.buf.clone().buf.reverse()]),
-    );
+    return this.buf.cloneReverse();
   }
 
   toHex(): string {
@@ -225,10 +222,7 @@ export class U32 extends FixedNum<4> {
 
   static fromLEBuf(buf: FixedBuf<4>): U32 {
     return new U32(
-      FixedBuf.fromBuf(
-        4,
-        WebBuf.fromArray([...buf.clone().buf.reverse()]),
-      ),
+      buf.cloneReverse(),
     );
   }
 
@@ -293,12 +287,7 @@ export class U64 extends FixedNum<8> {
   }
 
   toLEBuf(): FixedBuf<8> {
-    return FixedBuf.fromBuf(
-      8,
-      WebBuf.fromArray([
-        ...this.buf.clone().buf.reverse(),
-      ]),
-    );
+    return this.buf.cloneReverse();
   }
 
   toHex(): string {
@@ -311,12 +300,7 @@ export class U64 extends FixedNum<8> {
 
   static fromLEBuf(buf: FixedBuf<8>): U64 {
     return new U64(
-      FixedBuf.fromBuf(
-        8,
-        WebBuf.fromArray([
-          ...buf.clone().buf.reverse(),
-        ]),
-      ),
+      buf.cloneReverse(),
     );
   }
 
@@ -381,12 +365,7 @@ export class U128 extends FixedNum<16> {
   }
 
   toLEBuf(): FixedBuf<16> {
-    return FixedBuf.fromBuf(
-      16,
-      WebBuf.fromArray([
-        ...this.buf.clone().buf.reverse(),
-      ]),
-    );
+    return this.buf.cloneReverse();
   }
 
   toHex(): string {
@@ -399,12 +378,7 @@ export class U128 extends FixedNum<16> {
 
   static fromLEBuf(buf: FixedBuf<16>): U128 {
     return new U128(
-      FixedBuf.fromBuf(
-        16,
-        WebBuf.fromArray([
-          ...buf.clone().buf.reverse(),
-        ]),
-      ),
+      buf.cloneReverse(),
     );
   }
 
@@ -472,12 +446,7 @@ export class U256 extends FixedNum<32> {
   }
 
   toLEBuf(): FixedBuf<32> {
-    return FixedBuf.fromBuf(
-      32,
-      WebBuf.fromArray([
-        ...this.buf.clone().buf.reverse(),
-      ]),
-    );
+    return this.buf.cloneReverse();
   }
 
   toHex(): string {
@@ -490,12 +459,7 @@ export class U256 extends FixedNum<32> {
 
   static fromLEBuf(buf: FixedBuf<32>): U256 {
     return new U256(
-      FixedBuf.fromBuf(
-        32,
-        WebBuf.fromArray([
-          ...buf.clone().buf.reverse(),
-        ]),
-      ),
+      buf.cloneReverse(),
     );
   }
 

@@ -55,4 +55,9 @@ export class FixedBuf<N extends number> {
   clone(): FixedBuf<N> {
     return FixedBuf.fromBuf(this._size, WebBuf.from(this._buf));
   }
+
+  cloneReverse(): FixedBuf<N> {
+    const cloneedReverse = this._buf.cloneReverse();
+    return FixedBuf.fromBuf(this._size, cloneedReverse);
+  }
 }
