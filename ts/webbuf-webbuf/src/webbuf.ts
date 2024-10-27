@@ -114,6 +114,15 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   }
 
+  /**
+   * Create a new WebBuf from a Uint8Array (copy)
+   * @param buffer
+   * @returns webbuf
+   */
+  static fromUint8Array(buffer: Uint8Array) {
+    return new WebBuf(buffer);
+  }
+
   static fromArray(array: number[]) {
     return new WebBuf(array);
   }
