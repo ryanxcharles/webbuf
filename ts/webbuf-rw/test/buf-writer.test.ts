@@ -1,5 +1,6 @@
 import { beforeEach, describe, it, test, expect } from "vitest";
 import { BufWriter } from "../src/buf-writer.js";
+import { BufReader } from "../src/buf-reader.js";
 import { U8, U16BE, U32BE, U64BE, U128BE, U256BE } from "@webbuf/numbers";
 import { WebBuf } from "@webbuf/webbuf";
 
@@ -28,7 +29,7 @@ describe("BufWriter", () => {
       const u16: U16BE = U16BE.fromN(12345);
       bufferWriter.writeU16BE(u16);
       const result = bufferWriter.toBuf();
-      expect(result.readUint16BE(0)).toEqual(u16.n);
+      expect(new BufReader( result ).readU16BE().n).toEqual(u16.n);
     });
   });
 
@@ -37,7 +38,7 @@ describe("BufWriter", () => {
       const u32: U32BE = U32BE.fromN(1234567890);
       bufferWriter.writeU32BE(u32);
       const result = bufferWriter.toBuf();
-      expect(result.readUint32BE(0)).toEqual(u32.n);
+      expect(new BufReader( result ).readU32BE().n).toEqual(u32.n);
     });
   });
 
@@ -46,7 +47,7 @@ describe("BufWriter", () => {
       const u64: U64BE = U64BE.fromBn(1234567890123456789n);
       bufferWriter.writeU64BE(u64);
       const result = bufferWriter.toBuf();
-      expect(result.readBigInt64BE(0)).toEqual(u64.bn);
+      expect(new BufReader( result ).readU64BE().bn).toEqual(u64.bn);
     });
   });
 
@@ -56,7 +57,7 @@ describe("BufWriter", () => {
         U128BE.fromBn(0x0123456789ABCDEF0123456789ABCDEFn);
       bufferWriter.writeU128BE(u128);
       const result = bufferWriter.toBuf();
-      expect(result.readBigUint128BE(0)).toEqual(u128.bn);
+      expect(new BufReader( result ).readU128BE().bn).toEqual(u128.bn);
     });
   });
 
@@ -66,7 +67,7 @@ describe("BufWriter", () => {
         U256BE.fromBn(0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEFn);
       bufferWriter.writeU256BE(u256);
       const result = bufferWriter.toBuf();
-      expect(result.readBigUint256BE(0)).toEqual(u256.bn);
+      expect(new BufReader( result ).readU256BE().bn).toEqual(u256.bn);
     });
   });
 

@@ -3,6 +3,7 @@ import { BufReader } from "../src/buf-reader.js";
 import { WebBuf } from "@webbuf/webbuf";
 import fs from "node:fs";
 import path from "node:path";
+import { U16BE, U32BE, U64BE } from "@webbuf/numbers";
 
 describe("BufReader", () => {
   let bufferReader: BufReader;
@@ -38,13 +39,14 @@ describe("BufReader", () => {
 
   test("readUint16BE returns correct value and updates position", () => {
     const result = bufferReader.readU16BE();
-    expect(result.n).toBe(WebBuf.from([1, 2]).readUint16BE());
+    expect(result.n).toBe(U16BE.fromHex("0102").n);
     expect(bufferReader.pos).toBe(2);
   });
 
   test("readUint32BE returns correct value and updates position", () => {
     const result = bufferReader.readU32BE();
-    expect(result.n).toBe(WebBuf.from([1, 2, 3, 4]).readUint32BE());
+    // expect(result.n).toBe(WebBuf.from([1, 2, 3, 4]).readUint32BE());
+    expect(result.n).toBe(U32BE.fromHex("01020304").n);
     expect(bufferReader.pos).toBe(4);
   });
 

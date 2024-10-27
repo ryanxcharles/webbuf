@@ -352,4 +352,10 @@ export class WebBuf extends Uint8Array {
   equals(other: WebBuf): boolean {
     return this.compare(other) === 0;
   }
+
+  write(buf: WebBuf, offset = 0): number {
+    verifyOffset(offset, buf.length, this.length);
+    this.set(buf, offset);
+    return buf.length;
+  }
 }
