@@ -32,6 +32,10 @@ export class U8 extends FixedNum<1> {
     return new U8(FixedBuf.fromBuf(1, WebBuf.fromArray([Number(bn)])));
   }
 
+  static fromN(n: number): U8 {
+    return U8.fromBn(BigInt(n));
+  }
+
   toBn(): bigint {
     return BigInt(this.buf.buf[0] as number);
   }
