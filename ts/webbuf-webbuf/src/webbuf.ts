@@ -110,7 +110,7 @@ export class WebBuf extends Uint8Array {
    * @param buffer
    * @returns WebBuf
    */
-  static fromUint8Array(buffer: Uint8Array) {
+  static view(buffer: Uint8Array) {
     return new WebBuf(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   }
 
@@ -271,7 +271,7 @@ export class WebBuf extends Uint8Array {
       return WebBuf.fromString(source);
     }
     if (source instanceof Uint8Array) {
-      return WebBuf.fromUint8Array(source);
+      return WebBuf.view(source);
     }
     const sourceArray = Array.from(source);
     // biome-ignore lint:
