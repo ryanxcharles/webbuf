@@ -141,17 +141,18 @@ export class BufReader {
 
   readVarIntU64BE(): U64BE {
     const buf = this.readVarIntBEBuf();
-    const first = buf[0] as number;
+    const bufReader = new BufReader(buf);
+    const first = bufReader.readU8().n;
     let value: bigint;
     switch (first) {
       case 0xfd:
-        value = new BufReader(buf).readU16BE().bn;
+        value = bufReader.readU16BE().bn;
         break;
       case 0xfe:
-        value = new BufReader(buf).readU32BE().bn;
+        value = bufReader.readU32BE().bn;
         break;
       case 0xff:
-        value = new BufReader(buf).readU64BE().bn;
+        value = bufReader.readU64BE().bn;
         break;
       default:
         value = BigInt(first);
