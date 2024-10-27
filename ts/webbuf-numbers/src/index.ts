@@ -14,6 +14,12 @@ export abstract class FixedNum<N extends number> {
   abstract sub(other: FixedNum<N>): FixedNum<N>;
   abstract mul(other: FixedNum<N>): FixedNum<N>;
   abstract div(other: FixedNum<N>): FixedNum<N>;
+  abstract toBEBuf(): FixedBuf<N>;
+  abstract toLEBuf(): FixedBuf<N>;
+  abstract toHex(): string;
+  // abstract static fromBEBuf(buf: FixedBuf<N>): FixedU<N>;
+  // abstract static fromLEBuf(buf: FixedBuf<N>): FixedU<N>;
+  // abstract static fromHex(hex: string): FixedU<N>;
   abstract get n(): number;
   abstract get bn(): bigint;
 }
@@ -44,6 +50,30 @@ export class FixedU8 extends FixedNum<1> {
 
   div(other: FixedU8): FixedU8 {
     return FixedU8.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<1> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<1> {
+    return this.buf;
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<1>): FixedU8 {
+    return new FixedU8(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<1>): FixedU8 {
+    return new FixedU8(buf);
+  }
+
+  static fromHex(hex: string): FixedU8 {
+    return new FixedU8(FixedBuf.fromHex(1, hex));
   }
 
   get n(): number {
@@ -83,6 +113,30 @@ export class FixedU16 extends FixedNum<2> {
 
   div(other: FixedU16): FixedU16 {
     return FixedU16.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<2> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<2> {
+    return FixedBuf.fromBuf(2, WebBuf.fromArray([this.buf.buf[1], this.buf.buf[0]]));
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<2>): FixedU16 {
+    return new FixedU16(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<2>): FixedU16 {
+    return new FixedU16(FixedBuf.fromBuf(2, WebBuf.fromArray([buf.buf[1], buf.buf[0]])));
+  }
+
+  static fromHex(hex: string): FixedU16 {
+    return new FixedU16(FixedBuf.fromHex(2, hex));
   }
 
   get n(): number {
@@ -130,6 +184,30 @@ export class FixedU32 extends FixedNum<4> {
 
   div(other: FixedU32): FixedU32 {
     return FixedU32.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<4> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<4> {
+    return FixedBuf.fromBuf(4, WebBuf.fromArray([this.buf.buf[3], this.buf.buf[2], this.buf.buf[1], this.buf.buf[0]]));
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<4>): FixedU32 {
+    return new FixedU32(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<4>): FixedU32 {
+    return new FixedU32(FixedBuf.fromBuf(4, WebBuf.fromArray([buf.buf[3], buf.buf[2], buf.buf[1], buf.buf[0]])));
+  }
+
+  static fromHex(hex: string): FixedU32 {
+    return new FixedU32(FixedBuf.fromHex(4, hex));
   }
 
   get n(): number {
@@ -185,6 +263,48 @@ export class FixedU64 extends FixedNum<8> {
 
   div(other: FixedU64): FixedU64 {
     return FixedU64.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<8> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<8> {
+    return FixedBuf.fromBuf(8, WebBuf.fromArray([
+      this.buf.buf[7],
+      this.buf.buf[6],
+      this.buf.buf[5],
+      this.buf.buf[4],
+      this.buf.buf[3],
+      this.buf.buf[2],
+      this.buf.buf[1],
+      this.buf.buf[0],
+    ]));
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<8>): FixedU64 {
+    return new FixedU64(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<8>): FixedU64 {
+    return new FixedU64(FixedBuf.fromBuf(8, WebBuf.fromArray([
+      buf.buf[7],
+      buf.buf[6],
+      buf.buf[5],
+      buf.buf[4],
+      buf.buf[3],
+      buf.buf[2],
+      buf.buf[1],
+      buf.buf[0],
+    ])));
+  }
+
+  static fromHex(hex: string): FixedU64 {
+    return new FixedU64(FixedBuf.fromHex(8, hex));
   }
 
   get n(): number {
@@ -256,6 +376,64 @@ export class FixedU128 extends FixedNum<16> {
 
   div(other: FixedU128): FixedU128 {
     return FixedU128.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<16> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<16> {
+    return FixedBuf.fromBuf(16, WebBuf.fromArray([
+      this.buf.buf[15],
+      this.buf.buf[14],
+      this.buf.buf[13],
+      this.buf.buf[12],
+      this.buf.buf[11],
+      this.buf.buf[10],
+      this.buf.buf[9],
+      this.buf.buf[8],
+      this.buf.buf[7],
+      this.buf.buf[6],
+      this.buf.buf[5],
+      this.buf.buf[4],
+      this.buf.buf[3],
+      this.buf.buf[2],
+      this.buf.buf[1],
+      this.buf.buf[0],
+    ]));
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<16>): FixedU128 {
+    return new FixedU128(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<16>): FixedU128 {
+    return new FixedU128(FixedBuf.fromBuf(16, WebBuf.fromArray([
+      buf.buf[15],
+      buf.buf[14],
+      buf.buf[13],
+      buf.buf[12],
+      buf.buf[11],
+      buf.buf[10],
+      buf.buf[9],
+      buf.buf[8],
+      buf.buf[7],
+      buf.buf[6],
+      buf.buf[5],
+      buf.buf[4],
+      buf.buf[3],
+      buf.buf[2],
+      buf.buf[1],
+      buf.buf[0],
+    ])));
+  }
+
+  static fromHex(hex: string): FixedU128 {
+    return new FixedU128(FixedBuf.fromHex(16, hex));
   }
 
   get n(): number {
@@ -359,6 +537,96 @@ export class FixedU256 extends FixedNum<32> {
 
   div(other: FixedU256): FixedU256 {
     return FixedU256.fromBn(this.toBn() / other.toBn());
+  }
+
+  toBEBuf(): FixedBuf<32> {
+    return this.buf;
+  }
+
+  toLEBuf(): FixedBuf<32> {
+    return FixedBuf.fromBuf(32, WebBuf.fromArray([
+      this.buf.buf[31],
+      this.buf.buf[30],
+      this.buf.buf[29],
+      this.buf.buf[28],
+      this.buf.buf[27],
+      this.buf.buf[26],
+      this.buf.buf[25],
+      this.buf.buf[24],
+      this.buf.buf[23],
+      this.buf.buf[22],
+      this.buf.buf[21],
+      this.buf.buf[20],
+      this.buf.buf[19],
+      this.buf.buf[18],
+      this.buf.buf[17],
+      this.buf.buf[16],
+      this.buf.buf[15],
+      this.buf.buf[14],
+      this.buf.buf[13],
+      this.buf.buf[12],
+      this.buf.buf[11],
+      this.buf.buf[10],
+      this.buf.buf[9],
+      this.buf.buf[8],
+      this.buf.buf[7],
+      this.buf.buf[6],
+      this.buf.buf[5],
+      this.buf.buf[4],
+      this.buf.buf[3],
+      this.buf.buf[2],
+      this.buf.buf[1],
+      this.buf.buf[0],
+    ]));
+  }
+
+  toHex(): string {
+    return this.buf.toHex();
+  }
+
+  static fromBEBuf(buf: FixedBuf<32>): FixedU256 {
+    return new FixedU256(buf);
+  }
+
+  static fromLEBuf(buf: FixedBuf<32>): FixedU256 {
+    return new FixedU256(FixedBuf.fromBuf(32, WebBuf.fromArray([
+      buf.buf[31],
+      buf.buf[30],
+      buf.buf[29],
+      buf.buf[28],
+      buf.buf[27],
+      buf.buf[26],
+      buf.buf[25],
+      buf.buf[24],
+      buf.buf[23],
+      buf.buf[22],
+      buf.buf[21],
+      buf.buf[20],
+      buf.buf[19],
+      buf.buf[18],
+      buf.buf[17],
+      buf.buf[16],
+      buf.buf[15],
+      buf.buf[14],
+      buf.buf[13],
+      buf.buf[12],
+      buf.buf[11],
+      buf.buf[10],
+      buf.buf[9],
+      buf.buf[8],
+      buf.buf[7],
+      buf.buf[6],
+      buf.buf[5],
+      buf.buf[4],
+      buf.buf[3],
+      buf.buf[2],
+      buf.buf[1],
+      buf.buf[0],
+    ])));
+  }
+
+  static fromHex(hex: string): FixedU256 {
+    return new FixedU256(FixedBuf.fromHex(32, hex));
   }
 
   get n(): number {
