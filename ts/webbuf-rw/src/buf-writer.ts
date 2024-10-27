@@ -66,26 +66,19 @@ export class BufWriter {
     const n = bn.n;
     if (n < 253) {
       buf = WebBuf.alloc(1);
-      // buf.writeUint8(n, 0);
       buf.write(U8.fromN(n).toBEBuf().buf, 0);
     } else if (n < 0x10000) {
       buf = WebBuf.alloc(1 + 2);
       buf.write(U8.fromN(253).toBEBuf().buf, 0);
       buf.write(U16BE.fromN(n).toBEBuf().buf, 1);
-      // buf.writeUint8(253, 0);
-      // buf.writeUint16BE(n, 1);
     } else if (n < 0x100000000) {
       buf = WebBuf.alloc(1 + 4);
       buf.write(U8.fromN(254).toBEBuf().buf, 0);
       buf.write(U32BE.fromN(n).toBEBuf().buf, 1);
-      // buf.writeUint8(254, 0);
-      // buf.writeUint32BE(n, 1);
     } else {
       buf = WebBuf.alloc(1 + 8);
       buf.write(U8.fromN(255).toBEBuf().buf, 0);
       buf.write(bn.toBEBuf().buf, 1);
-      // buf.writeUint8(255, 0);
-      // buf.writeBigInt64BE(bn.bn, 1);
     }
     return buf;
   }
