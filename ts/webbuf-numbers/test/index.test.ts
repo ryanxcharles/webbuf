@@ -26,4 +26,9 @@ describe("U8", () => {
     const u8 = U8.fromBn(20n).div(U8.fromBn(10n));
     expect(u8.bn).toBe(2n);
   });
+
+  it("should convert to hex string", () => {
+    const u8 = U8.fromBn(255n);
+    expect(u8.toHex()).toBe("ff");
+  });
 });
