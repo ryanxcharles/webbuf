@@ -15,11 +15,11 @@ describe("WebBuf Benchmarks", () => {
         const largeBuf = WebBuf.alloc(largeBufLength);
         for (let i = 0; i < smallBufLength; i++) {
           const val = i % 256;
-          smallBuf.writeUint8(val, i);
+          smallBuf[i] = val;
         }
         for (let i = 0; i < largeBufLength; i++) {
           const val = i % 255;
-          largeBuf.writeUint8(val, i);
+          largeBuf[i] = val;
         }
         const startSmall = performance.now();
         const smallHex = smallBuf.toHex();
@@ -45,11 +45,11 @@ describe("WebBuf Benchmarks", () => {
         const largeBuf = WebBuf.alloc(largeBufLength);
         for (let i = 0; i < smallBufLength; i++) {
           const val = i % 256;
-          smallBuf.writeUint8(val, i);
+          smallBuf[i] = val;
         }
         for (let i = 0; i < largeBufLength; i++) {
           const val = i % 255;
-          largeBuf.writeUint8(val, i);
+          largeBuf[i] = val;
         }
         const startSmall = performance.now();
         const smallBase64 = smallBuf.toBase64();
@@ -75,11 +75,11 @@ describe("WebBuf Benchmarks", () => {
         const largeBuf = WebBuf.alloc(largeBufLength);
         for (let i = 0; i < smallBufLength; i++) {
           const val = i % 256;
-          smallBuf.writeUint8(val, i);
+          smallBuf[i] = val;
         }
         for (let i = 0; i < largeBufLength; i++) {
           const val = i % 255;
-          largeBuf.writeUint8(val, i);
+          largeBuf[i] = val;
         }
         const smallHex = smallBuf.toHex();
         const largeHex = largeBuf.toHex();
@@ -113,7 +113,7 @@ describe("WebBuf Benchmarks", () => {
           smallBuf = WebBuf.alloc(smallLength);
           for (let i = 0; i < smallLength; i++) {
             const val = i % 256;
-            smallBuf.writeUint8(val, i);
+            smallBuf[i] = val;
           }
           smallBase64 = smallBuf.toBase64();
         } while (smallBase64.length + 3 < FROM_BASE64_ALGO_THRESHOLD - 1);
@@ -122,7 +122,7 @@ describe("WebBuf Benchmarks", () => {
           largeBuf = WebBuf.alloc(largeLength);
           for (let i = 0; i < largeLength; i++) {
             const val = i % 256;
-            largeBuf.writeUint8(val, i);
+            largeBuf[i] = val;
           }
           largeBase64 = largeBuf.toBase64();
         } while (largeBase64.length - 3 < FROM_BASE64_ALGO_THRESHOLD + 1);

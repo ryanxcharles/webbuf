@@ -11,11 +11,11 @@ describe("WebBuf 2", () => {
       const largeBuf = WebBuf.alloc(largeBufLength);
       for (let i = 0; i < smallBufLength; i++) {
         const val = i % 256;
-        smallBuf.writeUint8(val, i);
+        smallBuf[i] = val;
       }
       for (let i = 0; i < largeBufLength; i++) {
         const val = i % 255;
-        largeBuf.writeUint8(val, i);
+        largeBuf[i] = val;
       }
       const smallHex = smallBuf.toHex();
       const largeHex = largeBuf.toHex();
@@ -33,11 +33,11 @@ describe("WebBuf 2", () => {
       const largeBuf = WebBuf.alloc(largeBufLength);
       for (let i = 0; i < smallBufLength; i++) {
         const val = i % 256;
-        smallBuf.writeUint8(val, i);
+        smallBuf[i] = val;
       }
       for (let i = 0; i < largeBufLength; i++) {
         const val = i % 255;
-        largeBuf.writeUint8(val, i);
+        largeBuf[i] = val;
       }
       const smallHex = smallBuf.toHex();
       const largeHex = largeBuf.toHex();
@@ -55,11 +55,11 @@ describe("WebBuf 2", () => {
       const largeBuf = WebBuf.alloc(largeBufLength);
       for (let i = 0; i < smallBufLength; i++) {
         const val = i % 256;
-        smallBuf.writeUint8(val, i);
+        smallBuf[i] = val;
       }
       for (let i = 0; i < largeBufLength; i++) {
         const val = i % 255;
-        largeBuf.writeUint8(val, i);
+        largeBuf[i] = val;
       }
       const smallBase64 = smallBuf.toBase64();
       const largeBase64 = largeBuf.toBase64();
@@ -77,11 +77,11 @@ describe("WebBuf 2", () => {
       const largeBuf = WebBuf.alloc(largeBufLength);
       for (let i = 0; i < smallBufLength; i++) {
         const val = i % 256;
-        smallBuf.writeUint8(val, i);
+        smallBuf[i] = val;
       }
       for (let i = 0; i < largeBufLength; i++) {
         const val = i % 255;
-        largeBuf.writeUint8(val, i);
+        largeBuf[i] = val;
       }
       const smallBase64 = smallBuf.toBase64();
       const largeBase64 = largeBuf.toBase64();
