@@ -25,6 +25,16 @@ export abstract class FixedNum<N extends number> {
 }
 
 export class U8 extends FixedNum<1> {
+  constructor(buf: FixedBuf<1> | number | bigint) {
+    if (typeof buf === "number") {
+      return U8.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U8.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U8 {
     if (bn < 0 || bn > 0xffn) {
       throw new Error("Invalid number");
@@ -90,6 +100,16 @@ export class U8 extends FixedNum<1> {
 }
 
 export class U16BE extends FixedNum<2> {
+  constructor(buf: FixedBuf<2> | number | bigint) {
+    if (typeof buf === "number") {
+      return U16BE.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U16BE.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U16BE {
     if (bn < 0 || bn > 0xffffn) {
       throw new Error("Invalid number");
@@ -104,7 +124,10 @@ export class U16BE extends FixedNum<2> {
   }
 
   toBn(): bigint {
-    return (BigInt(this.buf.buf[0] as number) << 8n) + BigInt(this.buf.buf[1] as number);
+    return (
+      (BigInt(this.buf.buf[0] as number) << 8n) +
+      BigInt(this.buf.buf[1] as number)
+    );
   }
 
   add(other: U16BE): U16BE {
@@ -140,9 +163,7 @@ export class U16BE extends FixedNum<2> {
   }
 
   static fromLEBuf(buf: FixedBuf<2>): U16BE {
-    return new U16BE(
-      buf.toReverse(),
-    );
+    return new U16BE(buf.toReverse());
   }
 
   static fromHex(hex: string): U16BE {
@@ -218,9 +239,7 @@ export class U32BE extends FixedNum<4> {
   }
 
   static fromLEBuf(buf: FixedBuf<4>): U32BE {
-    return new U32BE(
-      buf.toReverse(),
-    );
+    return new U32BE(buf.toReverse());
   }
 
   static fromHex(hex: string): U32BE {
@@ -296,9 +315,7 @@ export class U64BE extends FixedNum<8> {
   }
 
   static fromLEBuf(buf: FixedBuf<8>): U64BE {
-    return new U64BE(
-      buf.toReverse(),
-    );
+    return new U64BE(buf.toReverse());
   }
 
   static fromHex(hex: string): U64BE {
@@ -374,9 +391,7 @@ export class U128BE extends FixedNum<16> {
   }
 
   static fromLEBuf(buf: FixedBuf<16>): U128BE {
-    return new U128BE(
-      buf.toReverse(),
-    );
+    return new U128BE(buf.toReverse());
   }
 
   static fromHex(hex: string): U128BE {
@@ -455,9 +470,7 @@ export class U256BE extends FixedNum<32> {
   }
 
   static fromLEBuf(buf: FixedBuf<32>): U256BE {
-    return new U256BE(
-      buf.toReverse(),
-    );
+    return new U256BE(buf.toReverse());
   }
 
   static fromHex(hex: string): U256BE {

@@ -2,6 +2,16 @@ import { describe, test, it, expect } from "vitest";
 import { U8, U16BE, U32BE, U64BE, U128BE, U256BE } from "../src/index.js";
 
 describe("U8", () => {
+  it("should create a new U8 instance from number using the constructor", () => {
+    const u8 = new U8(0);
+    expect(u8.n).toBe(0);
+  });
+
+  it("should create a new U8 instance from bigint using the constructor", () => {
+    const u8 = new U8(0n);
+    expect(u8.n).toBe(0);
+  });
+
   it("should create a new U8 instance from number", () => {
     const u8 = U8.fromN(0);
     expect(u8.n).toBe(0);
