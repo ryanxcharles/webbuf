@@ -1,7 +1,7 @@
 import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
-export abstract class FixedU<N extends number> {
+export abstract class FixedNum<N extends number> {
   protected buf: FixedBuf<N>;
 
   constructor(buf: FixedBuf<N>) {
@@ -10,15 +10,15 @@ export abstract class FixedU<N extends number> {
 
   // abstract static fromBn(bn: bigint): FixedU<N>;
   abstract toBn(): bigint;
-  abstract add(other: FixedU<N>): FixedU<N>;
-  abstract sub(other: FixedU<N>): FixedU<N>;
-  abstract mul(other: FixedU<N>): FixedU<N>;
-  abstract div(other: FixedU<N>): FixedU<N>;
+  abstract add(other: FixedNum<N>): FixedNum<N>;
+  abstract sub(other: FixedNum<N>): FixedNum<N>;
+  abstract mul(other: FixedNum<N>): FixedNum<N>;
+  abstract div(other: FixedNum<N>): FixedNum<N>;
   abstract get n(): number;
   abstract get bn(): bigint;
 }
 
-export class FixedU8 extends FixedU<1> {
+export class FixedU8 extends FixedNum<1> {
   static fromBn(bn: bigint): FixedU8 {
     if (bn < 0 || bn > 0xffn) {
       throw new Error("Invalid number");
@@ -55,7 +55,7 @@ export class FixedU8 extends FixedU<1> {
   }
 }
 
-export class FixedU16 extends FixedU<2> {
+export class FixedU16 extends FixedNum<2> {
   static fromBn(bn: bigint): FixedU16 {
     if (bn < 0 || bn > 0xffffn) {
       throw new Error("Invalid number");
@@ -94,7 +94,7 @@ export class FixedU16 extends FixedU<2> {
   }
 }
 
-export class FixedU32 extends FixedU<4> {
+export class FixedU32 extends FixedNum<4> {
   static fromBn(bn: bigint): FixedU32 {
     if (bn < 0 || bn > 0xffffffffn) {
       throw new Error("Invalid number");
@@ -141,7 +141,7 @@ export class FixedU32 extends FixedU<4> {
   }
 }
 
-export class FixedU64 extends FixedU<8> {
+export class FixedU64 extends FixedNum<8> {
   static fromBn(bn: bigint): FixedU64 {
     if (bn < 0 || bn > 0xffffffffffffffffn) {
       throw new Error("Invalid number");
@@ -196,7 +196,7 @@ export class FixedU64 extends FixedU<8> {
   }
 }
 
-export class FixedU128 extends FixedU<16> {
+export class FixedU128 extends FixedNum<16> {
   static fromBn(bn: bigint): FixedU128 {
     if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffn) {
       throw new Error("Invalid number");
@@ -267,7 +267,7 @@ export class FixedU128 extends FixedU<16> {
   }
 }
 
-export class FixedU256 extends FixedU<32> {
+export class FixedU256 extends FixedNum<32> {
   static fromBn(bn: bigint): FixedU256 {
     if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn) {
       throw new Error("Invalid number");
