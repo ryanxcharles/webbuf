@@ -211,12 +211,7 @@ export class U32 extends FixedNum<4> {
   toLEBuf(): FixedBuf<4> {
     return FixedBuf.fromBuf(
       4,
-      WebBuf.fromArray([
-        this.buf.buf[3],
-        this.buf.buf[2],
-        this.buf.buf[1],
-        this.buf.buf[0],
-      ]),
+      WebBuf.fromArray([...this.buf.clone().buf.reverse()]),
     );
   }
 
@@ -232,7 +227,7 @@ export class U32 extends FixedNum<4> {
     return new U32(
       FixedBuf.fromBuf(
         4,
-        WebBuf.fromArray([buf.buf[3], buf.buf[2], buf.buf[1], buf.buf[0]]),
+        WebBuf.fromArray([...buf.clone().buf.reverse()]),
       ),
     );
   }
@@ -301,14 +296,7 @@ export class U64 extends FixedNum<8> {
     return FixedBuf.fromBuf(
       8,
       WebBuf.fromArray([
-        this.buf.buf[7],
-        this.buf.buf[6],
-        this.buf.buf[5],
-        this.buf.buf[4],
-        this.buf.buf[3],
-        this.buf.buf[2],
-        this.buf.buf[1],
-        this.buf.buf[0],
+        ...this.buf.clone().buf.reverse(),
       ]),
     );
   }
@@ -326,14 +314,7 @@ export class U64 extends FixedNum<8> {
       FixedBuf.fromBuf(
         8,
         WebBuf.fromArray([
-          buf.buf[7],
-          buf.buf[6],
-          buf.buf[5],
-          buf.buf[4],
-          buf.buf[3],
-          buf.buf[2],
-          buf.buf[1],
-          buf.buf[0],
+          ...buf.clone().buf.reverse(),
         ]),
       ),
     );
@@ -403,22 +384,7 @@ export class U128 extends FixedNum<16> {
     return FixedBuf.fromBuf(
       16,
       WebBuf.fromArray([
-        this.buf.buf[15],
-        this.buf.buf[14],
-        this.buf.buf[13],
-        this.buf.buf[12],
-        this.buf.buf[11],
-        this.buf.buf[10],
-        this.buf.buf[9],
-        this.buf.buf[8],
-        this.buf.buf[7],
-        this.buf.buf[6],
-        this.buf.buf[5],
-        this.buf.buf[4],
-        this.buf.buf[3],
-        this.buf.buf[2],
-        this.buf.buf[1],
-        this.buf.buf[0],
+        ...this.buf.clone().buf.reverse(),
       ]),
     );
   }
@@ -436,22 +402,7 @@ export class U128 extends FixedNum<16> {
       FixedBuf.fromBuf(
         16,
         WebBuf.fromArray([
-          buf.buf[15],
-          buf.buf[14],
-          buf.buf[13],
-          buf.buf[12],
-          buf.buf[11],
-          buf.buf[10],
-          buf.buf[9],
-          buf.buf[8],
-          buf.buf[7],
-          buf.buf[6],
-          buf.buf[5],
-          buf.buf[4],
-          buf.buf[3],
-          buf.buf[2],
-          buf.buf[1],
-          buf.buf[0],
+          ...buf.clone().buf.reverse(),
         ]),
       ),
     );
@@ -524,38 +475,7 @@ export class U256 extends FixedNum<32> {
     return FixedBuf.fromBuf(
       32,
       WebBuf.fromArray([
-        this.buf.buf[31],
-        this.buf.buf[30],
-        this.buf.buf[29],
-        this.buf.buf[28],
-        this.buf.buf[27],
-        this.buf.buf[26],
-        this.buf.buf[25],
-        this.buf.buf[24],
-        this.buf.buf[23],
-        this.buf.buf[22],
-        this.buf.buf[21],
-        this.buf.buf[20],
-        this.buf.buf[19],
-        this.buf.buf[18],
-        this.buf.buf[17],
-        this.buf.buf[16],
-        this.buf.buf[15],
-        this.buf.buf[14],
-        this.buf.buf[13],
-        this.buf.buf[12],
-        this.buf.buf[11],
-        this.buf.buf[10],
-        this.buf.buf[9],
-        this.buf.buf[8],
-        this.buf.buf[7],
-        this.buf.buf[6],
-        this.buf.buf[5],
-        this.buf.buf[4],
-        this.buf.buf[3],
-        this.buf.buf[2],
-        this.buf.buf[1],
-        this.buf.buf[0],
+        ...this.buf.clone().buf.reverse(),
       ]),
     );
   }
@@ -573,38 +493,7 @@ export class U256 extends FixedNum<32> {
       FixedBuf.fromBuf(
         32,
         WebBuf.fromArray([
-          buf.buf[31],
-          buf.buf[30],
-          buf.buf[29],
-          buf.buf[28],
-          buf.buf[27],
-          buf.buf[26],
-          buf.buf[25],
-          buf.buf[24],
-          buf.buf[23],
-          buf.buf[22],
-          buf.buf[21],
-          buf.buf[20],
-          buf.buf[19],
-          buf.buf[18],
-          buf.buf[17],
-          buf.buf[16],
-          buf.buf[15],
-          buf.buf[14],
-          buf.buf[13],
-          buf.buf[12],
-          buf.buf[11],
-          buf.buf[10],
-          buf.buf[9],
-          buf.buf[8],
-          buf.buf[7],
-          buf.buf[6],
-          buf.buf[5],
-          buf.buf[4],
-          buf.buf[3],
-          buf.buf[2],
-          buf.buf[1],
-          buf.buf[0],
+          ...buf.clone().buf.reverse(),
         ]),
       ),
     );
