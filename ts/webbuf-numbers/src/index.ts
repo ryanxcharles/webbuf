@@ -2,7 +2,7 @@ import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 
 export abstract class FixedNum<N extends number> {
-  protected buf: FixedBuf<N>;
+  buf: FixedBuf<N>;
 
   constructor(buf: FixedBuf<N>) {
     this.buf = buf;
@@ -53,11 +53,11 @@ export class FixedU8 extends FixedNum<1> {
   }
 
   toBEBuf(): FixedBuf<1> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<1> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toHex(): string {
@@ -116,7 +116,7 @@ export class FixedU16 extends FixedNum<2> {
   }
 
   toBEBuf(): FixedBuf<2> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<2> {
@@ -187,7 +187,7 @@ export class FixedU32 extends FixedNum<4> {
   }
 
   toBEBuf(): FixedBuf<4> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<4> {
@@ -266,7 +266,7 @@ export class FixedU64 extends FixedNum<8> {
   }
 
   toBEBuf(): FixedBuf<8> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<8> {
@@ -379,7 +379,7 @@ export class FixedU128 extends FixedNum<16> {
   }
 
   toBEBuf(): FixedBuf<16> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<16> {
@@ -540,7 +540,7 @@ export class FixedU256 extends FixedNum<32> {
   }
 
   toBEBuf(): FixedBuf<32> {
-    return this.buf;
+    return this.buf.clone();
   }
 
   toLEBuf(): FixedBuf<32> {
