@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { WebBuf } from "../src/index.js";
+import { WebBuf } from "@webbuf/webbuf";
 
 describe("Index", () => {
   it("should encode and decode base64", () => {

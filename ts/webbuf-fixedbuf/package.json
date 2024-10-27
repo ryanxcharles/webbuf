@@ -39,7 +39,7 @@
   "author": "Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)",
   "license": "MIT",
   "peerDependencies": {
-    "webbuf": "^3.0.12"
+    "@webbuf/webbuf": "workspace:^"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

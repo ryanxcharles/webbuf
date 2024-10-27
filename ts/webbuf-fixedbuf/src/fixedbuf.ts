@@ -1,4 +1,4 @@
-import { WebBuf } from "webbuf";
+import { WebBuf } from "@webbuf/webbuf";
 
 export class FixedBuf<N extends number> {
   public _buf: WebBuf;
