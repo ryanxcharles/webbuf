@@ -128,7 +128,7 @@ export class U16BE extends FixedNum<2> {
   }
 
   toLEBuf(): FixedBuf<2> {
-    return this.buf.cloneReverse();
+    return this.buf.toReverse();
   }
 
   toHex(): string {
@@ -141,7 +141,7 @@ export class U16BE extends FixedNum<2> {
 
   static fromLEBuf(buf: FixedBuf<2>): U16BE {
     return new U16BE(
-      buf.cloneReverse(),
+      buf.toReverse(),
     );
   }
 
@@ -206,7 +206,7 @@ export class U32BE extends FixedNum<4> {
   }
 
   toLEBuf(): FixedBuf<4> {
-    return this.buf.cloneReverse();
+    return this.buf.toReverse();
   }
 
   toHex(): string {
@@ -219,7 +219,7 @@ export class U32BE extends FixedNum<4> {
 
   static fromLEBuf(buf: FixedBuf<4>): U32BE {
     return new U32BE(
-      buf.cloneReverse(),
+      buf.toReverse(),
     );
   }
 
@@ -284,7 +284,7 @@ export class U64BE extends FixedNum<8> {
   }
 
   toLEBuf(): FixedBuf<8> {
-    return this.buf.cloneReverse();
+    return this.buf.toReverse();
   }
 
   toHex(): string {
@@ -297,7 +297,7 @@ export class U64BE extends FixedNum<8> {
 
   static fromLEBuf(buf: FixedBuf<8>): U64BE {
     return new U64BE(
-      buf.cloneReverse(),
+      buf.toReverse(),
     );
   }
 
@@ -362,7 +362,7 @@ export class U128BE extends FixedNum<16> {
   }
 
   toLEBuf(): FixedBuf<16> {
-    return this.buf.cloneReverse();
+    return this.buf.toReverse();
   }
 
   toHex(): string {
@@ -375,7 +375,7 @@ export class U128BE extends FixedNum<16> {
 
   static fromLEBuf(buf: FixedBuf<16>): U128BE {
     return new U128BE(
-      buf.cloneReverse(),
+      buf.toReverse(),
     );
   }
 
@@ -443,7 +443,7 @@ export class U256BE extends FixedNum<32> {
   }
 
   toLEBuf(): FixedBuf<32> {
-    return this.buf.cloneReverse();
+    return this.buf.toReverse();
   }
 
   toHex(): string {
@@ -456,7 +456,7 @@ export class U256BE extends FixedNum<32> {
 
   static fromLEBuf(buf: FixedBuf<32>): U256BE {
     return new U256BE(
-      buf.cloneReverse(),
+      buf.toReverse(),
     );
   }
 

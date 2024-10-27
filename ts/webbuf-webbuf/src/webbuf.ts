@@ -90,7 +90,7 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(this);
   }
 
-  cloneReverse() {
+  toReverse() {
     const cloned = new WebBuf(this);
     cloned.reverse();
     return cloned;
