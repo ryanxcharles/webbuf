@@ -1,6 +1,6 @@
 import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
-import { U8BE, U16BE, U32BE, U64BE, U128BE, U256BE } from "@webbuf/numbers";
+import { U8, U16BE, U32BE, U64BE, U128BE, U256BE } from "@webbuf/numbers";
 
 export class BufReader {
   buf: WebBuf;
@@ -35,10 +35,10 @@ export class BufReader {
     return this.read(this.buf.length - this.pos);
   }
 
-  readU8BE(): U8BE {
-    let val: U8BE;
+  readU8(): U8 {
+    let val: U8;
     try {
-      val = U8BE.fromBEBuf(
+      val = U8.fromBEBuf(
         FixedBuf.fromBuf(1, this.buf.subarray(this.pos, this.pos + 1)),
       );
     } catch (err: unknown) {
