@@ -1,6 +1,8 @@
 import { describe, expect, test, beforeEach } from "vitest";
 import { BufReader } from "../src/buf-reader.js";
 import { WebBuf } from "@webbuf/webbuf";
+import fs from "node:fs";
+import path from "node:path";
 
 describe("BufReader", () => {
   let bufferReader: BufReader;
@@ -132,4 +134,96 @@ describe("BufReader", () => {
     bufferReader = new BufReader(WebBuf.from([0x01]));
     expect(bufferReader.readVarIntU64BE().bn).toEqual(BigInt(1));
   });
+
+    describe("test vectors", () => {
+    interface TestVectorEbxBufReader {
+      read: TestVectorReadEbxBuf;
+      read_u8: TestVectorReadErrors;
+      read_u16_be: TestVectorReadErrors;
+      read_u32_be: TestVectorReadErrors;
+      read_u64_be: TestVectorReadErrors;
+      read_var_int_buf: TestVectorReadErrors;
+      read_var_int: TestVectorReadErrors;
+    }
+
+    interface TestVectorReadEbxBuf {
+      errors: TestVectorReadEbxBufError[];
+    }
+
+    interface TestVectorReadEbxBufError {
+      hex: string;
+      len: number;
+      error: string;
+    }
+
+    interface TestVectorReadErrors {
+      errors: TestVectorReadError[];
+    }
+
+    interface TestVectorReadError {
+      hex: string;
+      error: string;
+    }
+
+    const filePath = path.resolve(__dirname, "../vectors/buf-reader.json");
+    const jsonString = fs.readFileSync(filePath, "utf-8");
+    const testVector: TestVectorEbxBufReader = JSON.parse(jsonString);
+
+    test("test vectors: read", () => {
+      for (const test of testVector.read.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.read(test.len)).toThrow();
+      }
+    });
+
+    test("test vectors: read_u8", () => {
+      for (const test of testVector.read_u8.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readU8()).toThrow();
+      }
+    });
+
+    test("test vectors: read_u16_be", () => {
+      for (const test of testVector.read_u16_be.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readU16BE()).toThrow();
+      }
+    });
+
+    test("test vectors: read_u32_be", () => {
+      for (const test of testVector.read_u32_be.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readU32BE()).toThrow();
+      }
+    });
+
+    test("test vectors: read_u64_be", () => {
+      for (const test of testVector.read_u64_be.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readU64BE()).toThrow();
+      }
+    });
+
+    test("test vectors: read_var_int_buf", () => {
+      for (const test of testVector.read_var_int_buf.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readVarIntBEBuf()).toThrow();
+      }
+    });
+
+    test("test vectors: read_var_int", () => {
+      for (const test of testVector.read_var_int.errors) {
+        const buf = WebBuf.from(test.hex, "hex");
+        const bufferReader = new BufReader(buf);
+        expect(() => bufferReader.readVarIntU64BE()).toThrow();
+      }
+    });
+  });
+
 });
