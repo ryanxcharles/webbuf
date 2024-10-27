@@ -180,6 +180,16 @@ export class U16BE extends FixedNum<2> {
 }
 
 export class U32BE extends FixedNum<4> {
+  constructor(buf: FixedBuf<4> | number | bigint) {
+    if (typeof buf === "number") {
+      return U32BE.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U32BE.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U32BE {
     const byteLen = 4;
     if (bn < 0 || bn > 0xffffffffffffffffn) {
@@ -256,6 +266,16 @@ export class U32BE extends FixedNum<4> {
 }
 
 export class U64BE extends FixedNum<8> {
+  constructor(buf: FixedBuf<8> | number | bigint) {
+    if (typeof buf === "number") {
+      return U64BE.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U64BE.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U64BE {
     const byteLen = 8;
     if (bn < 0 || bn > 0xffffffffffffffffn) {
@@ -332,6 +352,16 @@ export class U64BE extends FixedNum<8> {
 }
 
 export class U128BE extends FixedNum<16> {
+  constructor(buf: FixedBuf<16> | number | bigint) {
+    if (typeof buf === "number") {
+      return U128BE.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U128BE.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U128BE {
     const byteLen = 16;
     if (bn < 0 || bn > 0xffffffffffffffffffffffffffffffffn) {
@@ -408,6 +438,16 @@ export class U128BE extends FixedNum<16> {
 }
 
 export class U256BE extends FixedNum<32> {
+  constructor(buf: FixedBuf<32> | number | bigint) {
+    if (typeof buf === "number") {
+      return U256BE.fromN(buf);
+    } else if (typeof buf === "bigint") {
+      return U256BE.fromBn(buf);
+    } else {
+      super(buf);
+    }
+  }
+
   static fromBn(bn: bigint): U256BE {
     const byteLen = 32;
     if (

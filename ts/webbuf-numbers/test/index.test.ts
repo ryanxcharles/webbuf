@@ -59,6 +59,16 @@ describe("U8", () => {
 });
 
 describe("U16BE", () => {
+  it("should create a new U16 instance from number using the constructor", () => {
+    const u16 = new U16BE(0);
+    expect(u16.n).toBe(0);
+  });
+
+  it("should create a new U16 instance from bigint using the constructor", () => {
+    const u16 = new U16BE(0n);
+    expect(u16.n).toBe(0);
+  });
+
   it("should create a new U16 instance from number", () => {
     const u16 = U16BE.fromN(0);
     expect(u16.n).toBe(0);
