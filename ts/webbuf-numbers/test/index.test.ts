@@ -1,49 +1,49 @@
 import { describe, test, it, expect } from "vitest";
-import { U8BE, U16BE, U32BE, U64BE, U128BE, U256BE } from "../src/index.js";
+import { U8, U16BE, U32BE, U64BE, U128BE, U256BE } from "../src/index.js";
 
-describe("U8BE", () => {
+describe("U8", () => {
   it("should create a new U8 instance from number", () => {
-    const u8 = U8BE.fromN(0);
+    const u8 = U8.fromN(0);
     expect(u8.n).toBe(0);
   });
 
   it("should add two U8 instances", () => {
-    const u8 = U8BE.fromBn(10n).add(U8BE.fromBn(20n));
+    const u8 = U8.fromBn(10n).add(U8.fromBn(20n));
     expect(u8.bn).toBe(30n);
   });
 
   it("should subtract two U8 instances", () => {
-    const u8 = U8BE.fromBn(20n).sub(U8BE.fromBn(10n));
+    const u8 = U8.fromBn(20n).sub(U8.fromBn(10n));
     expect(u8.bn).toBe(10n);
   });
 
   it("should multiply two U8 instances", () => {
-    const u8 = U8BE.fromBn(10n).mul(U8BE.fromBn(20n));
+    const u8 = U8.fromBn(10n).mul(U8.fromBn(20n));
     expect(u8.bn).toBe(200n);
   });
 
   it("should divide two U8 instances", () => {
-    const u8 = U8BE.fromBn(20n).div(U8BE.fromBn(10n));
+    const u8 = U8.fromBn(20n).div(U8.fromBn(10n));
     expect(u8.bn).toBe(2n);
   });
 
   it("should convert to hex string", () => {
-    const u8 = U8BE.fromBn(0xffn);
+    const u8 = U8.fromBn(0xffn);
     expect(u8.toHex()).toBe("ff");
   });
 
   it("should convert to a big number", () => {
-    const u8 = U8BE.fromBn(0xffn);
+    const u8 = U8.fromBn(0xffn);
     expect(u8.bn).toBe(0xffn);
   });
 
   it("should convert to LE buffer", () => {
-    const u8 = U8BE.fromBn(0xffn);
+    const u8 = U8.fromBn(0xffn);
     expect(u8.toLEBuf().toHex()).toEqual("ff");
   });
 
   it("should convert from LE buffer", () => {
-    const u8 = U8BE.fromLEBuf(U8BE.fromBn(0xffn).toLEBuf());
+    const u8 = U8.fromLEBuf(U8.fromBn(0xffn).toLEBuf());
     expect(u8.bn).toBe(0xffn);
   });
 });
