@@ -60,4 +60,90 @@ describe("BufReader", () => {
     // Check that the position has been updated correctly
     expect(bufferReader.pos).toBe(8);
   });
+
+  test("readUint128BE returns correct value and updates position", () => {
+    // Create a EbxBufReader with a buffer that contains the 128-bit unsigned integer 0x0123456789ABCDEF0123456789ABCDEF
+    bufferReader = new BufReader(
+      WebBuf.from([
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+      ]),
+    );
+
+    const result = bufferReader.readU128BE();
+
+    // Check that the method returns the correct BigInt
+    expect(result.bn).toEqual(
+      BigInt("0x0123456789ABCDEF0123456789ABCDEF"),
+    );
+
+    // Check that the position has been updated correctly
+    expect(bufferReader.pos).toBe(16);
+  });
+
+  test("readUint256BE returns correct value and updates position", () => {
+    // Create a EbxBufReader with a buffer that contains the 256-bit unsigned integer 0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF
+    bufferReader = new BufReader(
+      WebBuf.from([
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+        0x01,
+        0x23,
+        0x45,
+        0x67,
+        0x89,
+        0xab,
+        0xcd,
+        0xef,
+      ]),
+    );
+
+    const result = bufferReader.readU256BE();
+
+    // Check that the method returns the correct BigInt
+    expect(result.bn).toEqual(
+      BigInt(
+        "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+      ),
+    );
+
+    // Check that the position has been updated correctly
+    expect(bufferReader.pos).toBe(32);
+  });
 });
