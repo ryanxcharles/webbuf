@@ -64,24 +64,7 @@ describe("BufReader", () => {
   test("readUint128BE returns correct value and updates position", () => {
     // Create a EbxBufReader with a buffer that contains the 128-bit unsigned integer 0x0123456789ABCDEF0123456789ABCDEF
     bufferReader = new BufReader(
-      WebBuf.from([
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-      ]),
+      WebBuf.fromHex("0123456789ABCDEF0123456789ABCDEF"),
     );
 
     const result = bufferReader.readU128BE();
@@ -98,40 +81,9 @@ describe("BufReader", () => {
   test("readUint256BE returns correct value and updates position", () => {
     // Create a EbxBufReader with a buffer that contains the 256-bit unsigned integer 0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF
     bufferReader = new BufReader(
-      WebBuf.from([
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-        0x01,
-        0x23,
-        0x45,
-        0x67,
-        0x89,
-        0xab,
-        0xcd,
-        0xef,
-      ]),
+      WebBuf.fromHex(
+        "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+      ),
     );
 
     const result = bufferReader.readU256BE();
