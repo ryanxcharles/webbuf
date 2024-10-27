@@ -33,7 +33,8 @@ describe("Blake3", () => {
 
     expect(result).toBeInstanceOf(FixedBuf);
     expect(result.buf.length).toBe(32);
-    const expectedMacHex = "55603656ac7bd780db8fece23aad002ee008a605540fe3527a260c4b6e3b2b7e";
+    const expectedMacHex =
+      "55603656ac7bd780db8fece23aad002ee008a605540fe3527a260c4b6e3b2b7e";
     expect(result.toHex()).toBe(expectedMacHex);
   });
 });

@@ -29,7 +29,7 @@ describe("BufWriter", () => {
       const u16: U16BE = U16BE.fromN(12345);
       bufferWriter.writeU16BE(u16);
       const result = bufferWriter.toBuf();
-      expect(new BufReader( result ).readU16BE().n).toEqual(u16.n);
+      expect(new BufReader(result).readU16BE().n).toEqual(u16.n);
     });
   });
 
@@ -38,7 +38,7 @@ describe("BufWriter", () => {
       const u32: U32BE = U32BE.fromN(1234567890);
       bufferWriter.writeU32BE(u32);
       const result = bufferWriter.toBuf();
-      expect(new BufReader( result ).readU32BE().n).toEqual(u32.n);
+      expect(new BufReader(result).readU32BE().n).toEqual(u32.n);
     });
   });
 
@@ -47,27 +47,28 @@ describe("BufWriter", () => {
       const u64: U64BE = U64BE.fromBn(1234567890123456789n);
       bufferWriter.writeU64BE(u64);
       const result = bufferWriter.toBuf();
-      expect(new BufReader( result ).readU64BE().bn).toEqual(u64.bn);
+      expect(new BufReader(result).readU64BE().bn).toEqual(u64.bn);
     });
   });
 
   describe("writeUint128BE", () => {
     it("should write an unsigned 128-bit integer in big-endian format", () => {
-      const u128: U128BE =
-        U128BE.fromBn(0x0123456789ABCDEF0123456789ABCDEFn);
+      const u128: U128BE = U128BE.fromBn(0x0123456789abcdef0123456789abcdefn);
       bufferWriter.writeU128BE(u128);
       const result = bufferWriter.toBuf();
-      expect(new BufReader( result ).readU128BE().bn).toEqual(u128.bn);
+      expect(new BufReader(result).readU128BE().bn).toEqual(u128.bn);
     });
   });
 
   describe("writeUint256BE", () => {
     it("should write an unsigned 256-bit integer in big-endian format", () => {
       const u256: U256BE =
-        U256BE.fromBn(0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEFn);
+        U256BE.fromBn(
+          0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdefn,
+        );
       bufferWriter.writeU256BE(u256);
       const result = bufferWriter.toBuf();
-      expect(new BufReader( result ).readU256BE().bn).toEqual(u256.bn);
+      expect(new BufReader(result).readU256BE().bn).toEqual(u256.bn);
     });
   });
 

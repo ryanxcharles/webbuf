@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import{ acb3Encrypt, acb3Decrypt } from "../src/index.js";
+import { acb3Encrypt, acb3Decrypt } from "../src/index.js";
 import { WebBuf } from "@webbuf/webbuf";
 import { FixedBuf } from "@webbuf/fixedbuf";
 import { blake3Hash } from "@webbuf/blake3";

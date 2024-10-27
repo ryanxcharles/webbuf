@@ -145,13 +145,13 @@ export class BufReader {
     let value: bigint;
     switch (first) {
       case 0xfd:
-        value = new BufReader( buf ).readU16BE().bn;
+        value = new BufReader(buf).readU16BE().bn;
         break;
       case 0xfe:
-        value = new BufReader( buf ).readU32BE().bn;
+        value = new BufReader(buf).readU32BE().bn;
         break;
       case 0xff:
-        value = new BufReader( buf ).readU64BE().bn;
+        value = new BufReader(buf).readU64BE().bn;
         break;
       default:
         value = BigInt(first);

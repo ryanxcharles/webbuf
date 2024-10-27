@@ -74,9 +74,7 @@ describe("BufReader", () => {
     const result = bufferReader.readU128BE();
 
     // Check that the method returns the correct BigInt
-    expect(result.bn).toEqual(
-      BigInt("0x0123456789ABCDEF0123456789ABCDEF"),
-    );
+    expect(result.bn).toEqual(BigInt("0x0123456789ABCDEF0123456789ABCDEF"));
 
     // Check that the position has been updated correctly
     expect(bufferReader.pos).toBe(16);
@@ -137,7 +135,7 @@ describe("BufReader", () => {
     expect(bufferReader.readVarIntU64BE().bn).toEqual(BigInt(1));
   });
 
-    describe("test vectors", () => {
+  describe("test vectors", () => {
     interface TestVectorEbxBufReader {
       read: TestVectorReadEbxBuf;
       read_u8: TestVectorReadErrors;
@@ -227,5 +225,4 @@ describe("BufReader", () => {
       }
     });
   });
-
 });

@@ -11,7 +11,12 @@ const __dirname = dirname(__filename);
 console.log("Current directory:", __dirname);
 
 // First: Convert WASM to Base64 and write to a JS file
-const wasmPath = join(__dirname, "src", `rs-${NAME}-bundler`, `${NAME}_bg.wasm`);
+const wasmPath = join(
+  __dirname,
+  "src",
+  `rs-${NAME}-bundler`,
+  `${NAME}_bg.wasm`,
+);
 const wasmBase64 = readFileSync(wasmPath).toString("base64");
 
 const wasmJsCode = `
