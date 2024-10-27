@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@webbuf/webbuf": "workspace:^",
     "@webbuf/fixedbuf": "workspace:^",
-    "@webbuf/numbers": "workspace:^",
+    "@webbuf/numbers": "workspace:^"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
