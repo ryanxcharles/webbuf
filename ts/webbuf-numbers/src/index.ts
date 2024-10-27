@@ -163,20 +163,16 @@ export class U16 extends FixedNum<2> {
 
 export class U32 extends FixedNum<4> {
   static fromBn(bn: bigint): U32 {
-    if (bn < 0 || bn > 0xffffffffn) {
+    const byteLen = 4;
+    if (bn < 0 || bn > 0xffffffffffffffffn) {
       throw new Error("Invalid number");
     }
-    return new U32(
-      FixedBuf.fromBuf(
-        4,
-        WebBuf.fromArray([
-          Number(bn >> 24n),
-          Number(bn >> 16n),
-          Number(bn >> 8n),
-          Number(bn),
-        ]),
-      ),
-    );
+    const bytes = new Array(byteLen);
+    for (let i = byteLen - 1; i >= 0; i--) {
+      bytes[i] = Number(bn & 0xffn);
+      bn >>= 8n; // Shift right by 8 bits in-place
+    }
+    return new U32(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
   static fromN(n: number): U32 {
@@ -184,12 +180,12 @@ export class U32 extends FixedNum<4> {
   }
 
   toBn(): bigint {
-    return (
-      (BigInt(this.buf.buf[0] as number) << 24n) +
-      (BigInt(this.buf.buf[1] as number) << 16n) +
-      (BigInt(this.buf.buf[2] as number) << 8n) +
-      BigInt(this.buf.buf[3])
-    );
+    const byteLen = 4;
+    let result = 0n;
+    for (let i = 0; i < byteLen; i++) {
+      result = (result << 8n) + BigInt(this.buf.buf[i] as number);
+    }
+    return result;
   }
 
   add(other: U32): U32 {
@@ -265,7 +261,7 @@ export class U64 extends FixedNum<8> {
       bytes[i] = Number(bn & 0xffn);
       bn >>= 8n; // Shift right by 8 bits in-place
     }
-    return new U64(FixedBuf.fromBuf(8, WebBuf.fromArray(bytes)));
+    return new U64(FixedBuf.fromBuf(byteLen, WebBuf.fromArray(bytes)));
   }
 
   static fromN(n: number): U64 {
