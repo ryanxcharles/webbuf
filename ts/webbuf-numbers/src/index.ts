@@ -62,9 +62,7 @@ export class U8 extends BasicNumber<U8> {
   }
 
   toBEBuf(): WebBuf {
-    const buf = WebBuf.alloc(1);
-    buf.writeUint8(this.n, 0);
-    return buf;
+    return WebBuf.fromArray([this.n]);
   }
 
   toHex(): string {
@@ -72,7 +70,10 @@ export class U8 extends BasicNumber<U8> {
   }
 
   static fromBEBuf(buf: WebBuf): U8 {
-    return new U8(buf.readUint8(0));
+    if (buf.length !== 1) {
+      throw new Error("Invalid buffer length");
+    }
+    return new U8(buf[0] as number);
   }
 
   static fromHex(hex: string): U8 {
@@ -116,9 +117,7 @@ export class U16 extends BasicNumber<U16> {
   }
 
   toBEBuf(): WebBuf {
-    const buf = WebBuf.alloc(2);
-    buf.writeUint16BE(this.n, 0);
-    return buf;
+    return WebBuf.fromArray([this.n >> 8, this.n & 0xff]);
   }
 
   toHex(): string {
@@ -126,7 +125,10 @@ export class U16 extends BasicNumber<U16> {
   }
 
   static fromBEBuf(buf: WebBuf): U16 {
-    return new U16(buf.readUint16BE(0));
+    if (buf.length !== 2) {
+      throw new Error("Invalid buffer length");
+    }
+    return new U16(((buf[0] as number) << 8) + (buf[1] as number));
   }
 
   static fromHex(hex: string): U16 {
@@ -170,9 +172,12 @@ export class U32 extends BasicNumber<U32> {
   }
 
   toBEBuf(): WebBuf {
-    const buf = WebBuf.alloc(4);
-    buf.writeUint32BE(this.n, 0);
-    return buf;
+    return WebBuf.fromArray([
+      Number((this.bn >> 24n) & 0xffn),
+      Number((this.bn >> 16n) & 0xffn),
+      Number((this.bn >> 8n) & 0xffn),
+      Number(this.bn & 0xffn),
+    ]);
   }
 
   toHex(): string {
@@ -180,7 +185,15 @@ export class U32 extends BasicNumber<U32> {
   }
 
   static fromBEBuf(buf: WebBuf): U32 {
-    return new U32(buf.readUint32BE(0));
+    if (buf.length !== 4) {
+      throw new Error("Invalid buffer length");
+    }
+    return new U32(
+      (BigInt(buf[0] as number) << 24n) +
+        (BigInt(buf[1] as number) << 16n) +
+        (BigInt(buf[2] as number) << 8n) +
+        BigInt(buf[3] as number),
+    );
   }
 
   static fromHex(hex: string): U32 {
@@ -188,190 +201,190 @@ export class U32 extends BasicNumber<U32> {
   }
 }
 
-export class U64 extends BasicNumber<U64> {
-  readonly _U64: undefined;
+// export class U64 extends BasicNumber<U64> {
+//   readonly _U64: undefined;
 
-  constructor(value: bigint | number) {
-    super(value, 0x0000000000000000n, 0xffffffffffffffffn);
-  }
+//   constructor(value: bigint | number) {
+//     super(value, 0x0000000000000000n, 0xffffffffffffffffn);
+//   }
 
-  add(other: U64): U64 {
-    const result = this.value + other.value;
-    return new U64(result);
-  }
+//   add(other: U64): U64 {
+//     const result = this.value + other.value;
+//     return new U64(result);
+//   }
 
-  sub(other: U64): U64 {
-    const result = this.value - other.value;
-    return new U64(result);
-  }
+//   sub(other: U64): U64 {
+//     const result = this.value - other.value;
+//     return new U64(result);
+//   }
 
-  mul(other: U64): U64 {
-    const result = this.value * other.value;
-    return new U64(result);
-  }
+//   mul(other: U64): U64 {
+//     const result = this.value * other.value;
+//     return new U64(result);
+//   }
 
-  div(other: U64): U64 {
-    const result = this.value / other.value;
-    return new U64(result);
-  }
+//   div(other: U64): U64 {
+//     const result = this.value / other.value;
+//     return new U64(result);
+//   }
 
-  get bn(): bigint {
-    return this.value;
-  }
+//   get bn(): bigint {
+//     return this.value;
+//   }
 
-  get n(): number {
-    return Number(this.value);
-  }
+//   get n(): number {
+//     return Number(this.value);
+//   }
 
-  toBEBuf(): WebBuf {
-    const buf = WebBuf.alloc(8);
-    buf.writeBigInt64BE(this.bn);
-    return buf;
-  }
+//   toBEBuf(): WebBuf {
+//     const buf = WebBuf.alloc(8);
+//     buf.writeBigInt64BE(this.bn);
+//     return buf;
+//   }
 
-  toHex(): string {
-    return this.toBEBuf().toString("hex");
-  }
+//   toHex(): string {
+//     return this.toBEBuf().toString("hex");
+//   }
 
-  static fromBEBuf(buf: WebBuf): U64 {
-    return new U64(buf.readBigUint64BE(0));
-  }
+//   static fromBEBuf(buf: WebBuf): U64 {
+//     return new U64(buf.readBigUint64BE(0));
+//   }
 
-  static fromHex(hex: string): U64 {
-    return U64.fromBEBuf(FixedBuf.fromHex(8, hex).buf);
-  }
-}
+//   static fromHex(hex: string): U64 {
+//     return U64.fromBEBuf(FixedBuf.fromHex(8, hex).buf);
+//   }
+// }
 
-export class U128 extends BasicNumber<U128> {
-  readonly _U128: undefined;
+// export class U128 extends BasicNumber<U128> {
+//   readonly _U128: undefined;
 
-  constructor(value: bigint | number) {
-    super(
-      value,
-      0x00000000000000000000000000000000n,
-      0xffffffffffffffffffffffffffffffffn,
-    );
-  }
+//   constructor(value: bigint | number) {
+//     super(
+//       value,
+//       0x00000000000000000000000000000000n,
+//       0xffffffffffffffffffffffffffffffffn,
+//     );
+//   }
 
-  add(other: U128): U128 {
-    const result = this.value + other.value;
-    return new U128(result);
-  }
+//   add(other: U128): U128 {
+//     const result = this.value + other.value;
+//     return new U128(result);
+//   }
 
-  sub(other: U128): U128 {
-    const result = this.value - other.value;
-    return new U128(result);
-  }
+//   sub(other: U128): U128 {
+//     const result = this.value - other.value;
+//     return new U128(result);
+//   }
 
-  mul(other: U128): U128 {
-    const result = this.value * other.value;
-    return new U128(result);
-  }
+//   mul(other: U128): U128 {
+//     const result = this.value * other.value;
+//     return new U128(result);
+//   }
 
-  div(other: U128): U128 {
-    const result = this.value / other.value;
-    return new U128(result);
-  }
+//   div(other: U128): U128 {
+//     const result = this.value / other.value;
+//     return new U128(result);
+//   }
 
-  get bn(): bigint {
-    return this.value;
-  }
+//   get bn(): bigint {
+//     return this.value;
+//   }
 
-  get n(): number {
-    return Number(this.value);
-  }
+//   get n(): number {
+//     return Number(this.value);
+//   }
 
-  toBEBuf(): WebBuf {
-    const val1: bigint = this.bn >> 64n;
-    const val2: bigint = this.bn & 0xffffffffffffffffn;
-    const buf = WebBuf.alloc(16);
-    buf.writeBigUint64BE(val1, 0);
-    buf.writeBigUint64BE(val2, 8);
-    return buf;
-  }
+//   toBEBuf(): WebBuf {
+//     const val1: bigint = this.bn >> 64n;
+//     const val2: bigint = this.bn & 0xffffffffffffffffn;
+//     const buf = WebBuf.alloc(16);
+//     buf.writeBigUint64BE(val1, 0);
+//     buf.writeBigUint64BE(val2, 8);
+//     return buf;
+//   }
 
-  toHex(): string {
-    return this.toBEBuf().toString("hex");
-  }
+//   toHex(): string {
+//     return this.toBEBuf().toString("hex");
+//   }
 
-  static fromBEBuf(buf: WebBuf): U128 {
-    const val1: bigint = buf.readBigUint64BE(0);
-    const val2: bigint = buf.readBigUint64BE(8);
-    return new U128((val1 << 64n) + val2);
-  }
+//   static fromBEBuf(buf: WebBuf): U128 {
+//     const val1: bigint = buf.readBigUint64BE(0);
+//     const val2: bigint = buf.readBigUint64BE(8);
+//     return new U128((val1 << 64n) + val2);
+//   }
 
-  static fromHex(hex: string): U128 {
-    const buf = FixedBuf.fromHex(16, hex).buf;
-    return U128.fromBEBuf(buf);
-  }
-}
+//   static fromHex(hex: string): U128 {
+//     const buf = FixedBuf.fromHex(16, hex).buf;
+//     return U128.fromBEBuf(buf);
+//   }
+// }
 
-export class U256 extends BasicNumber<U256> {
-  readonly _U256: undefined;
+// export class U256 extends BasicNumber<U256> {
+//   readonly _U256: undefined;
 
-  constructor(value: bigint | number) {
-    super(
-      value,
-      0x0000000000000000000000000000000000000000000000000000000000000000n,
-      0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
-    );
-  }
+//   constructor(value: bigint | number) {
+//     super(
+//       value,
+//       0x0000000000000000000000000000000000000000000000000000000000000000n,
+//       0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+//     );
+//   }
 
-  add(other: U256): U256 {
-    const result = this.value + other.value;
-    return new U256(result);
-  }
+//   add(other: U256): U256 {
+//     const result = this.value + other.value;
+//     return new U256(result);
+//   }
 
-  sub(other: U256): U256 {
-    const result = this.value - other.value;
-    return new U256(result);
-  }
+//   sub(other: U256): U256 {
+//     const result = this.value - other.value;
+//     return new U256(result);
+//   }
 
-  mul(other: U256): U256 {
-    const result = this.value * other.value;
-    return new U256(result);
-  }
+//   mul(other: U256): U256 {
+//     const result = this.value * other.value;
+//     return new U256(result);
+//   }
 
-  div(other: U256): U256 {
-    const result = this.value / other.value;
-    return new U256(result);
-  }
+//   div(other: U256): U256 {
+//     const result = this.value / other.value;
+//     return new U256(result);
+//   }
 
-  get bn(): bigint {
-    return this.value;
-  }
+//   get bn(): bigint {
+//     return this.value;
+//   }
 
-  get n(): number {
-    return Number(this.value);
-  }
+//   get n(): number {
+//     return Number(this.value);
+//   }
 
-  toBEBuf(): WebBuf {
-    const val1: bigint = this.bn >> 192n;
-    const val2: bigint = (this.bn >> 128n) & 0xffffffffffffffffn;
-    const val3: bigint = (this.bn >> 64n) & 0xffffffffffffffffn;
-    const val4: bigint = this.bn & 0xffffffffffffffffn;
-    const buf = WebBuf.alloc(32);
-    buf.writeBigUint64BE(val1, 0);
-    buf.writeBigUint64BE(val2, 8);
-    buf.writeBigUint64BE(val3, 16);
-    buf.writeBigUint64BE(val4, 24);
-    return buf;
-  }
+//   toBEBuf(): WebBuf {
+//     const val1: bigint = this.bn >> 192n;
+//     const val2: bigint = (this.bn >> 128n) & 0xffffffffffffffffn;
+//     const val3: bigint = (this.bn >> 64n) & 0xffffffffffffffffn;
+//     const val4: bigint = this.bn & 0xffffffffffffffffn;
+//     const buf = WebBuf.alloc(32);
+//     buf.writeBigUint64BE(val1, 0);
+//     buf.writeBigUint64BE(val2, 8);
+//     buf.writeBigUint64BE(val3, 16);
+//     buf.writeBigUint64BE(val4, 24);
+//     return buf;
+//   }
 
-  toHex(): string {
-    return this.toBEBuf().toString("hex");
-  }
+//   toHex(): string {
+//     return this.toBEBuf().toString("hex");
+//   }
 
-  static fromBEBuf(buf: WebBuf): U256 {
-    const val1: bigint = buf.readBigUint64BE(0);
-    const val2: bigint = buf.readBigUint64BE(8);
-    const val3: bigint = buf.readBigUint64BE(16);
-    const val4: bigint = buf.readBigUint64BE(24);
-    return new U256((val1 << 192n) + (val2 << 128n) + (val3 << 64n) + val4);
-  }
+//   static fromBEBuf(buf: WebBuf): U256 {
+//     const val1: bigint = buf.readBigUint64BE(0);
+//     const val2: bigint = buf.readBigUint64BE(8);
+//     const val3: bigint = buf.readBigUint64BE(16);
+//     const val4: bigint = buf.readBigUint64BE(24);
+//     return new U256((val1 << 192n) + (val2 << 128n) + (val3 << 64n) + val4);
+//   }
 
-  static fromHex(hex: string): U256 {
-    const buf = FixedBuf.fromHex(32, hex).buf;
-    return U256.fromBEBuf(buf);
-  }
-}
+//   static fromHex(hex: string): U256 {
+//     const buf = FixedBuf.fromHex(32, hex).buf;
+//     return U256.fromBEBuf(buf);
+//   }
+// }
