@@ -147,6 +147,19 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(encoder.encode(str));
   }
 
+  static fromString(str: string, encoding: "utf8" | "hex" | "base64" = "utf8") {
+    if (encoding === "hex") {
+      return WebBuf.fromHex(str);
+    }
+    if (encoding === "base64") {
+      return WebBuf.fromBase64(str);
+    }
+    if (encoding === "utf8") {
+      return WebBuf.fromUtf8(str);
+    }
+    return WebBuf.fromUtf8(str);
+  }
+
   // we use wasm for big data, because small data is faster in js
 
   // experiments show wasm is always faster

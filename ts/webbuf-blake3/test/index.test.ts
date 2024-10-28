@@ -5,7 +5,7 @@ import { FixedBuf } from "@webbuf/fixedbuf";
 
 describe("Blake3", () => {
   it("should correctly compute blake3 hash", () => {
-    const input = WebBuf.fromString("test input");
+    const input = WebBuf.fromUtf8("test input");
     const result = blake3Hash(input);
 
     expect(result).toBeInstanceOf(FixedBuf);
@@ -16,7 +16,7 @@ describe("Blake3", () => {
   });
 
   it("should correctly compute double blake3 hash", () => {
-    const input = WebBuf.fromString("test input");
+    const input = WebBuf.fromUtf8("test input");
     const result = doubleBlake3Hash(input);
 
     expect(result).toBeInstanceOf(FixedBuf);
@@ -27,8 +27,8 @@ describe("Blake3", () => {
   });
 
   it("should correctly compute blake3 MAC", () => {
-    const key = blake3Hash(WebBuf.fromString("key"));
-    const message = WebBuf.fromString("message");
+    const key = blake3Hash(WebBuf.fromUtf8("key"));
+    const message = WebBuf.fromUtf8("message");
     const result = blake3Mac(key, message);
 
     expect(result).toBeInstanceOf(FixedBuf);
