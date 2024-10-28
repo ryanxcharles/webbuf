@@ -336,7 +336,7 @@ export class WebBuf extends Uint8Array {
       const decoder = new TextDecoder();
       return decoder.decode(this);
     }
-    return this.toHex();
+    return this.toUtf8();
   }
 
   inspect() {
