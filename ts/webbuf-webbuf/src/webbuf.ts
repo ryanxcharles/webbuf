@@ -339,6 +339,10 @@ export class WebBuf extends Uint8Array {
     return this.toHex();
   }
 
+  inspect() {
+    return `<WebBuf ${this.toHex().slice(0, 40) + (this.length > 40 ? "..." : "")}>`;
+  }
+
   toArray() {
     return Array.from(this);
   }
