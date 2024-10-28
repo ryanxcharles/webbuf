@@ -117,6 +117,21 @@ describe("BufReader", () => {
     expect(bufferReader.readVarIntBEBuf().toString("hex")).toEqual(
       WebBuf.from([0x01]).toString("hex"),
     );
+
+    bufferReader = new BufReader(WebBuf.from([0xfd, 0x01, 0x00]));
+    expect(bufferReader.readVarIntBEBuf().toString("hex")).toEqual("fd0100");
+
+    bufferReader = new BufReader(WebBuf.from([0xfe, 0x01, 0x00, 0x00, 0x00]));
+    expect(bufferReader.readVarIntBEBuf().toString("hex")).toEqual(
+      "fe01000000",
+    );
+
+    bufferReader = new BufReader(
+      WebBuf.from([0xff, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]),
+    );
+    expect(bufferReader.readVarIntBEBuf().toString("hex")).toEqual(
+      "ff0100000000000000",
+    );
   });
 
   test("readVarInt", () => {
