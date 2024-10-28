@@ -56,6 +56,21 @@ describe("U8", () => {
     const u8 = U8.fromLEBuf(U8.fromBn(0xffn).toLEBuf());
     expect(u8.bn).toBe(0xffn);
   });
+
+  it("should convert from BE buffer", () => {
+    const u8 = U8.fromBEBuf(U8.fromBn(0xffn).toBEBuf());
+    expect(u8.bn).toBe(0xffn);
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u8 = U8.fromLEBuf(U8.fromBn(0xffn).toLEBuf().buf)
+    expect(u8.bn).toBe(0xffn);
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u8 = U8.fromBEBuf(U8.fromBn(0xffn).toBEBuf().buf)
+    expect(u8.bn).toBe(0xffn);
+  });
 });
 
 describe("U16BE", () => {
@@ -113,6 +128,21 @@ describe("U16BE", () => {
     const u16 = U16BE.fromLEBuf(U16BE.fromBn(0x0102n).toLEBuf());
     expect(u16.bn).toBe(0x0102n);
   });
+
+  it("should convert from BE buffer", () => {
+    const u16 = U16BE.fromBEBuf(U16BE.fromBn(0x0102n).toBEBuf());
+    expect(u16.bn).toBe(0x0102n);
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u16 = U16BE.fromLEBuf(U16BE.fromBn(0x0102n).toLEBuf().buf)
+    expect(u16.bn).toBe(0x0102n);
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u16 = U16BE.fromBEBuf(U16BE.fromBn(0x0102n).toBEBuf().buf)
+    expect(u16.bn).toBe(0x0102n);
+  });
 });
 
 describe("U32BE", () => {
@@ -168,6 +198,21 @@ describe("U32BE", () => {
 
   it("should convert from LE buffer", () => {
     const u32 = U32BE.fromLEBuf(U32BE.fromBn(0x01020304n).toLEBuf());
+    expect(u32.bn).toBe(0x01020304n);
+  });
+
+  it("should convert from BE buffer", () => {
+    const u32 = U32BE.fromBEBuf(U32BE.fromBn(0x01020304n).toBEBuf());
+    expect(u32.bn).toBe(0x01020304n);
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u32 = U32BE.fromLEBuf(U32BE.fromBn(0x01020304n).toLEBuf().buf)
+    expect(u32.bn).toBe(0x01020304n);
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u32 = U32BE.fromBEBuf(U32BE.fromBn(0x01020304n).toBEBuf().buf)
     expect(u32.bn).toBe(0x01020304n);
   });
 });
