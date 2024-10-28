@@ -358,4 +358,9 @@ export class WebBuf extends Uint8Array {
     this.set(buf, offset);
     return buf.length;
   }
+
+  read(offset: number, ext: number): WebBuf {
+    verifyOffset(offset, ext, this.length);
+    return this.subarray(offset, offset + ext);
+  }
 }

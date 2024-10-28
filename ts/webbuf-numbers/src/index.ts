@@ -78,11 +78,17 @@ export class U8 extends FixedNum<1> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<1>): U8 {
+  static fromBEBuf(buf: FixedBuf<1> | WebBuf): U8 {
+    if (buf instanceof WebBuf) {
+      return new U8(FixedBuf.fromBuf(1, buf));
+    }
     return new U8(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<1>): U8 {
+  static fromLEBuf(buf: FixedBuf<1> | WebBuf): U8 {
+    if (buf instanceof WebBuf) {
+      return new U8(FixedBuf.fromBuf(1, buf));
+    }
     return new U8(buf);
   }
 
@@ -158,11 +164,17 @@ export class U16BE extends FixedNum<2> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<2>): U16BE {
+  static fromBEBuf(buf: FixedBuf<2> | WebBuf): U16BE {
+    if (buf instanceof WebBuf) {
+      return new U16BE(FixedBuf.fromBuf(2, buf));
+    }
     return new U16BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<2>): U16BE {
+  static fromLEBuf(buf: FixedBuf<2> | WebBuf): U16BE {
+    if (buf instanceof WebBuf) {
+      return new U16BE(FixedBuf.fromBuf(2, buf).toReverse());
+    }
     return new U16BE(buf.toReverse());
   }
 
@@ -244,11 +256,17 @@ export class U32BE extends FixedNum<4> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<4>): U32BE {
+  static fromBEBuf(buf: FixedBuf<4> | WebBuf): U32BE {
+    if (buf instanceof WebBuf) {
+      return new U32BE(FixedBuf.fromBuf(4, buf));
+    }
     return new U32BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<4>): U32BE {
+  static fromLEBuf(buf: FixedBuf<4> | WebBuf): U32BE {
+    if (buf instanceof WebBuf) {
+      return new U32BE(FixedBuf.fromBuf(4, buf).toReverse());
+    }
     return new U32BE(buf.toReverse());
   }
 
@@ -330,11 +348,17 @@ export class U64BE extends FixedNum<8> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<8>): U64BE {
+  static fromBEBuf(buf: FixedBuf<8> | WebBuf): U64BE {
+    if (buf instanceof WebBuf) {
+      return new U64BE(FixedBuf.fromBuf(8, buf));
+    }
     return new U64BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<8>): U64BE {
+  static fromLEBuf(buf: FixedBuf<8> | WebBuf): U64BE {
+    if (buf instanceof WebBuf) {
+      return new U64BE(FixedBuf.fromBuf(8, buf).toReverse());
+    }
     return new U64BE(buf.toReverse());
   }
 
@@ -416,11 +440,17 @@ export class U128BE extends FixedNum<16> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<16>): U128BE {
+  static fromBEBuf(buf: FixedBuf<16> | WebBuf): U128BE {
+    if (buf instanceof WebBuf) {
+      return new U128BE(FixedBuf.fromBuf(16, buf));
+    }
     return new U128BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<16>): U128BE {
+  static fromLEBuf(buf: FixedBuf<16> | WebBuf): U128BE {
+    if (buf instanceof WebBuf) {
+      return new U128BE(FixedBuf.fromBuf(16, buf).toReverse());
+    }
     return new U128BE(buf.toReverse());
   }
 
@@ -505,11 +535,17 @@ export class U256BE extends FixedNum<32> {
     return this.buf.toHex();
   }
 
-  static fromBEBuf(buf: FixedBuf<32>): U256BE {
+  static fromBEBuf(buf: FixedBuf<32> | WebBuf): U256BE {
+    if (buf instanceof WebBuf) {
+      return new U256BE(FixedBuf.fromBuf(32, buf));
+    }
     return new U256BE(buf);
   }
 
-  static fromLEBuf(buf: FixedBuf<32>): U256BE {
+  static fromLEBuf(buf: FixedBuf<32> | WebBuf): U256BE {
+    if (buf instanceof WebBuf) {
+      return new U256BE(FixedBuf.fromBuf(32, buf).toReverse());
+    }
     return new U256BE(buf.toReverse());
   }
 
