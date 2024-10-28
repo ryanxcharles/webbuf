@@ -142,7 +142,7 @@ export class WebBuf extends Uint8Array {
     return new WebBuf(array);
   }
 
-  static fromString(str: string) {
+  static fromUtf8(str: string) {
     const encoder = new TextEncoder();
     return new WebBuf(encoder.encode(str));
   }
@@ -287,12 +287,12 @@ export class WebBuf extends Uint8Array {
         return WebBuf.fromBase64(source);
       }
       if (mapFn === "utf8") {
-        return WebBuf.fromString(source);
+        return WebBuf.fromUtf8(source);
       }
       throw new TypeError("Invalid mapFn");
     }
     if (typeof source === "string") {
-      return WebBuf.fromString(source);
+      return WebBuf.fromUtf8(source);
     }
     if (source instanceof Uint8Array) {
       return WebBuf.view(source);
@@ -307,6 +307,11 @@ export class WebBuf extends Uint8Array {
     );
   }
 
+  toUtf8(): string {
+    const decoder = new TextDecoder();
+    return decoder.decode(this);
+  }
+
   toString(encoding?: "utf8" | "hex" | "base64") {
     if (encoding === "hex") {
       return this.toHex();
@@ -318,8 +323,7 @@ export class WebBuf extends Uint8Array {
       const decoder = new TextDecoder();
       return decoder.decode(this);
     }
-    const decoder = new TextDecoder();
-    return decoder.decode(this);
+    return this.toHex();
   }
 
   toArray() {

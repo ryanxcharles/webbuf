@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { WebBuf } from "../src/webbuf.js";
 
-describe("WebBuf 2", () => {
+describe("WebBuf", () => {
   describe("to/from hex/base64 algo threshold", () => {
     it.skip("should hande algo threshold for to hex", () => {
       const TO_HEX_ALGO_THRESHOLD = WebBuf.TO_HEX_ALGO_THRESHOLD;
@@ -94,9 +94,9 @@ describe("WebBuf 2", () => {
 
   describe("compare", () => {
     it("should pass these known test vectors", () => {
-      const b = WebBuf.fromString("a");
-      const c = WebBuf.fromString("c");
-      const d = WebBuf.fromString("aa");
+      const b = WebBuf.fromUtf8("a");
+      const c = WebBuf.fromUtf8("c");
+      const d = WebBuf.fromUtf8("aa");
 
       expect(b.compare(c)).toBe(-1);
       expect(c.compare(d)).toBe(1);
@@ -146,10 +146,10 @@ describe("WebBuf 2", () => {
   describe("base64", () => {
     it("should encode and decode base64", () => {
       const myStr = "Hello, World!";
-      const buf = WebBuf.fromString(myStr);
+      const buf = WebBuf.fromUtf8(myStr);
       const base64 = buf.toBase64();
       const decoded = WebBuf.fromBase64(base64);
-      expect(decoded.toString()).toBe(myStr);
+      expect(decoded.toUtf8()).toBe(myStr);
     });
 
     it("should encode and decode arbitrary binary data", () => {
@@ -178,10 +178,10 @@ describe("WebBuf 2", () => {
   describe("hex", () => {
     it("should encode and decode hex", () => {
       const myStr = "Hello, World!";
-      const buf = WebBuf.fromString(myStr);
+      const buf = WebBuf.fromUtf8(myStr);
       const hex = buf.toHex();
       const decoded = WebBuf.fromHex(hex);
-      expect(decoded.toString()).toBe(myStr);
+      expect(decoded.toUtf8()).toBe(myStr);
     });
   });
 
@@ -189,20 +189,20 @@ describe("WebBuf 2", () => {
     it("should decode base64", () => {
       const base64 = "YW9ldQ==";
       const decoded = WebBuf.fromBase64(base64);
-      expect(decoded.toString()).toBe("aoeu");
+      expect(decoded.toUtf8()).toBe("aoeu");
     });
 
     it("should ignore whitespace", () => {
       const base64 = "\n   YW9ldQ==  ";
       const decoded = WebBuf.fromBase64(base64, true);
-      expect(decoded.toString()).toBe("aoeu");
+      expect(decoded.toUtf8()).toBe("aoeu");
     });
 
     it("should handle newline in utf8", () => {
       const base64 =
         "LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK";
       const decoded = WebBuf.fromBase64(base64);
-      expect(decoded.toString()).toBe(
+      expect(decoded.toUtf8()).toBe(
         "---\ntitle: Three dashes marks the spot\ntags:\n",
       );
     });
@@ -211,7 +211,7 @@ describe("WebBuf 2", () => {
       const base64 =
         "LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoKICAtIHlhbWwKICAtIGZyb250LW1hdHRlcgogIC0gZGFzaGVzCmV4cGFuZWQt";
       const decoded = WebBuf.fromBase64(base64);
-      expect(decoded.toString()).toBe(
+      expect(decoded.toUtf8()).toBe(
         "---\ntitle: Three dashes marks the spot\ntags:\n  - yaml\n  - front-matter\n  - dashes\nexpaned-",
       );
     });
