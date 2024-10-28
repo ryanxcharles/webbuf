@@ -272,6 +272,21 @@ describe("U64BE", () => {
     const u64 = U64BE.fromLEBuf(U64BE.fromBn(0x0102030405060708n).toLEBuf());
     expect(u64.bn).toBe(0x0102030405060708n);
   });
+
+  it("should convert from BE buffer", () => {
+    const u64 = U64BE.fromBEBuf(U64BE.fromBn(0x0102030405060708n).toBEBuf());
+    expect(u64.bn).toBe(0x0102030405060708n);
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u64 = U64BE.fromLEBuf(U64BE.fromBn(0x0102030405060708n).toLEBuf().buf)
+    expect(u64.bn).toBe(0x0102030405060708n);
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u64 = U64BE.fromBEBuf(U64BE.fromBn(0x0102030405060708n).toBEBuf().buf)
+    expect(u64.bn).toBe(0x0102030405060708n);
+  });
 });
 
 describe("U128BE", () => {
@@ -323,6 +338,27 @@ describe("U128BE", () => {
   it("should convert from LE buffer", () => {
     const u128 = U128BE.fromLEBuf(
       U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toLEBuf(),
+    );
+    expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
+  });
+
+  it("should convert from BE buffer", () => {
+    const u128 = U128BE.fromBEBuf(
+      U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toBEBuf(),
+    );
+    expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u128 = U128BE.fromLEBuf(
+      U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toLEBuf().buf,
+    );
+    expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u128 = U128BE.fromBEBuf(
+      U128BE.fromBn(0x0102030405060708090a0b0c0d0e0f10n).toBEBuf().buf,
     );
     expect(u128.bn).toBe(0x0102030405060708090a0b0c0d0e0f10n);
   });
@@ -394,6 +430,39 @@ describe("U256BE", () => {
       U256BE.fromBn(
         0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
       ).toLEBuf(),
+    );
+    expect(u256.bn).toBe(
+      0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+    );
+  });
+
+  it("should convert from BE buffer", () => {
+    const u256 = U256BE.fromBEBuf(
+      U256BE.fromBn(
+        0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+      ).toBEBuf(),
+    );
+    expect(u256.bn).toBe(
+      0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+    );
+  });
+
+  it("should convert from LE buffer (not fixedbuf)", () => {
+    const u256 = U256BE.fromLEBuf(
+      U256BE.fromBn(
+        0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+      ).toLEBuf().buf,
+    );
+    expect(u256.bn).toBe(
+      0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+    );
+  });
+
+  it("should convert from BE buffer (not fixedbuf)", () => {
+    const u256 = U256BE.fromBEBuf(
+      U256BE.fromBn(
+        0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
+      ).toBEBuf().buf,
     );
     expect(u256.bn).toBe(
       0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20n,
