@@ -148,6 +148,17 @@ describe("BufReader", () => {
 
     bufferReader = new BufReader(WebBuf.from([0x01]));
     expect(bufferReader.readVarIntU64BE().bn).toEqual(BigInt(1));
+
+    bufferReader = new BufReader(WebBuf.from([0xfd, 0x01, 0x00]));
+    expect(bufferReader.readVarIntU64BE().bn).toEqual(2n ** 8n);
+
+    bufferReader = new BufReader(WebBuf.from([0xfe, 0x01, 0x00, 0x00, 0x00]));
+    expect(bufferReader.readVarIntU64BE().bn).toEqual(2n ** 24n);
+
+    bufferReader = new BufReader(
+      WebBuf.from([0xff, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]),
+    );
+    expect(bufferReader.readVarIntU64BE().bn).toEqual(2n ** 56n);
   });
 
   describe("test vectors", () => {
