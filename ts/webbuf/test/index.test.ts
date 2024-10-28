@@ -7,7 +7,7 @@ describe("Index", () => {
     const buf = WebBuf.from(myStr);
     const base64 = buf.toString("base64");
     const decoded = WebBuf.from(base64, "base64");
-    expect(decoded.toString()).toBe(myStr);
+    expect(decoded.toUtf8()).toBe(myStr);
   });
 
   it("should encode and decode hex", () => {
@@ -15,6 +15,6 @@ describe("Index", () => {
     const buf = WebBuf.from(myStr);
     const hex = buf.toString("hex");
     const decoded = WebBuf.from(hex, "hex");
-    expect(decoded.toString()).toBe(myStr);
+    expect(decoded.toUtf8()).toBe(myStr);
   });
 });
