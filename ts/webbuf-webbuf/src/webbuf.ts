@@ -15,22 +15,6 @@ function verifyOffset(offset: number, ext: number, length: number) {
   }
 }
 
-function verifySize(
-  buf: WebBuf,
-  value: number | bigint,
-  offset: number,
-  ext: number,
-  max: number | bigint,
-  min: number | bigint,
-) {
-  if (value > max || value < min) {
-    throw new Error('"value" argument is out of bounds');
-  }
-  if (offset + ext > buf.length) {
-    throw new Error("Index out of range");
-  }
-}
-
 export class WebBuf extends Uint8Array {
   static concat(list: Uint8Array[]) {
     const size = list.reduce((acc, buf) => acc + buf.length, 0);
