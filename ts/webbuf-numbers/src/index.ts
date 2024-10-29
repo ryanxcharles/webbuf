@@ -27,12 +27,11 @@ export abstract class FixedNum<N extends number> {
 export class U8 extends FixedNum<1> {
   constructor(buf: FixedBuf<1> | number | bigint) {
     if (typeof buf === "number") {
-      return U8.fromN(buf);
+      buf = U8.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U8.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U8.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U8 {
@@ -108,12 +107,11 @@ export class U8 extends FixedNum<1> {
 export class U16BE extends FixedNum<2> {
   constructor(buf: FixedBuf<2> | number | bigint) {
     if (typeof buf === "number") {
-      return U16BE.fromN(buf);
+      buf = U16BE.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U16BE.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U16BE.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U16BE {
@@ -194,12 +192,11 @@ export class U16BE extends FixedNum<2> {
 export class U32BE extends FixedNum<4> {
   constructor(buf: FixedBuf<4> | number | bigint) {
     if (typeof buf === "number") {
-      return U32BE.fromN(buf);
+      buf = U32BE.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U32BE.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U32BE.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U32BE {
@@ -286,12 +283,11 @@ export class U32BE extends FixedNum<4> {
 export class U64BE extends FixedNum<8> {
   constructor(buf: FixedBuf<8> | number | bigint) {
     if (typeof buf === "number") {
-      return U64BE.fromN(buf);
+      buf = U64BE.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U64BE.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U64BE.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U64BE {
@@ -378,12 +374,11 @@ export class U64BE extends FixedNum<8> {
 export class U128BE extends FixedNum<16> {
   constructor(buf: FixedBuf<16> | number | bigint) {
     if (typeof buf === "number") {
-      return U128BE.fromN(buf);
+      buf = U128BE.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U128BE.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U128BE.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U128BE {
@@ -470,12 +465,11 @@ export class U128BE extends FixedNum<16> {
 export class U256BE extends FixedNum<32> {
   constructor(buf: FixedBuf<32> | number | bigint) {
     if (typeof buf === "number") {
-      return U256BE.fromN(buf);
+      buf = U256BE.fromN(buf).buf;
     } else if (typeof buf === "bigint") {
-      return U256BE.fromBn(buf);
-    } else {
-      super(buf);
+      buf = U256BE.fromBn(buf).buf;
     }
+    super(buf);
   }
 
   static fromBn(bn: bigint): U256BE {
