@@ -1,6 +1,6 @@
 [package]
 name = "webbuf"
-version = "0.1.0"
+version.workspace = true
 edition = "2021"
 authors = ["Ryan X. Charles <ryan@ryanxcharles.com> (https://ryanxcharles.com)"]
 description = "A Rust library for fast base64 and hex encoding/decoding"

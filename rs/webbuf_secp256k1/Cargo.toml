@@ -1,7 +1,7 @@
 [package]
 name = "webbuf_secp256k1"
 description = "Rust WASM elliptic curve secp256k1 for digital signatures and Diffie-Hellman key exchange"
-version = "0.8.5"
+version.workspace = true
 edition = "2021"
 license = "MIT"
 authors = ["Ryan X. Charles <ryan@ryanxcharles.com>"]
