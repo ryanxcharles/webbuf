@@ -5,19 +5,19 @@ TypeScript and Rust/WASM. We give up backwards compatibility for modern
 convenience and speed. Please see the readme for the specific language for more
 information.
 
-- [WebBuf (TypeScript)](./ts/webbuf/README.md)
+- [WebBuf (TypeScript)](./ts/npm-webbuf/README.md)
 - [WebBuf (Rust)](./rs/webbuf/README.md)
 
-# WebBuf (TypeScript)
+## WebBuf (TypeScript)
 
-`WebBuf` is a powerful, flexible class that extends JavaScript's `Uint8Array`
-to provide additional functionality for handling binary data. It includes
-methods for manipulating binary data, converting to and from different formats
-(e.g., base64, hex, strings), and reading/writing values in both little-endian
-and big-endian formats. This library is ideal for applications that need
-efficient and low-level control over binary data, like encoding/decoding or
-working with protocols. It also supports "fixed-size" buffers with the
-`FixedBuf` class, which enforces a specific buffer size at compile-time.
+`WebBuf` is a powerful, flexible class that extends JavaScript's `Uint8Array` to
+provide additional functionality for handling binary data. It includes methods
+for manipulating binary data, converting to and from different formats (e.g.,
+base64, hex, strings), and reading/writing values in both little-endian and
+big-endian formats. This library is ideal for applications that need efficient
+and low-level control over binary data, like encoding/decoding or working with
+protocols. It also supports "fixed-size" buffers with the `FixedBuf` class,
+which enforces a specific buffer size at compile-time.
 
 Finally, the base64 and hex conversion methods are written in rust and built to
 WebAssembly for performance. They are about five times faster than pure
@@ -122,57 +122,56 @@ console.log(buf.equals(anotherBuf)); // false
 
 ### Static Methods
 
-- **`WebBuf.concat(list: Uint8Array[]): WebBuf`**  
+- **`WebBuf.concat(list: Uint8Array[]): WebBuf`**\
   Concatenates a list of `Uint8Array` or `WebBuf` into a single `WebBuf`.
 
-- **`WebBuf.alloc(size: number): WebBuf`**  
+- **`WebBuf.alloc(size: number): WebBuf`**\
   Allocates a new `WebBuf` of the specified size.
 
-- **`WebBuf.fromUint8Array(buffer: Uint8Array): WebBuf`**  
+- **`WebBuf.fromUint8Array(buffer: Uint8Array): WebBuf`**\
   Returns a `WebBuf` that is a view of the same data as the input `Uint8Array`.
 
-- **`WebBuf.fromArray(array: number[]): WebBuf`**  
+- **`WebBuf.fromArray(array: number[]): WebBuf`**\
   Creates a `WebBuf` from an array of numbers.
 
-- **`WebBuf.fromString(str: string): WebBuf`**  
+- **`WebBuf.fromString(str: string): WebBuf`**\
   Converts a string into a `WebBuf`.
 
-- **`WebBuf.fromHex(hex: string): WebBuf`**  
+- **`WebBuf.fromHex(hex: string): WebBuf`**\
   Converts a hex string to a `WebBuf`.
 
-- **`WebBuf.fromBase64(b64: string): WebBuf`**  
+- **`WebBuf.fromBase64(b64: string): WebBuf`**\
   Converts a base64 string into a `WebBuf`.
 
-- **`WebBuf.from(source, mapFn?, thisArg?): WebBuf`**  
+- **`WebBuf.from(source, mapFn?, thisArg?): WebBuf`**\
   Overrides the `Uint8Array.from` method to return a `WebBuf`.
 
 ### Instance Methods
 
-- **`toBase64(): string`**  
+- **`toBase64(): string`**\
   Converts the `WebBuf` to a base64 string.
 
-- **`toString(): string`**  
+- **`toString(): string`**\
   Converts the `WebBuf` to a UTF-8 string.
 
-- **`toHex(): string`**  
+- **`toHex(): string`**\
   Converts the `WebBuf` to a hexadecimal string.
 
-- **`toArray(): number[]`**  
+- **`toArray(): number[]`**\
   Converts the `WebBuf` to a standard array of numbers.
 
-- **`clone(): WebBuf`**  
+- **`clone(): WebBuf`**\
   Returns a copy of the `WebBuf`.
 
-- **`compare(other: WebBuf): number`**  
+- **`compare(other: WebBuf): number`**\
   Compares two buffers lexicographically. Returns `0` if equal, `-1` if `this`
   is smaller, or `1` if `this` is larger.
 
-- **`equals(other: WebBuf): boolean`**  
+- **`equals(other: WebBuf): boolean`**\
   Returns `true` if the contents of two buffers are identical.
 
-- **`copy(target: WebBuf, targetStart?: number, sourceStart?: number, sourceEnd?: number): number`**  
-  Copies
-  a section of `WebBuf` data to another `WebBuf`.
+- **`copy(target: WebBuf, targetStart?: number, sourceStart?: number, sourceEnd?: number): number`**\
+  Copies a section of `WebBuf` data to another `WebBuf`.
 
 ### Reading/Writing Numbers
 
@@ -230,7 +229,7 @@ matches the fixed size.
 
 #### Methods
 
-- **`buf: WebBuf`**  
+- **`buf: WebBuf`**\
   Returns the underlying `WebBuf` instance.
 
   ```typescript
@@ -239,14 +238,14 @@ matches the fixed size.
 
 #### Static Methods
 
-- **`fromBuf<N>(size: N, buf: WebBuf): FixedBuf<N>`**  
+- **`fromBuf<N>(size: N, buf: WebBuf): FixedBuf<N>`**\
   Creates a `FixedBuf` from an existing `WebBuf` of a specific size.
 
   ```typescript
   const fixedBuf = FixedBuf.fromBuf(32, someWebBuf);
   ```
 
-- **`alloc<N>(size: N, fill?: number): FixedBuf<N>`**  
+- **`alloc<N>(size: N, fill?: number): FixedBuf<N>`**\
   Allocates a new `FixedBuf` of a fixed size, optionally filled with the
   specified value. If no value is provided, the buffer will be initialized with
   zeros.
@@ -255,7 +254,7 @@ matches the fixed size.
   const buf = FixedBuf.alloc(16, 0xff); // 16-byte buffer filled with 0xff
   ```
 
-- **`fromHex<N>(size: N, hex: string): FixedBuf<N>`**  
+- **`fromHex<N>(size: N, hex: string): FixedBuf<N>`**\
   Creates a `FixedBuf` of a specific size from a hexadecimal string. The hex
   string must match the required length of the buffer.
 
@@ -263,7 +262,7 @@ matches the fixed size.
   const buf = FixedBuf.fromHex(16, "deadbeefcafebabe...");
   ```
 
-- **`fromBase64(size: number, base64: string): FixedBuf<number>`**  
+- **`fromBase64(size: number, base64: string): FixedBuf<number>`**\
   Creates a `FixedBuf` from a Base64-encoded string. The size of the resulting
   buffer is determined by the `size` parameter.
 
@@ -271,7 +270,7 @@ matches the fixed size.
   const buf = FixedBuf.fromBase64(16, "SGVsbG8gd29ybGQ=");
   ```
 
-- **`fromRandom<N>(size: N): FixedBuf<N>`**  
+- **`fromRandom<N>(size: N): FixedBuf<N>`**\
   Creates a `FixedBuf` of the given size filled with cryptographically secure
   random bytes.
 
@@ -281,21 +280,21 @@ matches the fixed size.
 
 #### Instance Methods
 
-- **`toHex(): string`**  
+- **`toHex(): string`**\
   Converts the `FixedBuf` to a hexadecimal string representation.
 
   ```typescript
   const hex = fixedBuf.toHex();
   ```
 
-- **`toBase64(): string`**  
+- **`toBase64(): string`**\
   Converts the `FixedBuf` to a Base64-encoded string.
 
   ```typescript
   const base64 = fixedBuf.toBase64();
   ```
 
-- **`clone(): FixedBuf<N>`**  
+- **`clone(): FixedBuf<N>`**\
   Creates a deep copy of the `FixedBuf`.
 
   ```typescript
