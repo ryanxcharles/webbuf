@@ -22,6 +22,8 @@ export interface ApiExport {
 export interface PackageApi {
   npm: string;
   dir: string;
+  /** One-line description from the package's package.json. */
+  description: string;
   exports: ApiExport[];
 }
 

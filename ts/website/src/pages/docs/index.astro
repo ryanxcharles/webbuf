@@ -1,7 +1,11 @@
 ---
 import DocsLayout from "../../layouts/DocsLayout.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import { CATEGORIES, packagesByCategory } from "../../data/packages";
+import {
+  CATEGORIES,
+  packagesByCategory,
+  summaryFor,
+} from "../../data/packages";
 ---
 
 <DocsLayout
@@ -37,7 +41,7 @@ import { CATEGORIES, packagesByCategory } from "../../data/packages";
               class="block rounded-lg border border-border bg-surface p-4 transition-colors hover:border-accent"
             >
               <p class="font-mono text-sm font-semibold">{pkg.npm}</p>
-              <p class="mt-1 text-sm text-muted">{pkg.summary}</p>
+              <p class="mt-1 text-sm text-muted">{summaryFor(pkg)}</p>
             </a>
           ))}
         </div>

@@ -89,7 +89,7 @@ Decided up front with the issue owner:
 - [Experiment 6: Generate a verified API catalog from TypeScript declarations](06-api-extraction.md) —
   **Pass**
 - [Experiment 7: Rebuild the catalog to 29 packages and render the full API](07-render-full-api.md) —
-  **Designed**
+  **Pass**
 
 ## Constraints / out of scope
 

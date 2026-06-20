@@ -12,6 +12,7 @@ const outFile = join(websiteDir, "src", "data", "api.generated.json");
 interface PackageDir {
   dir: string;
   npm: string;
+  description: string;
   entry: string;
 }
 
@@ -25,10 +26,16 @@ function discoverPackages(): PackageDir[] {
     if (!existsSync(pkgJsonPath) || !existsSync(entry)) continue;
     const pkg = JSON.parse(readFileSync(pkgJsonPath, "utf8")) as {
       name?: string;
+      description?: string;
       private?: boolean;
     };
     if (!pkg.name || pkg.private) continue;
-    result.push({ dir, npm: pkg.name, entry });
+    result.push({
+      dir,
+      npm: pkg.name,
+      description: pkg.description ?? "",
+      entry,
+    });
   }
   return result;
 }
@@ -76,6 +83,7 @@ interface ApiExport {
 interface PackageApi {
   npm: string;
   dir: string;
+  description: string;
   exports: ApiExport[];
 }
 
@@ -225,7 +233,7 @@ function extractPackage(pkg: PackageDir): PackageApi {
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  return { npm: pkg.npm, dir: pkg.dir, exports };
+  return { npm: pkg.npm, dir: pkg.dir, description: pkg.description, exports };
 }
 
 const catalog: Record<string, PackageApi> = {};

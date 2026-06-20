@@ -52,3 +52,36 @@ Scope of this experiment: the complete, accurate **API reference** per package
 
 Pass criteria: all steps succeed and no package page is a stub (every export is
 present with its real signature).
+
+## Result
+
+**Pass.**
+
+- `extract:api` now also records each package's `description`; catalog
+  regenerated deterministically for all 29.
+- `lint` → 0 errors; `check` → 0 errors / 0 warnings / 0 hints.
+- `build` → **31 pages** (29 package pages + `/docs` + landing).
+- **Completeness check**: a script compared, for every package, the count of
+  rendered export blocks (`scroll-mt-24`) in the built HTML against
+  `api.generated.json`'s export count — **29/29 pages match, 0 mismatches, 0
+  missing**. Every export is rendered with its real signature; no stubs remain.
+- Dev smoke test: `/docs/slhdsa` (97 exports), `/docs/mlkem`, `/docs/core`, and
+  `/docs` all → 200 with rendered `tokyo-night` signatures.
+
+The package catalog (`src/data/packages.ts`) now lists all 29 packages in eight
+accurate categories; summaries derive from the verified `description` (runtime
+boilerplate trimmed) and installs from the npm name. Each package page renders
+the description, install, and the full API grouped by kind (Constants /
+Functions / Classes / Interfaces / Type aliases …), each export via the new
+`ApiExport` component.
+
+## Conclusion
+
+The reopen's core defect is fixed: every published package has its own page
+documenting **every export with its real, compiler-derived signature** — 0
+stubs, verified programmatically against the catalog. What remains for closure is
+per-package **usage examples** (sourced from each `README.md` where present), a
+refreshed docs overview, and a final verification pass.
+
+Next experiment (to be designed): add verified usage examples and the
+overview/final-verification, then re-close the issue.

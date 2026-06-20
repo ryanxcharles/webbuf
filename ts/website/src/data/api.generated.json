@@ -2,6 +2,7 @@
   "@webbuf/acb3": {
     "npm": "@webbuf/acb3",
     "dir": "npm-webbuf-acb3",
+    "description": "AES+CBC encryption/decryption with blake3 mac for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acb3Decrypt",
@@ -24,6 +25,7 @@
   "@webbuf/acb3dh": {
     "npm": "@webbuf/acb3dh",
     "dir": "npm-webbuf-acb3dh",
+    "description": "AES+CBC encryption/decryption with blake3 mac and secp256k1 Diffie-Hellman shared secret for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acb3dhDecrypt",
@@ -46,6 +48,7 @@
   "@webbuf/acb3p256dh": {
     "npm": "@webbuf/acb3p256dh",
     "dir": "npm-webbuf-acb3p256dh",
+    "description": "AES+CBC encryption/decryption with blake3 mac and P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acb3p256dhDecrypt",
@@ -68,6 +71,7 @@
   "@webbuf/acs2": {
     "npm": "@webbuf/acs2",
     "dir": "npm-webbuf-acs2",
+    "description": "AES+CBC encryption/decryption with SHA-256 HMAC for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acs2Decrypt",
@@ -90,6 +94,7 @@
   "@webbuf/acs2dh": {
     "npm": "@webbuf/acs2dh",
     "dir": "npm-webbuf-acs2dh",
+    "description": "AES+CBC encryption/decryption with SHA-256 HMAC and secp256k1 Diffie-Hellman shared secret for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acs2dhDecrypt",
@@ -112,6 +117,7 @@
   "@webbuf/acs2p256dh": {
     "npm": "@webbuf/acs2p256dh",
     "dir": "npm-webbuf-acs2p256dh",
+    "description": "AES+CBC encryption/decryption with SHA-256 HMAC and P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "acs2p256dhDecrypt",
@@ -134,6 +140,7 @@
   "@webbuf/aescbc": {
     "npm": "@webbuf/aescbc",
     "dir": "npm-webbuf-aescbc",
+    "description": "Rust/wasm optimized AES+CBC encryption/decryption for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "aescbcDecrypt",
@@ -156,6 +163,7 @@
   "@webbuf/aesgcm": {
     "npm": "@webbuf/aesgcm",
     "dir": "npm-webbuf-aesgcm",
+    "description": "Rust/wasm optimized AES-GCM authenticated encryption for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "aesgcmDecrypt",
@@ -178,6 +186,7 @@
   "@webbuf/aesgcm-mlkem": {
     "npm": "@webbuf/aesgcm-mlkem",
     "dir": "npm-webbuf-aesgcm-mlkem",
+    "description": "AES-256-GCM with ML-KEM-768 key encapsulation: post-quantum authenticated encryption for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "_aesgcmMlkemEncryptDeterministic",
@@ -216,6 +225,7 @@
   "@webbuf/aesgcm-p256dh": {
     "npm": "@webbuf/aesgcm-p256dh",
     "dir": "npm-webbuf-aesgcm-p256dh",
+    "description": "AES-GCM authenticated encryption with P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
     "exports": [
       {
         "name": "aesgcmP256dhDecrypt",
@@ -238,6 +248,7 @@
   "@webbuf/aesgcm-p256dh-mlkem": {
     "npm": "@webbuf/aesgcm-p256dh-mlkem",
     "dir": "npm-webbuf-aesgcm-p256dh-mlkem",
+    "description": "Hybrid AES-256-GCM with P-256 ECDH + ML-KEM-768: classical + post-quantum authenticated encryption for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "_aesgcmP256dhMlkemEncryptDeterministic",
@@ -276,6 +287,7 @@
   "@webbuf/aesgcm-x25519dh-mlkem": {
     "npm": "@webbuf/aesgcm-x25519dh-mlkem",
     "dir": "npm-webbuf-aesgcm-x25519dh-mlkem",
+    "description": "Hybrid AES-256-GCM with X25519 ECDH + ML-KEM-768: classical + post-quantum authenticated encryption (Curve25519-flavored sibling of @webbuf/aesgcm-p256dh-mlkem) for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "_aesgcmX25519dhMlkemEncryptDeterministic",
@@ -314,6 +326,7 @@
   "@webbuf/blake3": {
     "npm": "@webbuf/blake3",
     "dir": "npm-webbuf-blake3",
+    "description": "Rust/wasm optimized blake3 hash & mac for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "blake3Hash",
@@ -344,6 +357,7 @@
   "@webbuf/ed25519": {
     "npm": "@webbuf/ed25519",
     "dir": "npm-webbuf-ed25519",
+    "description": "Rust/wasm Ed25519 PureEdDSA (RFC 8032) for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "ed25519PublicKeyCreate",
@@ -374,6 +388,7 @@
   "@webbuf/fixedbuf": {
     "npm": "@webbuf/fixedbuf",
     "dir": "npm-webbuf-fixedbuf",
+    "description": "Fixed-sized buffers optimized with Rust/WASM for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "FixedBuf",
@@ -401,6 +416,7 @@
   "@webbuf/mldsa": {
     "npm": "@webbuf/mldsa",
     "dir": "npm-webbuf-mldsa",
+    "description": "Rust/wasm ML-DSA (FIPS 204) post-quantum digital signatures for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "ML_DSA_44",
@@ -611,6 +627,7 @@
   "@webbuf/mlkem": {
     "npm": "@webbuf/mlkem",
     "dir": "npm-webbuf-mlkem",
+    "description": "Rust/wasm ML-KEM (FIPS 203) post-quantum key encapsulation for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "ML_KEM_1024",
@@ -785,6 +802,7 @@
   "@webbuf/numbers": {
     "npm": "@webbuf/numbers",
     "dir": "npm-webbuf-numbers",
+    "description": "Fixed-sized numbers (unsigned, signed, float) optimized with Rust/WASM for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "FixedNum",
@@ -1074,6 +1092,7 @@
   "@webbuf/p256": {
     "npm": "@webbuf/p256",
     "dir": "npm-webbuf-p256",
+    "description": "Rust/wasm optimized P-256 (NIST) ECDSA and Diffie-Hellman for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "p256PrivateKeyAdd",
@@ -1215,6 +1234,7 @@
   "@webbuf/pbkdf2-sha256": {
     "npm": "@webbuf/pbkdf2-sha256",
     "dir": "npm-webbuf-pbkdf2-sha256",
+    "description": "Rust/wasm optimized PBKDF2-HMAC-SHA256 password-based key derivation for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "pbkdf2Sha256",
@@ -1229,6 +1249,7 @@
   "@webbuf/ripemd160": {
     "npm": "@webbuf/ripemd160",
     "dir": "npm-webbuf-ripemd160",
+    "description": "Rust/wasm optimized ripemd160 hash & mac for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "doubleRipemd160Hash",
@@ -1251,6 +1272,7 @@
   "@webbuf/rw": {
     "npm": "@webbuf/rw",
     "dir": "npm-webbuf-rw",
+    "description": "Read and write buffers, optimized with Rust/WASM for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "BufReader",
@@ -1299,6 +1321,7 @@
   "@webbuf/secp256k1": {
     "npm": "@webbuf/secp256k1",
     "dir": "npm-webbuf-secp256k1",
+    "description": "Rust/wasm optimized secp256k1 ecdsa and Diffie-Hellman for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "privateKeyAdd",
@@ -1369,6 +1392,7 @@
   "@webbuf/sha256": {
     "npm": "@webbuf/sha256",
     "dir": "npm-webbuf-sha256",
+    "description": "Rust/wasm optimized SHA-256 hash & HMAC-SHA256 for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "doubleSha256Hash",
@@ -1399,6 +1423,7 @@
   "@webbuf/sig-ed25519-mldsa": {
     "npm": "@webbuf/sig-ed25519-mldsa",
     "dir": "npm-webbuf-sig-ed25519-mldsa",
+    "description": "Composite Ed25519 + ML-DSA-65 signatures (OpenPGP-style hybrid: classical + post-quantum) for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "_sigEd25519MldsaSignDeterministic",
@@ -1437,6 +1462,7 @@
   "@webbuf/slhdsa": {
     "npm": "@webbuf/slhdsa",
     "dir": "npm-webbuf-slhdsa",
+    "description": "Rust/wasm SLH-DSA (FIPS 205) post-quantum hash-based digital signatures for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "SLH_DSA_SHA2_128F",
@@ -2232,6 +2258,7 @@
   "@webbuf/webbuf": {
     "npm": "@webbuf/webbuf",
     "dir": "npm-webbuf-webbuf",
+    "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "Base32Alphabet",
@@ -2312,6 +2339,7 @@
   "@webbuf/x25519": {
     "npm": "@webbuf/x25519",
     "dir": "npm-webbuf-x25519",
+    "description": "Rust/wasm X25519 ECDH (RFC 7748) for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "x25519PublicKeyCreate",
@@ -2334,6 +2362,7 @@
   "webbuf": {
     "npm": "webbuf",
     "dir": "npm-webbuf",
+    "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
     "exports": [
       {
         "name": "_aesgcmMlkemEncryptDeterministic",
