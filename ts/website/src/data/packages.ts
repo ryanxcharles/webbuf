@@ -93,7 +93,11 @@ export const PACKAGES: readonly Package[] = [
   // Post-quantum primitives
   { slug: "mlkem", npm: "@webbuf/mlkem", category: "Post-quantum primitives" },
   { slug: "mldsa", npm: "@webbuf/mldsa", category: "Post-quantum primitives" },
-  { slug: "slhdsa", npm: "@webbuf/slhdsa", category: "Post-quantum primitives" },
+  {
+    slug: "slhdsa",
+    npm: "@webbuf/slhdsa",
+    category: "Post-quantum primitives",
+  },
 
   // Hybrid post-quantum
   {
@@ -121,7 +125,8 @@ export const PACKAGES: readonly Package[] = [
 export const packagesByCategory = (category: Category): Package[] =>
   PACKAGES.filter((pkg) => pkg.category === category);
 
-export const installCommand = (pkg: Package): string => `npm install ${pkg.npm}`;
+export const installCommand = (pkg: Package): string =>
+  `npm install ${pkg.npm}`;
 
 /** The verified API + description for a package, from the generated catalog. */
 export const apiFor = (pkg: Package): PackageApi | undefined =>

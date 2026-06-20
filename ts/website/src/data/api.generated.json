@@ -3,6 +3,8 @@
     "npm": "@webbuf/acb3",
     "dir": "npm-webbuf-acb3",
     "description": "AES+CBC encryption/decryption with blake3 mac for web, node.js, deno and bun.",
+    "usage": "import { acb3Encrypt, acb3Decrypt } from \"@webbuf/acb3\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// 256-bit key\nconst key = FixedBuf.fromRandom<32>(32);\n\n// Encrypt with authentication\nconst plaintext = WebBuf.fromUtf8(\"Secret message\");\nconst ciphertext = acb3Encrypt(plaintext, key);\n\n// Decrypt and verify\ntry {\n  const decrypted = acb3Decrypt(ciphertext, key);\n  console.log(decrypted.toUtf8()); // \"Secret message\"\n} catch (e) {\n  console.error(\"Authentication failed!\");\n}",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acb3Decrypt",
@@ -26,6 +28,8 @@
     "npm": "@webbuf/acb3dh",
     "dir": "npm-webbuf-acb3dh",
     "description": "AES+CBC encryption/decryption with blake3 mac and secp256k1 Diffie-Hellman shared secret for web, node.js, deno and bun.",
+    "usage": "import { acb3dhEncrypt, acb3dhDecrypt } from \"@webbuf/acb3dh\";\nimport { publicKeyCreate } from \"@webbuf/secp256k1\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Alice and Bob generate key pairs\nconst alicePrivKey = FixedBuf.fromRandom<32>(32);\nconst alicePubKey = publicKeyCreate(alicePrivKey);\n\nconst bobPrivKey = FixedBuf.fromRandom<32>(32);\nconst bobPubKey = publicKeyCreate(bobPrivKey);\n\n// Alice encrypts a message to Bob\nconst plaintext = WebBuf.fromUtf8(\"Hello Bob!\");\nconst ciphertext = acb3dhEncrypt(alicePrivKey, bobPubKey, plaintext);\n\n// Bob decrypts the message from Alice\nconst decrypted = acb3dhDecrypt(bobPrivKey, alicePubKey, ciphertext);\nconsole.log(decrypted.toUtf8()); // \"Hello Bob!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acb3dhDecrypt",
@@ -49,6 +53,8 @@
     "npm": "@webbuf/acb3p256dh",
     "dir": "npm-webbuf-acb3p256dh",
     "description": "AES+CBC encryption/decryption with blake3 mac and P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
+    "usage": "import { acb3p256dhEncrypt, acb3p256dhDecrypt } from \"@webbuf/acb3p256dh\";\nimport { p256PublicKeyCreate } from \"@webbuf/p256\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Alice and Bob generate key pairs\nconst alicePrivKey = FixedBuf.fromRandom<32>(32);\nconst alicePubKey = p256PublicKeyCreate(alicePrivKey);\n\nconst bobPrivKey = FixedBuf.fromRandom<32>(32);\nconst bobPubKey = p256PublicKeyCreate(bobPrivKey);\n\n// Alice encrypts a message to Bob\nconst plaintext = WebBuf.fromUtf8(\"Hello Bob!\");\nconst ciphertext = acb3p256dhEncrypt(alicePrivKey, bobPubKey, plaintext);\n\n// Bob decrypts the message from Alice\nconst decrypted = acb3p256dhDecrypt(bobPrivKey, alicePubKey, ciphertext);\nconsole.log(decrypted.toUtf8()); // \"Hello Bob!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acb3p256dhDecrypt",
@@ -72,6 +78,8 @@
     "npm": "@webbuf/acs2",
     "dir": "npm-webbuf-acs2",
     "description": "AES+CBC encryption/decryption with SHA-256 HMAC for web, node.js, deno and bun.",
+    "usage": "import { acs2Encrypt, acs2Decrypt } from \"@webbuf/acs2\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// 256-bit key\nconst key = FixedBuf.fromRandom<32>(32);\n\n// Encrypt with authentication\nconst plaintext = WebBuf.fromUtf8(\"Secret message\");\nconst ciphertext = acs2Encrypt(plaintext, key);\n\n// Decrypt and verify\ntry {\n  const decrypted = acs2Decrypt(ciphertext, key);\n  console.log(decrypted.toUtf8()); // \"Secret message\"\n} catch (e) {\n  console.error(\"Authentication failed!\");\n}",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acs2Decrypt",
@@ -95,6 +103,8 @@
     "npm": "@webbuf/acs2dh",
     "dir": "npm-webbuf-acs2dh",
     "description": "AES+CBC encryption/decryption with SHA-256 HMAC and secp256k1 Diffie-Hellman shared secret for web, node.js, deno and bun.",
+    "usage": "import { acs2dhEncrypt, acs2dhDecrypt } from \"@webbuf/acs2dh\";\nimport { publicKeyCreate } from \"@webbuf/secp256k1\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Alice and Bob generate key pairs\nconst alicePrivKey = FixedBuf.fromRandom<32>(32);\nconst alicePubKey = publicKeyCreate(alicePrivKey);\n\nconst bobPrivKey = FixedBuf.fromRandom<32>(32);\nconst bobPubKey = publicKeyCreate(bobPrivKey);\n\n// Alice encrypts a message to Bob\nconst plaintext = WebBuf.fromUtf8(\"Hello Bob!\");\nconst ciphertext = acs2dhEncrypt(alicePrivKey, bobPubKey, plaintext);\n\n// Bob decrypts the message from Alice\nconst decrypted = acs2dhDecrypt(bobPrivKey, alicePubKey, ciphertext);\nconsole.log(decrypted.toUtf8()); // \"Hello Bob!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acs2dhDecrypt",
@@ -118,6 +128,8 @@
     "npm": "@webbuf/acs2p256dh",
     "dir": "npm-webbuf-acs2p256dh",
     "description": "AES+CBC encryption/decryption with SHA-256 HMAC and P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
+    "usage": "import { acs2p256dhEncrypt, acs2p256dhDecrypt } from \"@webbuf/acs2p256dh\";\nimport { p256PublicKeyCreate } from \"@webbuf/p256\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Alice and Bob generate key pairs\nconst alicePrivKey = FixedBuf.fromRandom<32>(32);\nconst alicePubKey = p256PublicKeyCreate(alicePrivKey);\n\nconst bobPrivKey = FixedBuf.fromRandom<32>(32);\nconst bobPubKey = p256PublicKeyCreate(bobPrivKey);\n\n// Alice encrypts a message to Bob\nconst plaintext = WebBuf.fromUtf8(\"Hello Bob!\");\nconst ciphertext = acs2p256dhEncrypt(alicePrivKey, bobPubKey, plaintext);\n\n// Bob decrypts the message from Alice\nconst decrypted = acs2p256dhDecrypt(bobPrivKey, alicePubKey, ciphertext);\nconsole.log(decrypted.toUtf8()); // \"Hello Bob!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "acs2p256dhDecrypt",
@@ -141,6 +153,8 @@
     "npm": "@webbuf/aescbc",
     "dir": "npm-webbuf-aescbc",
     "description": "Rust/wasm optimized AES+CBC encryption/decryption for web, node.js, deno and bun.",
+    "usage": "import { aescbcEncrypt, aescbcDecrypt } from \"@webbuf/aescbc\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// AES-256 key (32 bytes)\nconst aesKey = FixedBuf.fromRandom<32>(32);\n\n// Optional: custom IV (16 bytes). If not provided, random IV is generated.\nconst iv = FixedBuf.fromRandom<16>(16);\n\n// Encrypt\nconst plaintext = WebBuf.fromUtf8(\"Hello, world!\");\nconst ciphertext = aescbcEncrypt(plaintext, aesKey, iv);\n// Note: IV is prepended to ciphertext\n\n// Decrypt\nconst decrypted = aescbcDecrypt(ciphertext, aesKey);\nconsole.log(decrypted.toUtf8()); // \"Hello, world!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "aescbcDecrypt",
@@ -164,6 +178,8 @@
     "npm": "@webbuf/aesgcm",
     "dir": "npm-webbuf-aesgcm",
     "description": "Rust/wasm optimized AES-GCM authenticated encryption for the web, node.js, deno, and bun.",
+    "usage": "import { aesgcmEncrypt, aesgcmDecrypt } from \"@webbuf/aesgcm\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\nconst key = FixedBuf.fromRandom<32>(32); // AES-256\nconst plaintext = WebBuf.fromUtf8(\"Hello, AES-GCM!\");\n\n// Encrypt (nonce generated automatically)\nconst ciphertext = aesgcmEncrypt(plaintext, key);\n\n// Decrypt (nonce extracted from ciphertext)\nconst decrypted = aesgcmDecrypt(ciphertext, key);\nconsole.log(decrypted.toUtf8()); // \"Hello, AES-GCM!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "aesgcmDecrypt",
@@ -187,6 +203,8 @@
     "npm": "@webbuf/aesgcm-mlkem",
     "dir": "npm-webbuf-aesgcm-mlkem",
     "description": "AES-256-GCM with ML-KEM-768 key encapsulation: post-quantum authenticated encryption for the web, node.js, deno, and bun.",
+    "usage": "import { aesgcmMlkemEncrypt, aesgcmMlkemDecrypt } from \"@webbuf/aesgcm-mlkem\";\nimport { mlKem768KeyPair } from \"@webbuf/mlkem\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// Recipient generates a keypair (once, persistent)\nconst { encapsulationKey, decapsulationKey } = mlKem768KeyPair();\n\n// Sender encrypts to recipient's encapsulationKey\nconst plaintext = WebBuf.fromUtf8(\"hello, post-quantum\");\nconst ciphertext = aesgcmMlkemEncrypt(encapsulationKey, plaintext);\n\n// Recipient decrypts using decapsulationKey\nconst recovered = aesgcmMlkemDecrypt(decapsulationKey, ciphertext);\n// recovered.toUtf8() === \"hello, post-quantum\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "_aesgcmMlkemEncryptDeterministic",
@@ -226,6 +244,8 @@
     "npm": "@webbuf/aesgcm-p256dh",
     "dir": "npm-webbuf-aesgcm-p256dh",
     "description": "AES-GCM authenticated encryption with P-256 (NIST) Diffie-Hellman shared secret for web, node.js, deno and bun.",
+    "usage": "import { aesgcmP256dhEncrypt, aesgcmP256dhDecrypt } from \"@webbuf/aesgcm-p256dh\";\nimport { p256PublicKeyCreate } from \"@webbuf/p256\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Alice and Bob generate key pairs\nconst alicePrivKey = FixedBuf.fromRandom<32>(32);\nconst alicePubKey = p256PublicKeyCreate(alicePrivKey);\n\nconst bobPrivKey = FixedBuf.fromRandom<32>(32);\nconst bobPubKey = p256PublicKeyCreate(bobPrivKey);\n\n// Alice encrypts a message to Bob\nconst plaintext = WebBuf.fromUtf8(\"Hello Bob!\");\nconst ciphertext = aesgcmP256dhEncrypt(alicePrivKey, bobPubKey, plaintext);\n\n// Bob decrypts the message from Alice\nconst decrypted = aesgcmP256dhDecrypt(bobPrivKey, alicePubKey, ciphertext);\nconsole.log(decrypted.toUtf8()); // \"Hello Bob!\"",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "aesgcmP256dhDecrypt",
@@ -249,6 +269,8 @@
     "npm": "@webbuf/aesgcm-p256dh-mlkem",
     "dir": "npm-webbuf-aesgcm-p256dh-mlkem",
     "description": "Hybrid AES-256-GCM with P-256 ECDH + ML-KEM-768: classical + post-quantum authenticated encryption for the web, node.js, deno, and bun.",
+    "usage": "import {\n  aesgcmP256dhMlkemEncrypt,\n  aesgcmP256dhMlkemDecrypt,\n} from \"@webbuf/aesgcm-p256dh-mlkem\";\nimport { mlKem768KeyPair } from \"@webbuf/mlkem\";\nimport { p256PublicKeyCreate } from \"@webbuf/p256\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// Both parties have persistent (static-static) P-256 keypairs\nconst senderPriv = FixedBuf.fromRandom<32>(32);\nconst senderPub = p256PublicKeyCreate(senderPriv);\nconst recipientPriv = FixedBuf.fromRandom<32>(32);\nconst recipientPub = p256PublicKeyCreate(recipientPriv);\n\n// Recipient holds an ML-KEM-768 keypair too\nconst { encapsulationKey, decapsulationKey } = mlKem768KeyPair();\n\n// Sender encrypts using its own P-256 priv, recipient's P-256 pub,\n// recipient's ML-KEM encapsulation key\nconst plaintext = WebBuf.fromUtf8(\"hybrid encryption\");\nconst ciphertext = aesgcmP256dhMlkemEncrypt(\n  senderPriv,\n  recipientPub,\n  encapsulationKey,\n  plaintext,\n);\n\n// Recipient decrypts using its own P-256 priv, sender's P-256 pub,\n// own ML-KEM decapsulation key\nconst recovered = aesgcmP256dhMlkemDecrypt(\n  recipientPriv,\n  senderPub,\n  decapsulationKey,\n  ciphertext,\n);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "_aesgcmP256dhMlkemEncryptDeterministic",
@@ -288,6 +310,8 @@
     "npm": "@webbuf/aesgcm-x25519dh-mlkem",
     "dir": "npm-webbuf-aesgcm-x25519dh-mlkem",
     "description": "Hybrid AES-256-GCM with X25519 ECDH + ML-KEM-768: classical + post-quantum authenticated encryption (Curve25519-flavored sibling of @webbuf/aesgcm-p256dh-mlkem) for the web, node.js, deno, and bun.",
+    "usage": "import {\n  aesgcmX25519dhMlkemEncrypt,\n  aesgcmX25519dhMlkemDecrypt,\n} from \"@webbuf/aesgcm-x25519dh-mlkem\";\nimport { mlKem768KeyPair } from \"@webbuf/mlkem\";\nimport { x25519PublicKeyCreate } from \"@webbuf/x25519\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// Both parties have persistent (static-static) X25519 keypairs.\nconst senderPriv = FixedBuf.fromRandom<32>(32);\nconst senderPub = x25519PublicKeyCreate(senderPriv);\nconst recipientPriv = FixedBuf.fromRandom<32>(32);\nconst recipientPub = x25519PublicKeyCreate(recipientPriv);\n\n// Recipient holds an ML-KEM-768 keypair too.\nconst { encapsulationKey, decapsulationKey } = mlKem768KeyPair();\n\n// Sender encrypts using its own X25519 priv, recipient's X25519 pub,\n// recipient's ML-KEM encapsulation key.\nconst plaintext = WebBuf.fromUtf8(\"hybrid encryption\");\nconst ciphertext = aesgcmX25519dhMlkemEncrypt(\n  senderPriv,\n  recipientPub,\n  encapsulationKey,\n  plaintext,\n);\n\n// Recipient decrypts using its own X25519 priv, sender's X25519 pub,\n// own ML-KEM decapsulation key.\nconst recovered = aesgcmX25519dhMlkemDecrypt(\n  recipientPriv,\n  senderPub,\n  decapsulationKey,\n  ciphertext,\n);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "_aesgcmX25519dhMlkemEncryptDeterministic",
@@ -327,6 +351,8 @@
     "npm": "@webbuf/blake3",
     "dir": "npm-webbuf-blake3",
     "description": "Rust/wasm optimized blake3 hash & mac for the web, node.js, deno, and bun.",
+    "usage": "import { blake3Hash, doubleBlake3Hash, blake3Mac } from \"@webbuf/blake3\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Hash data\nconst data = WebBuf.fromUtf8(\"Hello, world!\");\nconst hash = blake3Hash(data);\nconsole.log(hash.toHex()); // 32-byte hash\n\n// Double hash (hash of hash)\nconst doubleHash = doubleBlake3Hash(data);\n\n// Keyed MAC (requires 32-byte key)\nconst key = FixedBuf.fromRandom<32>(32);\nconst mac = blake3Mac(key, data);\nconsole.log(mac.toHex()); // 32-byte MAC",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "blake3Hash",
@@ -358,6 +384,8 @@
     "npm": "@webbuf/ed25519",
     "dir": "npm-webbuf-ed25519",
     "description": "Rust/wasm Ed25519 PureEdDSA (RFC 8032) for the web, node.js, deno, and bun.",
+    "usage": "import {\n  ed25519PublicKeyCreate,\n  ed25519Sign,\n  ed25519Verify,\n} from \"@webbuf/ed25519\";\nimport { WebBuf } from \"@webbuf/webbuf\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Each party generates a 32-byte seed and derives the public key.\nconst priv = FixedBuf.fromRandom<32>(32);\nconst pub = ed25519PublicKeyCreate(priv);\n\n// Sign a message.\nconst message = WebBuf.fromUtf8(\"hello, ed25519\");\nconst signature = ed25519Sign(priv, message);\n\n// Verify it.\nconst ok = ed25519Verify(pub, message, signature); // true",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "ed25519PublicKeyCreate",
@@ -389,6 +417,8 @@
     "npm": "@webbuf/fixedbuf",
     "dir": "npm-webbuf-fixedbuf",
     "description": "Fixed-sized buffers optimized with Rust/WASM for the web, node.js, deno, and bun.",
+    "usage": "import { FixedBuf } from \"@webbuf/fixedbuf\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// Create fixed-size buffers\nconst buf32 = FixedBuf.alloc<32>(32); // 32-byte buffer\nconst buf16 = FixedBuf.alloc<16>(16, 0xff); // 16 bytes filled with 0xff\nconst random = FixedBuf.fromRandom<32>(32); // 32 random bytes\n\n// Create from encoded strings\nconst fromHex = FixedBuf.fromHex<4>(4, \"deadbeef\");\nconst fromB64 = FixedBuf.fromBase64(16, \"SGVsbG8gV29ybGQhISE=\");\n\n// Create from WebBuf\nconst webBuf = WebBuf.alloc(32);\nconst fixed = FixedBuf.fromBuf<32>(32, webBuf);\n\n// Access underlying buffer\nconst underlying: WebBuf = fixed.buf;\n\n// Convert to strings\nfromHex.toHex(); // \"deadbeef\"\nfromB64.toBase64(); // \"SGVsbG8gV29ybGQhISE=\"\n\n// Clone and reverse\nconst cloned = fixed.clone();\nconst reversed = fixed.toReverse();",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "FixedBuf",
@@ -417,6 +447,8 @@
     "npm": "@webbuf/mldsa",
     "dir": "npm-webbuf-mldsa",
     "description": "Rust/wasm ML-DSA (FIPS 204) post-quantum digital signatures for the web, node.js, deno, and bun.",
+    "usage": "const { verifyingKey, signingKey } = mlDsa65KeyPair();\nconst signature = mlDsa65Sign(signingKey, message, context);\nconst ok = mlDsa65Verify(verifyingKey, message, signature, context);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "ML_DSA_44",
@@ -628,6 +660,8 @@
     "npm": "@webbuf/mlkem",
     "dir": "npm-webbuf-mlkem",
     "description": "Rust/wasm ML-KEM (FIPS 203) post-quantum key encapsulation for the web, node.js, deno, and bun.",
+    "usage": "const { encapsulationKey, decapsulationKey } = mlKem768KeyPair();\nconst { ciphertext, sharedSecret } = mlKem768Encapsulate(encapsulationKey);\nconst recovered = mlKem768Decapsulate(decapsulationKey, ciphertext);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "ML_KEM_1024",
@@ -803,6 +837,8 @@
     "npm": "@webbuf/numbers",
     "dir": "npm-webbuf-numbers",
     "description": "Fixed-sized numbers (unsigned, signed, float) optimized with Rust/WASM for the web, node.js, deno, and bun.",
+    "usage": "import {\n  U8,\n  U16BE,\n  U16LE,\n  U32BE,\n  U32LE,\n  U64BE,\n  U64LE,\n  U128BE,\n  U128LE,\n  U256BE,\n  U256LE,\n} from \"@webbuf/numbers\";\n\n// Create from number or bigint\nconst a = U32BE.fromN(1000);\nconst b = U64BE.fromBn(0x123456789abcdef0n);\n\n// Arithmetic\nconst sum = a.add(U32BE.fromN(500));\nconst diff = a.sub(U32BE.fromN(100));\nconst product = a.mul(U32BE.fromN(2));\nconst quotient = a.div(U32BE.fromN(10));\n\n// Convert to number/bigint\na.n; // 1000 (number)\na.bn; // 1000n (bigint)\n\n// Buffer conversions\nconst beBuf = a.toBEBuf(); // Big-endian FixedBuf\nconst leBuf = a.toLEBuf(); // Little-endian FixedBuf\nconst restored = U32BE.fromBEBuf(beBuf);\n\n// Hex conversions\nconst hex = a.toHex(); // \"000003e8\"\nconst fromHex = U32BE.fromHex(\"000003e8\");",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "FixedNum",
@@ -1093,6 +1129,8 @@
     "npm": "@webbuf/p256",
     "dir": "npm-webbuf-p256",
     "description": "Rust/wasm optimized P-256 (NIST) ECDSA and Diffie-Hellman for the web, node.js, deno, and bun.",
+    "usage": "import {\n  p256PublicKeyCreate,\n  p256PrivateKeyVerify,\n  p256PublicKeyVerify,\n} from \"@webbuf/p256\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Generate random private key\nconst privKey = FixedBuf.fromRandom<32>(32);\n\n// Verify private key is valid\np256PrivateKeyVerify(privKey); // true\n\n// Derive public key (compressed, 33 bytes)\nconst pubKey = p256PublicKeyCreate(privKey);\n\n// Verify public key\np256PublicKeyVerify(pubKey); // true",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "p256PrivateKeyAdd",
@@ -1235,6 +1273,8 @@
     "npm": "@webbuf/pbkdf2-sha256",
     "dir": "npm-webbuf-pbkdf2-sha256",
     "description": "Rust/wasm optimized PBKDF2-HMAC-SHA256 password-based key derivation for the web, node.js, deno, and bun.",
+    "usage": "import { pbkdf2Sha256 } from \"@webbuf/pbkdf2-sha256\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\nconst password = WebBuf.fromUtf8(\"my password\");\nconst salt = WebBuf.fromUtf8(\"random salt\");\nconst iterations = 100_000;\nconst keyLen = 32;\n\nconst derivedKey = pbkdf2Sha256(password, salt, iterations, keyLen);  // FixedBuf<32>\nconsole.log(derivedKey.toHex());",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "pbkdf2Sha256",
@@ -1250,6 +1290,8 @@
     "npm": "@webbuf/ripemd160",
     "dir": "npm-webbuf-ripemd160",
     "description": "Rust/wasm optimized ripemd160 hash & mac for the web, node.js, deno, and bun.",
+    "usage": "import { ripemd160Hash, doubleRipemd160Hash } from \"@webbuf/ripemd160\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// RIPEMD-160 hash\nconst data = WebBuf.fromUtf8(\"Hello, world!\");\nconst hash = ripemd160Hash(data);\nconsole.log(hash.toHex()); // 20-byte hash\n\n// Double hash (hash of hash)\nconst doubleHash = doubleRipemd160Hash(data);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "doubleRipemd160Hash",
@@ -1273,6 +1315,8 @@
     "npm": "@webbuf/rw",
     "dir": "npm-webbuf-rw",
     "description": "Read and write buffers, optimized with Rust/WASM for the web, node.js, deno, and bun.",
+    "usage": "import { BufWriter } from \"@webbuf/rw\";\nimport { U8, U16BE, U32BE, U64BE } from \"@webbuf/numbers\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\nconst writer = new BufWriter();\n\n// Write numbers\nwriter.writeU8(new U8(255));\nwriter.writeU16BE(new U16BE(1000));\nwriter.writeU32BE(new U32BE(123456));\nwriter.writeU64BE(new U64BE(0x123456789abcdef0n));\n\n// Write fixed buffers\nconst hash = FixedBuf.fromRandom<32>(32);\nwriter.writeFixed(hash);\n\n// Write variable-length data\nwriter.writeVarIntU64BE(new U64BE(1000n));\n\n// Get result\nconst buf = writer.toBuf();",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "BufReader",
@@ -1322,6 +1366,8 @@
     "npm": "@webbuf/secp256k1",
     "dir": "npm-webbuf-secp256k1",
     "description": "Rust/wasm optimized secp256k1 ecdsa and Diffie-Hellman for the web, node.js, deno, and bun.",
+    "usage": "import {\n  publicKeyCreate,\n  privateKeyVerify,\n  publicKeyVerify,\n} from \"@webbuf/secp256k1\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Generate random private key\nconst privKey = FixedBuf.fromRandom<32>(32);\n\n// Verify private key is valid\nprivateKeyVerify(privKey); // true\n\n// Derive public key (compressed, 33 bytes)\nconst pubKey = publicKeyCreate(privKey);\n\n// Verify public key\npublicKeyVerify(pubKey); // true",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "privateKeyAdd",
@@ -1393,6 +1439,8 @@
     "npm": "@webbuf/sha256",
     "dir": "npm-webbuf-sha256",
     "description": "Rust/wasm optimized SHA-256 hash & HMAC-SHA256 for the web, node.js, deno, and bun.",
+    "usage": "import { sha256Hash, doubleSha256Hash, sha256Hmac } from \"@webbuf/sha256\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// SHA-256 hash\nconst data = WebBuf.fromUtf8(\"abc\");\nconst hash = sha256Hash(data);\nconsole.log(hash.toHex());\n// \"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\"\n\n// Double SHA-256 (used in Bitcoin)\nconst doubleHash = doubleSha256Hash(data);\n\n// HMAC-SHA256\nconst key = WebBuf.fromUtf8(\"secret key\");\nconst message = WebBuf.fromUtf8(\"message\");\nconst mac = sha256Hmac(key, message);\nconsole.log(mac.toHex()); // 32-byte HMAC",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "doubleSha256Hash",
@@ -1424,6 +1472,8 @@
     "npm": "@webbuf/sig-ed25519-mldsa",
     "dir": "npm-webbuf-sig-ed25519-mldsa",
     "description": "Composite Ed25519 + ML-DSA-65 signatures (OpenPGP-style hybrid: classical + post-quantum) for the web, node.js, deno, and bun.",
+    "usage": "import {\n  sigEd25519MldsaSign,\n  sigEd25519MldsaVerify,\n} from \"@webbuf/sig-ed25519-mldsa\";\nimport { ed25519PublicKeyCreate } from \"@webbuf/ed25519\";\nimport { mlDsa65KeyPair } from \"@webbuf/mldsa\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\nimport { WebBuf } from \"@webbuf/webbuf\";\n\n// Each party generates two independent keys: a 32-byte Ed25519 seed and an\n// ML-DSA-65 keypair.\nconst ed25519Priv = FixedBuf.fromRandom<32>(32);\nconst ed25519Pub = ed25519PublicKeyCreate(ed25519Priv);\n\nconst { signingKey: mldsaSigningKey, verifyingKey: mldsaVerifyingKey } =\n  mlDsa65KeyPair();\n\n// Sign a message — produces a 3374-byte composite signature.\nconst message = WebBuf.fromUtf8(\"composite signature\");\nconst signature = sigEd25519MldsaSign(ed25519Priv, mldsaSigningKey, message);\n\n// Verify — both halves must verify against their respective public keys.\nconst ok = sigEd25519MldsaVerify(\n  ed25519Pub,\n  mldsaVerifyingKey,\n  message,\n  signature,\n);\n// ok === true",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "_sigEd25519MldsaSignDeterministic",
@@ -1463,6 +1513,8 @@
     "npm": "@webbuf/slhdsa",
     "dir": "npm-webbuf-slhdsa",
     "description": "Rust/wasm SLH-DSA (FIPS 205) post-quantum hash-based digital signatures for the web, node.js, deno, and bun.",
+    "usage": "const { verifyingKey, signingKey } = slhDsaSha2_128fKeyPair();\nconst signature = slhDsaSha2_128fSign(signingKey, message, context);\nconst ok = slhDsaSha2_128fVerify(verifyingKey, message, signature, context);",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "SLH_DSA_SHA2_128F",
@@ -2259,6 +2311,8 @@
     "npm": "@webbuf/webbuf",
     "dir": "npm-webbuf-webbuf",
     "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
+    "usage": "import { WebBuf } from \"@webbuf/webbuf\";\n\n// Create from various sources\nconst buf1 = WebBuf.alloc(32);\nconst buf2 = WebBuf.fromHex(\"deadbeef\");\nconst buf3 = WebBuf.fromBase64(\"SGVsbG8=\");\nconst buf4 = WebBuf.fromUtf8(\"Hello, world!\");\nconst buf5 = WebBuf.fromArray([1, 2, 3, 4]);\n\n// Convert to strings\nbuf2.toHex(); // \"deadbeef\"\nbuf3.toBase64(); // \"SGVsbG8=\"\nbuf4.toUtf8(); // \"Hello, world!\"\n\n// Buffer operations\nconst combined = WebBuf.concat([buf1, buf2]);\nconst cloned = buf1.clone();\nconst reversed = buf1.toReverse();\n\n// Comparison\nbuf1.equals(buf2); // false\nbuf1.compare(buf2); // -1, 0, or 1",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "Base32Alphabet",
@@ -2340,6 +2394,8 @@
     "npm": "@webbuf/x25519",
     "dir": "npm-webbuf-x25519",
     "description": "Rust/wasm X25519 ECDH (RFC 7748) for the web, node.js, deno, and bun.",
+    "usage": "import { x25519PublicKeyCreate, x25519SharedSecretRaw } from \"@webbuf/x25519\";\nimport { FixedBuf } from \"@webbuf/fixedbuf\";\n\n// Each party generates a 32-byte private key and computes its public key.\nconst alicePriv = FixedBuf.fromRandom<32>(32);\nconst alicePub = x25519PublicKeyCreate(alicePriv);\n\nconst bobPriv = FixedBuf.fromRandom<32>(32);\nconst bobPub = x25519PublicKeyCreate(bobPriv);\n\n// Each side computes the same shared secret independently.\nconst aliceSS = x25519SharedSecretRaw(alicePriv, bobPub);\nconst bobSS = x25519SharedSecretRaw(bobPriv, alicePub);\n// aliceSS.toHex() === bobSS.toHex()",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "x25519PublicKeyCreate",
@@ -2363,6 +2419,8 @@
     "npm": "webbuf",
     "dir": "npm-webbuf",
     "description": "Rust/WASM optimized buffers for the web, node.js, deno, and bun.",
+    "usage": "import {\n  // Core\n  WebBuf,\n  FixedBuf,\n\n  // Numbers\n  U8,\n  U16BE,\n  U16LE,\n  U32BE,\n  U32LE,\n  U64BE,\n  U64LE,\n  U128BE,\n  U128LE,\n  U256BE,\n  U256LE,\n\n  // Buffer I/O\n  BufReader,\n  BufWriter,\n\n  // Hashing\n  blake3Hash,\n  doubleBlake3Hash,\n  blake3Mac,\n  sha256Hash,\n  doubleSha256Hash,\n  sha256Hmac,\n  ripemd160Hash,\n  doubleRipemd160Hash,\n\n  // Elliptic curves\n  sign,\n  verify,\n  publicKeyCreate,\n  publicKeyVerify,\n  privateKeyVerify,\n  sharedSecret,\n\n  // Encryption\n  aescbcEncrypt,\n  aescbcDecrypt,\n  acb3Encrypt,\n  acb3Decrypt,\n  acb3dhEncrypt,\n  acb3dhDecrypt,\n  acs2Encrypt,\n  acs2Decrypt,\n  acs2dhEncrypt,\n  acs2dhDecrypt,\n} from \"webbuf\";",
+    "usageLang": "ts",
     "exports": [
       {
         "name": "_aesgcmMlkemEncryptDeterministic",

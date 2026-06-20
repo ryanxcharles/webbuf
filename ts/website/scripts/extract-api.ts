@@ -84,7 +84,24 @@ interface PackageApi {
   npm: string;
   dir: string;
   description: string;
+  /** Maintainer's first TS/JS README example, or null if the README has none. */
+  usage: string | null;
+  usageLang: "ts" | "js";
   exports: ApiExport[];
+}
+
+/** Extract the first TypeScript/JavaScript fenced code block from a README. */
+function readmeUsage(dir: string): {
+  usage: string | null;
+  usageLang: "ts" | "js";
+} {
+  const readmePath = join(tsDir, dir, "README.md");
+  if (!existsSync(readmePath)) return { usage: null, usageLang: "ts" };
+  const md = readFileSync(readmePath, "utf8");
+  const match = /```(typescript|ts|javascript|js)\n([\s\S]*?)```/.exec(md);
+  if (!match) return { usage: null, usageLang: "ts" };
+  const lang = match[1].startsWith("j") ? "js" : "ts";
+  return { usage: match[2].trimEnd(), usageLang: lang };
 }
 
 function kindOf(flags: ts.SymbolFlags): ExportKind {
@@ -99,8 +116,7 @@ function kindOf(flags: ts.SymbolFlags): ExportKind {
 }
 
 const SIG_FLAGS =
-  ts.TypeFormatFlags.NoTruncation |
-  ts.TypeFormatFlags.WriteArrowStyleSignature;
+  ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.WriteArrowStyleSignature;
 
 const NO_TRUNCATION = ts.TypeFormatFlags.NoTruncation;
 
@@ -193,11 +209,15 @@ function renderSignatures(
   }
 
   if (kind === "type") {
-    return [`type ${symbol.getName()} = ${checker.typeToString(type, location, SIG_FLAGS)}`];
+    return [
+      `type ${symbol.getName()} = ${checker.typeToString(type, location, SIG_FLAGS)}`,
+    ];
   }
 
   // const / enum / other: show the resolved type.
-  return [`${symbol.getName()}: ${checker.typeToString(type, location, SIG_FLAGS)}`];
+  return [
+    `${symbol.getName()}: ${checker.typeToString(type, location, SIG_FLAGS)}`,
+  ];
 }
 
 function extractPackage(pkg: PackageDir): PackageApi {
@@ -233,7 +253,15 @@ function extractPackage(pkg: PackageDir): PackageApi {
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  return { npm: pkg.npm, dir: pkg.dir, description: pkg.description, exports };
+  const { usage, usageLang } = readmeUsage(pkg.dir);
+  return {
+    npm: pkg.npm,
+    dir: pkg.dir,
+    description: pkg.description,
+    usage,
+    usageLang,
+    exports,
+  };
 }
 
 const catalog: Record<string, PackageApi> = {};
@@ -251,4 +279,7 @@ for (const key of Object.keys(catalog).sort()) {
 }
 
 writeFileSync(outFile, `${JSON.stringify(ordered, null, 2)}\n`);
-console.log(`\nWrote ${outFile} (${PACKAGES.length.toString()} packages)`);
+const withUsage = Object.values(ordered).filter((p) => p.usage !== null).length;
+console.log(
+  `\nWrote ${outFile} (${PACKAGES.length.toString()} packages, ${withUsage.toString()} with a usage example)`,
+);

@@ -24,6 +24,9 @@ export interface PackageApi {
   dir: string;
   /** One-line description from the package's package.json. */
   description: string;
+  /** Maintainer's first TS/JS README example, or null if none. */
+  usage: string | null;
+  usageLang: "ts" | "js";
   exports: ApiExport[];
 }
 

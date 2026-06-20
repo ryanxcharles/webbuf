@@ -44,3 +44,32 @@ fabricated.
 
 Pass criteria: all steps succeed; then the issue is closed (Conclusion +
 frontmatter + index) as a separate close commit.
+
+## Result
+
+**Pass.**
+
+- `extract:api` captured a usage example for **29/29** packages — the
+  first-TS/JS-fence heuristic also picks up the `## Preferred API` examples
+  (mlkem/mldsa/slhdsa and the hybrid `aesgcm-*` packages), so coverage is total.
+  Output remains **idempotent** (identical SHA on re-run).
+- Generated `api.generated.json` is now excluded from Prettier
+  (`**/*.generated.json` in the shared ignore) so the generator owns its format;
+  `prettier --check` is clean across the website.
+- `lint` → 0 errors; `check` → 0/0/0; `build` → **31 pages**.
+- **Completeness re-check**: 29/29 package pages still render exactly their
+  catalog export count (0 mismatches).
+- Usage sections render on sampled pages (`blake3`, `secp256k1`, `mldsa`,
+  `slhdsa`).
+- `astro preview` (production build) serves `/`, `/docs`,
+  `/docs/aesgcm-x25519dh-mlkem`, `/docs/numbers` → 200.
+- `pnpm install` at the `ts/` root → "Already up to date" (no churn).
+
+## Conclusion
+
+Every package page now carries the maintainer's authoritative usage example
+(verified from the README, never invented) above its complete API reference, and
+the docs overview reflects the real 29-package catalog. With requirement 4 fully
+satisfied — every published package, every export documented in detail, plus a
+real usage example — the issue is ready to close. The close (issue Conclusion +
+frontmatter + index) follows as a separate close commit per the workflow.
