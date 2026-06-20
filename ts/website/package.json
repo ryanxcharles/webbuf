@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "build:images": "tsx scripts/process-images.ts",
+    "extract:api": "tsx scripts/extract-api.ts",
     "lint": "eslint .",
     "format": "prettier --write . --ignore-path ../.prettierignore"
   },

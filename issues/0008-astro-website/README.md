@@ -87,7 +87,7 @@ Decided up front with the issue owner:
 - [Experiment 5: Final verification and close](05-final-verification.md) —
   **Pass** (premature close — see "Reopened")
 - [Experiment 6: Generate a verified API catalog from TypeScript declarations](06-api-extraction.md) —
-  **Designed**
+  **Pass**
 
 ## Constraints / out of scope
 
