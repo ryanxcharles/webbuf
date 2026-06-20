@@ -581,14 +581,41 @@ designed.
 **Never list experiments upfront.** The outcome of each experiment informs what
 comes next.
 
+### Experiment commits
+
+Every experiment has **two required commit points**:
+
+1. **Plan commit** — after the experiment design is written and linked from the
+   issue README's `## Experiments` index, commit the plan **before
+   implementation begins**. This commit contains the new `NN-{slug}.md`
+   (Description / Changes / Verification) and the README index line.
+2. **Result commit** — after implementation, verification, and recording the
+   result (`## Result` / `## Conclusion` in the experiment file plus the updated
+   status on the README index line), commit the result **before designing the
+   next experiment**.
+
+These commits must be **separate**: do not combine a plan and its result in one
+commit, and do not start the next experiment before the previous experiment's
+result commit exists. Closing the issue (Conclusion + frontmatter `closed` +
+regenerated index) is its own final **close commit**.
+
+The agent **performs these commits itself** as part of the workflow — they are
+mandated steps, not actions to wait for a separate request. This overrides any
+general "commit only when asked" default for the bookkeeping above. Commit
+messages follow the repo's `commit` skill (GitPoet) convention.
+
 ### Process summary
 
-1. Create the issue with frontmatter, goal, background. No experiments yet.
-2. Design Experiment 1.
-3. Implement Experiment 1.
-4. Record the result — Pass, partial, or fail with a conclusion.
+1. Create the issue with frontmatter, goal, background. No experiments yet —
+   then commit the new issue.
+2. Design Experiment N (write `NN-{slug}.md`, link it from the README index) →
+   **plan commit**.
+3. Implement Experiment N.
+4. Record the result — Pass, partial, or fail with a conclusion — and update its
+   status on the README index line → **result commit**.
 5. Repeat until the goal is met.
-6. Close the issue — write a Conclusion section, update frontmatter.
+6. Close the issue — write a Conclusion section, update frontmatter, regenerate
+   the index → **close commit**.
 
 Every closed issue MUST have a `## Conclusion` section summarizing what was
 accomplished, what changed, and key decisions made. The conclusion is the
