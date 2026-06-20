@@ -1,0 +1,29 @@
+---
+const year = new Date().getFullYear();
+
+const links = [
+  { label: "GitHub", href: "https://github.com/identellica/webbuf" },
+  { label: "npm", href: "https://www.npmjs.com/package/webbuf" },
+];
+---
+
+<footer class="border-t border-border">
+  <div
+    class="mx-auto flex max-w-3xl flex-col gap-2 px-6 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p>&copy; {year} Astrohacker. MIT licensed.</p>
+    <nav class="flex gap-4">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="transition-colors hover:text-accent"
+            rel="noopener noreferrer"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</footer>

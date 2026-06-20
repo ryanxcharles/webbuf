@@ -1,0 +1,63 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Logo from "../components/Logo.astro";
+import CodeBlock from "../components/CodeBlock.astro";
+
+const features = [
+  {
+    title: "Rust-powered",
+    body: "Cryptography written or wrapped in Rust and compiled to WebAssembly for native-grade performance.",
+  },
+  {
+    title: "Synchronous loading",
+    body: "WASM is inlined as base64, so packages load like ordinary JavaScript — no async imports, no top-level await.",
+  },
+  {
+    title: "Typed buffers",
+    body: "A common WebBuf format and FixedBuf<N> give every package a shared, type-safe buffer surface.",
+  },
+];
+---
+
+<Layout>
+  <section class="flex flex-col items-start">
+    <Logo size={72} class="mb-6" />
+    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">WebBuf</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted">
+      High-performance buffer manipulation and cryptography for the web, written
+      in Rust, compiled to WebAssembly, and shipped as zero-config TypeScript
+      packages.
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a
+        href="/docs"
+        class="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
+      >
+        Read the docs
+      </a>
+      <a
+        href="https://github.com/identellica/webbuf"
+        rel="noopener noreferrer"
+        class="rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
+      >
+        GitHub
+      </a>
+    </div>
+  </section>
+
+  <section class="mt-12 w-full">
+    <CodeBlock code="npm install webbuf" lang="bash" />
+  </section>
+
+  <section class="mt-14 grid gap-4 sm:grid-cols-3">
+    {
+      features.map((feature) => (
+        <div class="rounded-lg border border-border bg-surface p-5">
+          <h2 class="font-semibold text-accent">{feature.title}</h2>
+          <p class="mt-2 text-sm text-muted">{feature.body}</p>
+        </div>
+      ))
+    }
+  </section>
+</Layout>

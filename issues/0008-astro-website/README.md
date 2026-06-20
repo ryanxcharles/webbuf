@@ -1,6 +1,7 @@
 +++
-status = "open"
+status = "closed"
 opened = "2026-06-20"
+closed = "2026-06-20"
 +++
 
 # Astro website with logo image pipeline
@@ -61,6 +62,19 @@ Decided up front with the issue owner:
        a `prefers-color-scheme` media query.
 6. **Verification**: the website must build and run in dev (e.g. `pnpm dev`),
    and be tested to confirm it runs.
+
+## Experiments
+
+- [Experiment 1: Scaffold the Astro site with three-mode TokyoNight theming](01-scaffold-and-theming.md) —
+  **Pass**
+- [Experiment 2: Logo image pipeline (WebP + dual PNG favicons)](02-image-pipeline.md) —
+  **Pass**
+- [Experiment 3: Astro-aware ESLint and design foundation](03-eslint-and-foundation.md) —
+  **Pass**
+- [Experiment 4: Content — landing page and docs section](04-content-landing-and-docs.md) —
+  **Pass**
+- [Experiment 5: Final verification and close](05-final-verification.md) —
+  **Pass**
 
 ## Constraints / out of scope
 
@@ -128,3 +142,54 @@ list — experiments are designed one at a time and each informs the next.
 
 Open questions are resolved as each experiment is designed; the first experiment
 is expected to be the scaffold + thin slice above.
+
+## Conclusion
+
+Delivered WebBuf's first website at `ts/website` and the logo image pipeline,
+across five experiments that followed the intended sequence almost exactly
+(theming front-loaded, then the pipeline, then foundation, content, and a final
+verification pass).
+
+What was built:
+
+- **Astro + Tailwind v4** package at `ts/website`, auto-joined to the `ts/` pnpm
+  workspace, TypeScript throughout.
+- **Three-mode theming** (system / light / dark) on **TokyoNight** (dark) and
+  **TokyoNight Day** (light), implemented as a semantic CSS-variable token layer
+  wired into Tailwind's `@theme`, with a render-blocking inline head script that
+  sets `data-theme` before first paint (no FOUC) and a persisted manual toggle.
+- **`sharp` image pipeline** as a TypeScript script (`scripts/process-images.ts`,
+  run via `tsx` as `build:images`), modeled on radcn's: the two 1000×1000 source
+  logos become a WebP set `[32,64,96,128,180,200,300,400]` per variant plus a PNG
+  favicon per color scheme (favicons referenced via dual `<link rel="icon">`
+  media queries), with a generated typed image manifest. The pipeline is
+  deterministic/idempotent.
+- **Content**: a finished landing page and a data-driven **docs** section — a
+  sidebar, an overview grid, and a generated page per published package (15) with
+  install and (where the API is documented) usage, highlighted at build time with
+  Shiki `tokyo-night`.
+- **Tooling**: Astro-aware ESLint config + `lint` script, shared Prettier
+  (`**/.astro/` added to the root ignore), and accessibility touches
+  (focus-visible ring, `prefers-reduced-motion`).
+
+Key decisions:
+
+- Favicon-as-PNG (two PNGs, one per color scheme) rather than a true `.ico`,
+  per the issue owner's request.
+- Code blocks use a single `tokyo-night` Shiki theme in both modes (a dark code
+  window on the light page) to avoid fragile dual-theme Shiki wiring; revisit if
+  light-mode code styling is wanted later.
+- Usage snippets limited to the three packages with a documented API
+  (`@webbuf/webbuf`, `@webbuf/fixedbuf`, `@webbuf/blake3`) to avoid inventing
+  crypto APIs; the rest show accurate summaries + install.
+- One deviation from the spine's design notes: the no-FOUC script ships as an
+  exported string inlined via `<script is:inline set:html>` because a pre-paint
+  inline script cannot be a bundled module.
+
+Verification: lint, `astro check`, and `astro build` (17 pages) are all green;
+the site serves correctly under both `astro dev` and `astro preview`; the image
+pipeline is idempotent; and the rest of the `ts/` workspace install is
+undisturbed.
+
+Out of scope and deferred: **deployment to Cloudflare** (a future issue), an
+OpenGraph/social image, and richer per-package API docs.

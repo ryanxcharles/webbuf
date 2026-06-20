@@ -1,0 +1,29 @@
+---
+import { siteImage } from "../lib/images";
+
+interface Props {
+  /** Rendered pixel size (square). */
+  size?: number;
+  class?: string;
+}
+
+const { size = 32, class: className } = Astro.props;
+---
+
+<span class:list={["inline-flex shrink-0", className]}>
+  <img
+    src={siteImage("/images/webbuf-2-light-64.webp")}
+    width={size}
+    height={size}
+    alt="WebBuf"
+    class="block dark:hidden"
+  />
+  <img
+    src={siteImage("/images/webbuf-2-dark-64.webp")}
+    width={size}
+    height={size}
+    alt=""
+    aria-hidden="true"
+    class="hidden dark:block"
+  />
+</span>

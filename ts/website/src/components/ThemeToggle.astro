@@ -1,0 +1,28 @@
+---
+// Cycles color theme: system -> light -> dark. The actual theme state lives in
+// the inline head script (window.__theme); this only drives and labels it.
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  class="rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent"
+>
+  <span data-theme-label>System</span>
+</button>
+
+<script>
+  const names = { system: "System", light: "Light", dark: "Dark" } as const;
+  const btn = document.getElementById("theme-toggle");
+  const label = btn?.querySelector<HTMLElement>("[data-theme-label]");
+
+  const sync = () => {
+    const mode = window.__theme?.getMode() ?? "system";
+    if (label) label.textContent = names[mode];
+  };
+
+  btn?.addEventListener("click", () => window.__theme?.cycle());
+  window.addEventListener("themechange", sync);
+  sync();
+</script>

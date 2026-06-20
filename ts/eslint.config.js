@@ -20,6 +20,7 @@ export default tseslint.config(
       "**/rs-*-bundler/",
       "**/rs-*-inline-base64/",
       "eslint.config.js",
+      "website/",
     ],
   },
 );
