@@ -2,14 +2,14 @@
 
 ## Open
 
-| #   | Title | Opened |
-| --- | ----- | ------ |
+| #                                    | Title                                  | Opened     |
+| ------------------------------------ | -------------------------------------- | ---------- |
+| [0008](0008-astro-website/README.md) | Astro website with logo image pipeline | 2026-06-20 |
 
 ## Closed
 
 | #                                                 | Title                                                                           | Opened     | Closed     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------- | ---------- | ---------- |
-| [0008](0008-astro-website/README.md)              | Astro website with logo image pipeline                                          | 2026-06-20 | 2026-06-20 |
 | [0007](0007-curve25519-hybrid-pq/README.md)       | Adopt Curve25519 (X25519, Ed25519) and Curve25519-based hybrid PQ constructions | 2026-04-26 | 2026-04-26 |
 | [0006](0006-aad-pq-encryption/README.md)          | AAD support for AES-GCM and post-quantum encryption packages                    | 2026-04-25 | 2026-04-25 |
 | [0005](0005-pin-mlkem-and-scope-docs/README.md)   | Pin ml-kem exactly and clarify PQ encryption scope docs                         | 2026-04-25 | 2026-04-25 |

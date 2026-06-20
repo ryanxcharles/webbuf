@@ -1,7 +1,6 @@
 +++
-status = "closed"
+status = "open"
 opened = "2026-06-20"
-closed = "2026-06-20"
 +++
 
 # Astro website with logo image pipeline
@@ -50,6 +49,18 @@ Decided up front with the issue owner:
 4. **Content scope**: a **landing page plus a documentation site** — a marketing
    landing page and a real docs section covering the `@webbuf/*` packages
    (closest in scope to the sibling radcn / nutorch sites).
+   - **Complete API documentation is required.** This was implied from the start
+     and is now made explicit: **every published package** must have its own page
+     documenting **every exported function/symbol in detail** — name, signature,
+     parameters, return type, and a usage example. Summary-plus-install stubs do
+     **not** satisfy this; a package page is only done when its full public API
+     is documented.
+   - **The package set must be the real, published one**, enumerated from the
+     repo (the `ts/npm-webbuf-*` packages), not a hand-picked subset. Every
+     symbol and signature must be sourced from the actual package surface —
+     `ts/npm-webbuf-*/src/index.ts`, the `.d.ts` output, and each package
+     `README.md` — and **never invented**. If an API cannot be verified from the
+     source, it is not documented until it can be.
 5. **Image pipeline**:
    - A **TypeScript** script (not JavaScript) that lives **in the website
      folder** and uses `sharp`.
@@ -143,14 +154,29 @@ list — experiments are designed one at a time and each informs the next.
 Open questions are resolved as each experiment is designed; the first experiment
 is expected to be the scaffold + thin slice above.
 
-## Conclusion
+## Reopened (2026-06-20)
 
-Delivered WebBuf's first website at `ts/website` and the logo image pipeline,
-across five experiments that followed the intended sequence almost exactly
-(theming front-loaded, then the pipeline, then foundation, content, and a final
-verification pass).
+This issue was **closed prematurely after Experiment 5 and has been reopened**.
+The closure claimed the content scope was delivered, but the docs section only
+documented 15 hand-picked packages and gave a real usage example for just three
+(`@webbuf/webbuf`, `@webbuf/fixedbuf`, `@webbuf/blake3`); the other pages were
+summary-plus-install stubs. That does not meet requirement 4 as now clarified:
+**every published package, with every exported function documented in detail.**
+The published set is also larger and different than what was catalogued (it
+includes, e.g., `ed25519`, `x25519`, `p256`, the `aesgcm*` family,
+`pbkdf2-sha256`, `sig-ed25519-mldsa`, `acs2*`, `acb3p256dh`).
 
-What was built:
+Remaining work (experiments to be designed, one at a time): enumerate the real
+`ts/npm-webbuf-*` package set, extract each package's true public API from its
+`src/index.ts` / `.d.ts` / `README.md`, and document every export in detail on
+its page — then re-verify and close.
+
+### Interim progress (Experiments 1–5)
+
+Experiments 1–5 stand as the record of what was built so far — the scaffold,
+theming, image pipeline, design foundation, landing page, and the (incomplete)
+docs section. Experiment 5's verification (build/dev/preview green) holds; only
+its act of **closing** the issue was wrong. What was built:
 
 - **Astro + Tailwind v4** package at `ts/website`, auto-joined to the `ts/` pnpm
   workspace, TypeScript throughout.
@@ -191,5 +217,7 @@ the site serves correctly under both `astro dev` and `astro preview`; the image
 pipeline is idempotent; and the rest of the `ts/` workspace install is
 undisturbed.
 
-Out of scope and deferred: **deployment to Cloudflare** (a future issue), an
-OpenGraph/social image, and richer per-package API docs.
+Still out of scope: **deployment to Cloudflare** (a future issue) and an
+OpenGraph/social image. **Full per-package API documentation is NOT deferred —
+it is the remaining in-scope work** that this issue must complete before it can
+be closed (see "Reopened" above and requirement 4).
