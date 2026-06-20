@@ -1,6 +1,7 @@
 +++
-status = "open"
+status = "closed"
 opened = "2026-06-20"
+closed = "2026-06-20"
 +++
 
 # Astro website with logo image pipeline
@@ -227,3 +228,48 @@ Still out of scope: **deployment to Cloudflare** (a future issue) and an
 OpenGraph/social image. **Full per-package API documentation is NOT deferred —
 it is the remaining in-scope work** that this issue must complete before it can
 be closed (see "Reopened" above and requirement 4).
+
+## Conclusion
+
+Delivered WebBuf's first website at `ts/website` — Astro + Tailwind v4,
+three-mode TokyoNight theming, a `sharp` logo pipeline, and a complete,
+**verified** documentation site for all 29 published packages — across eight
+experiments (Experiment 5's premature close was corrected by reopening; the work
+then continued through Experiments 6–8).
+
+What was built:
+
+- **Astro + Tailwind v4** package at `ts/website` in the `ts/` pnpm workspace,
+  TypeScript throughout, with Astro-aware ESLint and shared Prettier.
+- **Three-mode theming** (system / light / dark) on TokyoNight / TokyoNight Day:
+  a semantic CSS-variable token layer, a render-blocking no-FOUC head script, and
+  a persisted manual toggle.
+- **`sharp` image pipeline** (`process-images.ts`, via `tsx`): the two source
+  logos → a WebP size set per variant + a PNG favicon per color scheme +
+  a typed image manifest; deterministic.
+- **Verified API docs** — the heart of the reopen. `extract-api.ts` uses the
+  TypeScript compiler to read **every export of all 29 packages** straight from
+  source (overloads collapsed, class members enumerated), emitting a
+  deterministic `api.generated.json`. Every package page renders that full API
+  (grouped by kind, real signatures) plus the maintainer's own README usage
+  example. A build-time check asserts each page renders exactly the catalogued
+  export count — **0 stubs, nothing invented**.
+
+Key decisions:
+
+- API documentation is **generated from the compiler**, never transcribed, which
+  is what makes requirement 4's "never invented" guarantee mechanical. Summaries
+  come from each `package.json` description; usage examples from each README's
+  first TS/JS code block.
+- Favicons are PNGs (one per color scheme), per the issue owner's request.
+- Code blocks use a single `tokyo-night` Shiki theme in both modes.
+- The no-FOUC script ships as an exported string inlined via
+  `<script is:inline set:html>` (a pre-paint script cannot be a bundled module).
+
+Verification at close: `lint`, `astro check` (0/0/0), and `astro build`
+(31 pages) are green; the completeness check passes for all 29 packages; the
+image and API pipelines are idempotent; the site serves under both `astro dev`
+and `astro preview`; and the rest of the `ts/` workspace is undisturbed.
+
+Out of scope and deferred to future issues: **deployment to Cloudflare** and an
+**OpenGraph/social image**.
