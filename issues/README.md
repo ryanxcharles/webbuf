@@ -2,8 +2,9 @@
 
 ## Open
 
-| #   | Title | Opened |
-| --- | ----- | ------ |
+| #                                    | Title                                  | Opened     |
+| ------------------------------------ | -------------------------------------- | ---------- |
+| [0008](0008-astro-website/README.md) | Astro website with logo image pipeline | 2026-06-20 |
 
 ## Closed
 
