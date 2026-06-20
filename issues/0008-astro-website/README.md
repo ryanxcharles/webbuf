@@ -90,6 +90,8 @@ Decided up front with the issue owner:
   **Pass**
 - [Experiment 7: Rebuild the catalog to 29 packages and render the full API](07-render-full-api.md) —
   **Pass**
+- [Experiment 8: Verified usage examples, overview refresh, and close](08-usage-and-close.md) —
+  **Designed**
 
 ## Constraints / out of scope
 
