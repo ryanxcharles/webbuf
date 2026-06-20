@@ -1,0 +1,58 @@
+# Experiment 6: Generate a verified API catalog from TypeScript declarations
+
+## Description
+
+Build the **source of truth** for the docs: extract every exported symbol and
+its real signature from each published `@webbuf/*` package using the TypeScript
+compiler, so the docs can be generated from the actual API and never invented
+(requirement 4). This experiment produces and verifies the catalog only —
+rendering it into the docs pages is a later experiment.
+
+There are **29 published packages** (the 28 scoped `ts/npm-webbuf-*` plus the
+`npm-webbuf` umbrella). Each `src/index.ts` exports explicitly-typed functions,
+constants, and interfaces; some (e.g. `mlkem`, `slhdsa`) expose many functions
+across parameter sets, with TypeScript **overloads** that must be collapsed into
+one entry per symbol.
+
+## Approach
+
+Use the TypeScript compiler API over each package's `src/index.ts` (with that
+package's own module resolution, so cross-package and inline-wasm types resolve):
+get the module symbol, enumerate `checker.getExportsOfModule(...)`, and for each
+export record its name, kind, fully-rendered signature(s)/type, and JSDoc. This
+is mechanically guaranteed to match the real public API — signatures are read
+from the compiler, not transcribed by hand.
+
+## Changes
+
+- `ts/website/scripts/extract-api.ts` (TypeScript, run via `tsx`):
+  - enumerate published packages from `ts/npm-webbuf-*/package.json` (skip any
+    `"private": true`), including the `npm-webbuf` umbrella;
+  - for each, create a `ts.Program` rooted at its `src/index.ts`, take the
+    module symbol, and enumerate its exports;
+  - for each export emit `{ name, kind, signatures[], doc }` — collapsing
+    function overloads into a single entry carrying every signature;
+  - write `ts/website/src/data/api.generated.json` (sorted for determinism).
+- `ts/website/src/data/api.ts` — a small typed loader importing the JSON and
+  exposing `apiForPackage(npmName)` plus the `ApiExport` type.
+- `ts/website/package.json` — add script `extract:api` → `tsx scripts/extract-api.ts`
+  (TypeScript is already a dependency).
+- `api.generated.json` is committed (a derived but checked-in artifact, like the
+  processed images).
+
+## Verification
+
+1. `pnpm --filter @webbuf/website extract:api` runs clean and emits API entries
+   for **all 29** published packages.
+2. Spot-checks against the actual source:
+   - `@webbuf/blake3` → exactly `blake3Hash`, `doubleBlake3Hash`, `blake3Mac`,
+     each `(...) => FixedBuf<32>`;
+   - `@webbuf/secp256k1` → includes `sign`, `verify`, `sharedSecret`,
+     `publicKeyCreate` with their `FixedBuf<N>` signatures;
+   - `@webbuf/mlkem` → includes the `ML_KEM_512/768/1024` constants and the
+     per-level key-pair/encapsulate/decapsulate functions, **overloads collapsed**
+     (one `mlKem512KeyPair` entry, not three).
+3. Re-running `extract:api` yields byte-identical JSON (deterministic).
+4. `lint`, `check`, and `build` remain green with the new data file + loader.
+
+Pass criteria: all four steps succeed.

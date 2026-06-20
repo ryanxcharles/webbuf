@@ -85,7 +85,9 @@ Decided up front with the issue owner:
 - [Experiment 4: Content — landing page and docs section](04-content-landing-and-docs.md) —
   **Pass**
 - [Experiment 5: Final verification and close](05-final-verification.md) —
-  **Pass**
+  **Pass** (premature close — see "Reopened")
+- [Experiment 6: Generate a verified API catalog from TypeScript declarations](06-api-extraction.md) —
+  **Designed**
 
 ## Constraints / out of scope
 
