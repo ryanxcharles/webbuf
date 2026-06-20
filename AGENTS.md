@@ -475,19 +475,36 @@ incremental steps that solve the problem.
 
 ### Issue structure
 
-Each issue is a **folder** containing a `README.md` with TOML frontmatter:
+Each issue is a **folder**. The `README.md` is the issue **spine**
+(frontmatter, goal, background, analysis, an ordered index of experiments, and
+the final conclusion). **Every experiment is its own numbered file** in the same
+folder — the README never contains experiment bodies, only links to them.
 
 ```
-issues/0001-some-topic/
-├── README.md          <- main issue document with frontmatter
-├── 01-sub-topic.md    <- optional: additional files for long issues
-└── 02-sub-topic.md
+issues/0008-some-topic/
+├── README.md          <- spine: frontmatter, goal, background,
+│                         the ordered Experiments index, conclusion
+├── 01-sub-topic.md    <- Experiment 1 (full body in its own file)
+└── 02-sub-topic.md    <- Experiment 2
 ```
 
-The folder name is `{number}-{slug}`. The number is 4-digit, globally
-sequential.
+The folder name is `{number}-{slug}`. The number is 4-digit, zero-padded, and
+globally sequential. The slug is lowercase, hyphenated, and describes the topic.
+
+**Why one file per experiment:** it keeps experiments ordered and easy to read,
+access, and organize (up to ~100 per issue with clean `NN-` filenames), and —
+critically — it makes experiments easy to **automate**: each experiment is a
+discrete file created and tracked from the README, rather than ever-growing
+edits to one monolithic document.
+
+> **Note:** issues `0001`–`0007` predate this structure and keep their
+> experiments inline in the README. They are closed and immutable — leave them
+> as-is. The spine + one-file-per-experiment layout applies to issue `0008`
+> onward.
 
 #### Frontmatter
+
+Every `README.md` starts with TOML frontmatter:
 
 ```
 +++
@@ -498,10 +515,58 @@ opened = "2026-04-25"
 
 When closing, add `closed = "YYYY-MM-DD"` and change `status` to `"closed"`.
 
+#### README.md structure
+
+After the frontmatter, a new issue's `README.md` has these sections:
+
+1. **Title** (H1) — a plain descriptive title (e.g. `# Hybrid post-quantum
+   encryption packages`). The index script extracts this H1 verbatim.
+2. **Goal** — One or two sentences describing the desired outcome.
+3. **Background** — Context, prior work, constraints.
+4. **Analysis** / **Proposed Solutions** — Technical details.
+
+A new issue's README has **no experiments listed yet**.
+
+As experiments are created, the README grows an **`## Experiments`** section: an
+ordered list linking to each experiment file, one per line, with a one-line
+status. The README holds the links and statuses only — never the experiment
+bodies. Example:
+
+```markdown
+## Experiments
+
+- [Experiment 1: Audit the current API](01-audit-api.md) — **Pass**
+- [Experiment 2: Wire the new wrapper](02-wire-wrapper.md) — **Partial** (needs
+  a deterministic-seed path)
+- [Experiment 3: …](03-….md) — **Designed**
+```
+
+Keep each status to one of: `Designed`, `In progress`, `Pass`, `Partial`,
+`Fail`. Update the line when the experiment's result is recorded, so the README
+doubles as an at-a-glance progress tracker.
+
+When the issue is solved or abandoned, add the **`## Conclusion`** section to
+the README (see "Process summary").
+
+#### Experiment files
+
+Each experiment lives in its **own file** `NN-{slug}.md` in the issue folder,
+where `NN` is a zero-padded two-digit number in creation order (`01`, `02`, …,
+up to `99`). The slug is lowercase-hyphenated and describes the experiment.
+
+Each experiment file contains:
+
+1. **Title** (H1) — `# Experiment {N}: {descriptive title}`
+2. **Description** — What and why.
+3. **Changes** — Specific code changes, listed by file.
+4. **Verification** — How to test. Concrete steps and pass/fail criteria.
+5. **Result** and **Conclusion** — added after the experiment runs.
+
 ### Experiments
 
-Only after the issue's requirements are clear. Each experiment is designed,
-implemented, and concluded before the next one is designed.
+Design experiments only after the issue's requirements are clear. Each
+experiment is designed, implemented, and concluded before the next one is
+designed.
 
 **Never list experiments upfront.** The outcome of each experiment informs what
 comes next.
